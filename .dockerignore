@@ -1,0 +1,19 @@
+*.md
+!README.md
+**/node_modules/
+**/[a-c].txt
+**/.turbo
+**/.DS_Store
+**/.vscode/
+# git相关
+**/.git/
+# **/.gitignore
+**/.gitattributes
+# eslint相关
+**/.eslintignore
+**/.eslintrc.js
+**/eslint.config.mjs
+# prettier相关
+**/.prettierrc
+**/.prettierrc.mjs
+**/.prettierignore

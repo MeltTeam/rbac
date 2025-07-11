@@ -1,0 +1,42 @@
+{
+  "name": "rbac",
+  "type": "module",
+  "version": "0.0.1",
+  "packageManager": "pnpm@9.5.0",
+  "description": "MeltTeam-rbac",
+  "author": "MeltTeam",
+  "license": "MIT",
+  "keywords": [
+    "rbac"
+  ],
+  "main": "index.js",
+  "engines": {
+    "node": ">=20.19.2"
+  },
+  "scripts": {
+    "git:add": "git add .",
+    "git:commit": "cz"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "catalog:cli",
+    "@commitlint/config-conventional": "catalog:cli",
+    "@configs/commitizen-config": "workspace:*",
+    "@configs/commitlint-config": "workspace:*",
+    "@configs/eslint-config": "workspace:*",
+    "@configs/prettier-config": "workspace:*",
+    "@types/node": "catalog:cli",
+    "commitizen": "catalog:cli",
+    "cz-customizable": "catalog:cli",
+    "husky": "catalog:cli",
+    "lint-staged": "catalog:cli",
+    "turbo": "catalog:cli"
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-customizable"
+    },
+    "cz-customizable": {
+      "config": ".cz-config.cjs"
+    }
+  }
+}

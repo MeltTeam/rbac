@@ -1,0 +1,12 @@
+{
+  "name": "@configs/commitizen-config",
+  "version": "0.0.1",
+  "private": true,
+  "description": "commitizen配置",
+  "author": "MeltTeam",
+  "license": "MIT",
+  "main": "./src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}

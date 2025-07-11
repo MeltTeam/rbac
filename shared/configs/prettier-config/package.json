@@ -1,0 +1,19 @@
+{
+  "name": "@configs/prettier-config",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "description": "prettier配置",
+  "author": "MeltTeam",
+  "license": "MIT",
+  "main": "./src/index.mjs",
+  "module": "./src/index.mjs",
+  "scripts": {
+    "test": "node ./src/index.mjs",
+    "format": "prettier --write src/",
+    "lint": "eslint . --fix"
+  },
+  "devDependencies": {
+    "prettier": "catalog:cli"
+  }
+}
