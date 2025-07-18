@@ -5,6 +5,8 @@
 **/docker-volumes
 **/.pm2
 **/documentation
+**/analysis.html
+**/out
 # Logs
 logs
 *.log

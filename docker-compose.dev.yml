@@ -1,0 +1,64 @@
+version: '3'
+networks: # 定义网络
+  dev_rbac_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.3.0/16
+
+services:
+  dev_rbac_mysql:
+    # 自动重启
+    restart: always
+    container_name: dev_rbac_mysql
+    image: mysql:lts
+    user: root
+    # 密码认证
+    environment:
+      - MYSQL_ROOT_PASSWORD=Aa123456
+      - TZ=Asia/Shanghai
+    ports:
+      - '3306:3306'
+      - '33060:33060'
+    volumes:
+      - ./docker-volumes/mysql/data:/var/lib/mysql
+      - ./docker-volumes/mysql/config:/etc/mysql/conf.d
+      - ./docker-volumes/mysql/log:/var/log/mysql
+      - ./docker-volumes/mysql/run:/var/run/mysqld
+    networks:
+      dev_rbac_network:
+        ipv4_address: 192.168.3.3
+  dev_rbac_redis:
+    # 自动重启
+    restart: always
+    container_name: dev_rbac_redis
+    image: bitnami/redis:7.4.0
+    user: root
+    # 密码认证
+    environment:
+      - REDIS_PASSWORD=Aa123456
+      - TZ=Asia/Shanghai
+    ports:
+      - '6379:6379'
+    volumes:
+      - ./docker-volumes/redis/data:/data
+      - ./docker-volumes/redis/config:/etc/redis
+      - ./docker-volumes/redis/log:/var/log/redis
+      - ./docker-volumes/redis/run:/var/run/redis
+    networks:
+      dev_rbac_network:
+        ipv4_address: 192.168.3.4
+  # dev_rbac_web
+  # dev_rbac_web:
+  #   # 自动重启
+  #   restart: always
+  #   container_name: dev_rbac_web
+  #   user: root
+  #   build:
+  #     context: .
+  #     dockerfile: ./apps/web/Dockerfile
+  #   ports:
+  #     - '8094:80'
+  #   networks:
+  #     dev_rbac_network:
+  #       ipv4_address: 192.168.3.5

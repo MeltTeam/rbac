@@ -15,7 +15,14 @@
   },
   "scripts": {
     "git:add": "git add .",
-    "git:commit": "cz"
+    "git:commit": "cz",
+    "dev:web": "pnpm --filter @apps/web dev",
+    "build:web": "pnpm --filter @apps/web build",
+    "dev:service": "pnpm --filter @apps/service dev:hot",
+    "build:service": "pnpm --filter @apps/service build",
+    "docker:dev:start": "docker-compose -f docker-compose.dev.yml up -d --build",
+    "docker:dev:stop": "docker-compose -f docker-compose.dev.yml stop",
+    "docker:dev:del": "docker-compose -f docker-compose.dev.yml down --volumes"
   },
   "devDependencies": {
     "@commitlint/cli": "catalog:cli",
@@ -27,6 +34,7 @@
     "@types/node": "catalog:cli",
     "commitizen": "catalog:cli",
     "cz-customizable": "catalog:cli",
+    "eslint": "catalog:cli",
     "husky": "catalog:cli",
     "lint-staged": "catalog:cli",
     "turbo": "catalog:cli"

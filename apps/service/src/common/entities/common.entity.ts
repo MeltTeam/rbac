@@ -1,0 +1,113 @@
+import type { ICommonEntity } from './interfaces/ICommonEntity'
+import { StatusEnum } from '@packages/types'
+import { Expose } from 'class-transformer'
+import { BeforeInsert, Column, CreateDateColumn, DeleteDateColumn, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
+import { uuid_v4 } from '@/common/utils'
+
+/** 实体公共字段 */
+export abstract class CommonEntity implements ICommonEntity {
+  constructor() {}
+
+  @PrimaryGeneratedColumn('increment', {
+    comment: '表索引',
+    name: '_id',
+    type: 'int',
+  })
+  _id: number
+
+  @Column({
+    comment: '业务ID',
+    name: 'id',
+    type: 'varchar',
+    length: 36,
+    charset: 'ascii',
+    unique: true,
+  })
+  id: string
+
+  @Column({
+    comment: '创建者',
+    name: 'created_by',
+    type: 'varchar',
+    length: 36,
+    charset: 'ascii',
+    default: 'sys',
+  })
+  createdBy: string
+
+  @Column({
+    comment: '更新者',
+    name: 'updated_by',
+    type: 'varchar',
+    length: 36,
+    charset: 'ascii',
+    default: 'sys',
+  })
+  updatedBy: string
+
+  @Column({
+    comment: '删除者',
+    name: 'deleted_by',
+    type: 'varchar',
+    length: 36,
+    charset: 'ascii',
+    nullable: true,
+    default: null,
+  })
+  deletedBy: string | null
+
+  @CreateDateColumn({
+    comment: '创建时间',
+    name: 'created_at',
+    type: 'datetime',
+    precision: 6,
+    default: () => 'CURRENT_TIMESTAMP(6)',
+  })
+  createdAt: Date
+
+  @UpdateDateColumn({
+    comment: '更新时间',
+    name: 'updated_at',
+    type: 'datetime',
+    precision: 6,
+    default: () => 'CURRENT_TIMESTAMP(6)',
+    onUpdate: 'CURRENT_TIMESTAMP(6)',
+  })
+  updatedAt: Date
+
+  @DeleteDateColumn({
+    comment: '删除时间',
+    name: 'deleted_at',
+    type: 'datetime',
+    nullable: true,
+    precision: 6,
+    default: null,
+  })
+  deletedAt: Date | null
+
+  @Column({
+    comment: '备注说明',
+    name: 'remark',
+    type: 'varchar',
+    length: 500,
+    nullable: true,
+    default: null,
+  })
+  remark: string | null
+
+  // @Index('IDX_STATUS', ['status'])
+  @Column({
+    comment: '状态',
+    name: 'status',
+    type: 'tinyint',
+    unsigned: true,
+    default: StatusEnum.ENABLE,
+  })
+  status: StatusEnum
+
+  @Expose()
+  @BeforeInsert()
+  generateId() {
+    if (!this.id) this.id = uuid_v4()
+  }
+}

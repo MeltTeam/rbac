@@ -1,0 +1,25 @@
+{
+  "name": "@packages/types",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "公共类型",
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/types/index.d.ts",
+  "scripts": {
+    "ts:init": "tsc --init",
+    "build": "rollup -c",
+    "preinstall": "pnpm build"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "catalog:cli",
+    "@rollup/plugin-node-resolve": "catalog:cli",
+    "@rollup/plugin-typescript": "catalog:cli",
+    "@types/node": "catalog:cli",
+    "rollup": "catalog:cli",
+    "rollup-plugin-delete": "catalog:cli",
+    "rollup-plugin-dts": "catalog:cli",
+    "typescript": "catalog:cli"
+  }
+}
