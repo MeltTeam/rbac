@@ -1,0 +1,14 @@
+{
+  "name": "@configs/commitlint-config",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "description": "commitlint配置",
+  "author": "MeltTeam",
+  "license": "MIT",
+  "main": "./src/index.js",
+  "module": "./src/index.mjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}

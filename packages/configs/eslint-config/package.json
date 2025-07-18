@@ -1,0 +1,22 @@
+{
+  "name": "@configs/eslint-config",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "description": "eslint配置",
+  "author": "MeltTeam",
+  "license": "MIT",
+  "main": "./src/index.mjs",
+  "module": "./src/index.mjs",
+  "scripts": {
+    "test": "node ./src/index.mjs",
+    "format": "prettier --write src/",
+    "lint": "eslint . --fix"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "catalog:cli",
+    "@unocss/eslint-plugin": "catalog:cli",
+    "eslint": "catalog:cli",
+    "eslint-plugin-format": "catalog:cli"
+  }
+}

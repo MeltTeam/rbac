@@ -1,0 +1,50 @@
+{
+  "name": "rbac",
+  "type": "module",
+  "version": "0.0.1",
+  "packageManager": "pnpm@9.5.0",
+  "description": "MeltTeam-rbac",
+  "author": "MeltTeam",
+  "license": "MIT",
+  "keywords": [
+    "rbac"
+  ],
+  "main": "index.js",
+  "engines": {
+    "node": ">=20.19.2"
+  },
+  "scripts": {
+    "git:add": "git add .",
+    "git:commit": "cz",
+    "dev:web": "pnpm --filter @apps/web dev",
+    "build:web": "pnpm --filter @apps/web build",
+    "dev:service": "pnpm --filter @apps/service dev:hot",
+    "build:service": "pnpm --filter @apps/service build",
+    "docker:dev:start": "docker-compose -f docker-compose.dev.yml up -d --build",
+    "docker:dev:stop": "docker-compose -f docker-compose.dev.yml stop",
+    "docker:dev:del": "docker-compose -f docker-compose.dev.yml down --volumes"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "catalog:cli",
+    "@commitlint/config-conventional": "catalog:cli",
+    "@configs/commitizen-config": "workspace:*",
+    "@configs/commitlint-config": "workspace:*",
+    "@configs/eslint-config": "workspace:*",
+    "@configs/prettier-config": "workspace:*",
+    "@types/node": "catalog:cli",
+    "commitizen": "catalog:cli",
+    "cz-customizable": "catalog:cli",
+    "eslint": "catalog:cli",
+    "husky": "catalog:cli",
+    "lint-staged": "catalog:cli",
+    "turbo": "catalog:cli"
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-customizable"
+    },
+    "cz-customizable": {
+      "config": ".cz-config.cjs"
+    }
+  }
+}

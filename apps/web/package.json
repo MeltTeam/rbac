@@ -1,0 +1,62 @@
+{
+  "name": "@apps/web",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "packageManager": "pnpm@9.5.0",
+  "engines": {
+    "node": ">=20.19.2"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "run-p type-check \"build-only {@}\" --",
+    "preview": "vite preview",
+    "build-only": "vite build",
+    "type-check": "vue-tsc --build",
+    "format": "prettier --write src/",
+    "lint": "eslint . --fix"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "catalog:web_prod",
+    "@fortawesome/free-brands-svg-icons": "catalog:web_prod",
+    "@fortawesome/free-regular-svg-icons": "catalog:web_prod",
+    "@fortawesome/free-solid-svg-icons": "catalog:web_prod",
+    "@fortawesome/vue-fontawesome": "catalog:web_prod",
+    "@unocss/reset": "catalog:web_prod",
+    "axios": "catalog:cli",
+    "crypto-js": "catalog:cli",
+    "dayjs": "catalog:cli",
+    "element-plus": "catalog:web_prod",
+    "nprogress": "catalog:web_prod",
+    "pinia": "catalog:web_prod",
+    "uuid": "catalog:cli",
+    "vue": "catalog:web_prod",
+    "vue-router": "catalog:web_prod"
+  },
+  "devDependencies": {
+    "@configs/eslint-config": "workspace:*",
+    "@packages/types": "workspace:*",
+    "@tsconfig/node22": "catalog:web_dev",
+    "@types/crypto-js": "catalog:cli",
+    "@types/node": "catalog:cli",
+    "@types/nprogress": "catalog:web_dev",
+    "@unocss/preset-attributify": "catalog:web_dev",
+    "@vitejs/plugin-vue": "catalog:web_dev",
+    "@vitejs/plugin-vue-jsx": "catalog:web_dev",
+    "@vue/tsconfig": "catalog:web_dev",
+    "autoprefixer": "catalog:web_dev",
+    "eslint": "catalog:cli",
+    "npm-run-all2": "catalog:web_dev",
+    "rollup-plugin-visualizer": "catalog:web_dev",
+    "typescript": "catalog:cli",
+    "unocss": "catalog:web_dev",
+    "unplugin-auto-import": "catalog:web_dev",
+    "unplugin-vue-components": "catalog:web_dev",
+    "vite": "catalog:web_dev",
+    "vite-plugin-compression": "catalog:web_dev",
+    "vite-plugin-html": "catalog:web_dev",
+    "vite-plugin-imagemin": "catalog:web_dev",
+    "vite-plugin-vue-devtools": "catalog:web_dev",
+    "vue-tsc": "catalog:web_dev"
+  }
+}
