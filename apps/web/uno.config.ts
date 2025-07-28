@@ -1,5 +1,5 @@
 /* eslint-disable style/quote-props */
-import { defineConfig, presetAttributify, presetWind3, transformerDirectives, transformerVariantGroup } from 'unocss'
+import { defineConfig, presetAttributify, presetIcons, presetWind3, transformerDirectives, transformerVariantGroup } from 'unocss'
 
 export default defineConfig({
   content: {
@@ -10,11 +10,28 @@ export default defineConfig({
   },
   presets: [
     // 兼容Tailwind CSS v3 / Windi CSS配置
-    presetWind3(),
+    presetWind3({
+      dark: 'class',
+    }),
     // 属性写法配置
     presetAttributify({
       prefix: 'uno-',
       prefixedOnly: true,
+    }),
+    // 图标配置
+    presetIcons({
+      warn: true,
+      // 前缀
+      prefix: ['i-'],
+      // 图标样式
+      extraProperties: {
+        display: 'inline-block',
+        'vertical-align': 'middle',
+      },
+      // 打包时分包
+      collections: {
+        iconPark: () => import('@iconify-json/icon-park/icons.json').then((i) => i.default),
+      },
     }),
   ],
   rules: [

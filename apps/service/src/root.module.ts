@@ -1,8 +1,10 @@
 import type { ConfigFactory } from '@nestjs/config'
 import { Module } from '@nestjs/common'
 import { ConfigModule as Config2Module } from '@nestjs/config'
+import { APP_GUARD } from '@nestjs/core'
+import { ThrottlerBehindProxyGuard } from './common/http/guards/throttlerBehindProxy.guard'
 import { ALL_CONFIG } from './configs'
-import { TestModule } from './modules/test/test.module'
+import { AuthModule } from './modules/auth/auth.module'
 import { SharedModule } from './shared/shared.module'
 
 /** 根模块 */
@@ -21,8 +23,13 @@ import { SharedModule } from './shared/shared.module'
       cache: true,
     }),
     SharedModule,
-    TestModule,
+    AuthModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerBehindProxyGuard,
+    },
+  ],
 })
 export class RootModule {}

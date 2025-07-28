@@ -20,7 +20,6 @@ export abstract class BaseModule implements OnModuleInit {
   /**
    * 创建函数key
    * @param fnName 函数名
-   * @returns
    */
   createFnKey(fnName: string) {
     return `${this.className}:${fnName}`

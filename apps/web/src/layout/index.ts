@@ -1,2 +1,3 @@
-/** 登录页布局 */
-export const LoginLayout = defineAsyncComponent(() => import('./LoginLayout.vue'))
+import LoginLayout from './LoginLayout.vue'
+
+export { LoginLayout }

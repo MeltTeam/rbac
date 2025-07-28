@@ -17,5 +17,6 @@ export const webConfig = antfu({
     'style/brace-style': 'off',
     'vue/html-self-closing': 'off',
     'vue/singleline-html-element-content-newline': 'off',
+    'prefer-promise-reject-errors': 'off',
   },
 })

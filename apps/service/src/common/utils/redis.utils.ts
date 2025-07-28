@@ -19,7 +19,7 @@ export function initRedis(redisConfig: RedisOptions, logger: Logger): IinitRedis
   redisConfig!.enableAutoPipelining = true
   redisConfig!.commandTimeout = 30000
   redisConfig!.connectTimeout = 3000
-  redisConfig!.enableOfflineQueue = false
+  redisConfig!.enableOfflineQueue = true
   redisConfig!.keepAlive = 30000
   redisConfig!.retryStrategy = (retries) => Math.min(retries * 100, 5000)
   redisConfig!.reconnectOnError = (err) => {

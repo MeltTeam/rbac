@@ -1,6 +1,8 @@
 /* eslint-disable style/quote-props */
+import { dirname, resolve } from 'node:path'
 import { env } from 'node:process'
 import { fileURLToPath, URL } from 'node:url'
+import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import autoprefixer from 'autoprefixer'
@@ -20,7 +22,7 @@ console.clear()
 // https://vite.dev/config/
 export default defineConfig({
   server: {
-    open: true,
+    // open: true,
     host: '0.0.0.0',
     hmr: true,
     port: 4002,
@@ -75,6 +77,12 @@ export default defineConfig({
     Components({
       dts: 'src/typings/components.d.ts',
       resolvers: [ElementPlusResolver()],
+    }),
+    VueI18nPlugin({
+      include: [resolve(dirname(fileURLToPath(import.meta.url)), './src/i18n/locales/**')],
+      compositionOnly: true,
+      fullInstall: true,
+      runtimeOnly: true,
     }),
     viteCompression({
       verbose: true,

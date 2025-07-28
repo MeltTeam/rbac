@@ -1,8 +1,8 @@
 import type { Queue } from 'bullmq'
 import type Redis from 'ioredis'
 import { Cache } from '@nestjs/cache-manager'
+import { BaseModule } from '@/common/abstracts/BaseModule.abstract'
 import { DEFAULT_CACHE_TTL } from '@/configs/constants'
-import { BaseModule } from '../../common/abstracts/BaseModule.abstract'
 
 export interface Cache2ModuleOptions {
   /** 子类名 */
@@ -88,9 +88,15 @@ export abstract class Cache2Module extends BaseModule {
    * 批量删除缓存
    * @param keys 键名数组
    */
-  async delMany(keys: string[]) {
-    for (const key of keys) {
-      await this.del(key)
+  async delMany(keys: string[]): Promise<boolean> {
+    try {
+      for (const key of keys) {
+        await this.del(key)
+      }
+      return true
+    } catch (e) {
+      this.logger.error(`${this.delMany.name}:${e.message}`)
+      return false
     }
   }
 
@@ -122,10 +128,14 @@ export abstract class Cache2Module extends BaseModule {
    * @param delay 延迟时间(default: 1000)
    */
   async delayedDel(key: string, delay: number = 1000): Promise<boolean> {
-    try{
+    if (!this.queue) {
+      this.logger.error(`${this.delayedDel.name}:未提供队列实例`)
+      return false
+    }
+    try {
       await this.queue?.add('delayedDel', { key }, { attempts: 3, delay })
       return true
-    }catch(e){
+    } catch (e) {
       this.logger.error(`${this.delayedDel.name}:${e.message}`)
       return false
     }
@@ -137,15 +147,18 @@ export abstract class Cache2Module extends BaseModule {
    * @param delay 延迟时间(default: 1000)
    */
   async delayedDelMany(keys: string[], delay: number = 1000): Promise<boolean> {
-  try{
-
-    for (const key of keys) {
-      await this.delayedDel(key, delay)
+    if (!this.queue) {
+      this.logger.error(`${this.delayedDelMany.name}:未提供队列实例`)
+      return false
     }
-    return true
-  }catch(e){
-    this.logger.error(`${this.delayedDelMany.name}:${e.message}`)
-    return false
-  }
+    try {
+      for (const key of keys) {
+        await this.delayedDel(key, delay)
+      }
+      return true
+    } catch (e) {
+      this.logger.error(`${this.delayedDelMany.name}:${e.message}`)
+      return false
+    }
   }
 }

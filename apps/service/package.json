@@ -74,6 +74,7 @@
     "uuid": "catalog:cli"
   },
   "devDependencies": {
+    "@configs/eslint-config": "workspace:*",
     "@nestjs/cli": "catalog:api_dev",
     "@nestjs/schematics": "catalog:api_dev",
     "@nestjs/testing": "catalog:api_dev",
@@ -89,6 +90,7 @@
     "@types/passport-local": "catalog:api_dev",
     "@types/supertest": "catalog:api_dev",
     "copy-webpack-plugin": "catalog:api_dev",
+    "eslint": "catalog:cli",
     "globals": "catalog:api_dev",
     "jest": "catalog:api_dev",
     "nestjs-spelunker": "catalog:api_dev",
@@ -102,9 +104,7 @@
     "typescript": "catalog:cli",
     "webpack": "catalog:api_dev",
     "webpack-bundle-analyzer": "catalog:api_dev",
-    "webpack-node-externals": "catalog:api_dev",
-    "eslint": "catalog:cli",
-    "@configs/eslint-config": "workspace:*"
+    "webpack-node-externals": "catalog:api_dev"
   },
   "jest": {
     "moduleFileExtensions": [

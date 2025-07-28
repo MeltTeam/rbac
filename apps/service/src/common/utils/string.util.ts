@@ -10,7 +10,6 @@ export function hasSpace(str: string) {
  * 随机生成code
  * @param length 长度
  * @param type 类型
- * @returns
  */
 export function getCode(length: number = 6, type: number = 16) {
   return Math.random()
