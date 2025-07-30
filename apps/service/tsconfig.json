@@ -8,9 +8,9 @@
     "module": "commonjs",
     "paths": {
       "@/*": ["src/*"],
-      "@common/*": ["src/common/*"],
-      "@shared/*": ["src/shared/*"],
-      "@modules/*": ["src/modules/*"]
+      "@c/*": ["src/common/*"],
+      "@s/*": ["src/shared/*"],
+      "@m/*": ["src/modules/*"]
     },
     "strictBindCallApply": false,
     "strictNullChecks": true,

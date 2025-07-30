@@ -10,17 +10,17 @@ export interface IAddUserDto {
 /** 修改用户接口参数校验 */
 export interface IPatchUserDto {
   /** 用户名 */
-  username: string
+  username?: string
   /** 别名 */
-  nickName: string
+  nickName?: string
   /** 性别 */
-  sex: SexEnum
+  sex?: SexEnum
   /** 生日 */
-  birthday: Date
+  birthday?: Date
   /** 邮箱 */
-  email: string
+  email?: string
   /** 电话号码 */
-  phone: string
+  phone?: string
   /** 头像 */
-  avatar: string
+  avatar?: string
 }

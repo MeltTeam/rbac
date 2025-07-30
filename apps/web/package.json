@@ -9,6 +9,7 @@
   },
   "scripts": {
     "dev": "vite",
+    "i18n": "node ./script/generateLocales.js",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "vite build",
@@ -17,12 +18,11 @@
     "lint": "eslint . --fix"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "catalog:web_prod",
-    "@fortawesome/free-brands-svg-icons": "catalog:web_prod",
-    "@fortawesome/free-regular-svg-icons": "catalog:web_prod",
-    "@fortawesome/free-solid-svg-icons": "catalog:web_prod",
-    "@fortawesome/vue-fontawesome": "catalog:web_prod",
+    "@iconify-json/icon-park": "catalog:web_prod",
+    "@iconify/vue": "catalog:web_prod",
+    "@intlify/unplugin-vue-i18n": "catalog:web_prod",
     "@unocss/reset": "catalog:web_prod",
+    "@vueuse/core": "catalog:web_prod",
     "axios": "catalog:cli",
     "crypto-js": "catalog:cli",
     "dayjs": "catalog:cli",
@@ -31,6 +31,7 @@
     "pinia": "catalog:web_prod",
     "uuid": "catalog:cli",
     "vue": "catalog:web_prod",
+    "vue-i18n": "catalog:web_prod",
     "vue-router": "catalog:web_prod"
   },
   "devDependencies": {
@@ -41,6 +42,7 @@
     "@types/node": "catalog:cli",
     "@types/nprogress": "catalog:web_dev",
     "@unocss/preset-attributify": "catalog:web_dev",
+    "@unocss/preset-icons": "catalog:web_dev",
     "@vitejs/plugin-vue": "catalog:web_dev",
     "@vitejs/plugin-vue-jsx": "catalog:web_dev",
     "@vue/tsconfig": "catalog:web_dev",

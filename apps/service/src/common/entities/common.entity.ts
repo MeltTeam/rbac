@@ -6,8 +6,6 @@ import { uuid_v4 } from '@/common/utils'
 
 /** 实体公共字段 */
 export abstract class CommonEntity implements ICommonEntity {
-  constructor() {}
-
   @PrimaryGeneratedColumn('increment', {
     comment: '表索引',
     name: '_id',

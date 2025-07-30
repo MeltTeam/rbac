@@ -63,7 +63,6 @@ export function InputSpace(name: string) {
 /**
  * 验证JWT
  * @param name key名
- * @returns
  */
 export function InputJWT(name: string) {
   return applyDecorators.apply(this, [

@@ -10,13 +10,20 @@ declare module 'vue' {
   export interface GlobalComponents {
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCol: typeof import('element-plus/es')['ElCol']
+    ElDropdown: typeof import('element-plus/es')['ElDropdown']
+    ElDropdownItem: typeof import('element-plus/es')['ElDropdownItem']
+    ElDropdownMenu: typeof import('element-plus/es')['ElDropdownMenu']
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
-    ElFrom: typeof import('element-plus/es')['ElFrom']
+    ElImage: typeof import('element-plus/es')['ElImage']
     ElRow: typeof import('element-plus/es')['ElRow']
     ElText: typeof import('element-plus/es')['ElText']
+    MButton: typeof import('./../components/MButton/index.vue')['default']
+    MForm: typeof import('./../components/MForm/index.vue')['default']
+    MI18nBtn: typeof import('./../components/MI18nBtn/index.vue')['default']
+    MLoading: typeof import('./../components/MLoading/index.vue')['default']
+    MThemeBtn: typeof import('./../components/MThemeBtn/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
-    RouterLoading: typeof import('./../components/RouterLoading.vue')['default']
     RouterView: typeof import('vue-router')['RouterView']
   }
 }

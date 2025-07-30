@@ -1,3 +1,2 @@
-export const LoginForm = defineAsyncComponent({
-  loader: () => import('./LoginForm.vue'),
-})
+import CaptchaImg from './CaptchaImg/index.vue'
+export { CaptchaImg }

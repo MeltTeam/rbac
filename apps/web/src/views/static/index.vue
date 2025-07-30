@@ -3,5 +3,3 @@
 <template>
   <div>root</div>
 </template>
-
-<style></style>

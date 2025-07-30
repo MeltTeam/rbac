@@ -2,6 +2,15 @@
   @apply text-[14px] sm:text-[15px] md:text-[16px] lg:text-[17px] xl:text-[18px] 2xl:text-[19px];
 }
 
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+}
+
+.dark::view-transition-old(root) {
+  z-index: 9999;
+}
+
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.4s ease;

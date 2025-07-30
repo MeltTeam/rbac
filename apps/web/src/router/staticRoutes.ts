@@ -50,7 +50,9 @@ export function getStaticRoutes(entries: [string, any][], dynamicsRoutes: RouteR
     } else {
       _tree.parent = pathArray[pathArray.length - 2]
     }
-    if (_tree.name === 'login') _tree.redirect = `${_tree.path}/SvgLogin`
+    if (_tree.name === 'login') {
+      _tree.redirect = `${_tree.path}/SvgLogin`
+    }
     if (_tree.name === 'not-found') {
       _tree.parent = null
       _tree.path = '/:path(.*)*'
