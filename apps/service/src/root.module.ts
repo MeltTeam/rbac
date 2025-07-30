@@ -4,7 +4,7 @@ import { ConfigModule as Config2Module } from '@nestjs/config'
 import { APP_GUARD } from '@nestjs/core'
 import { ThrottlerBehindProxyGuard } from './common/http/guards/throttlerBehindProxy.guard'
 import { ALL_CONFIG } from './configs'
-import { AuthModule } from './modules/auth/auth.module'
+import { BusinessModule } from './modules/business.module'
 import { SharedModule } from './shared/shared.module'
 
 /** 根模块 */
@@ -23,7 +23,7 @@ import { SharedModule } from './shared/shared.module'
       cache: true,
     }),
     SharedModule,
-    AuthModule,
+    BusinessModule,
   ],
   providers: [
     {

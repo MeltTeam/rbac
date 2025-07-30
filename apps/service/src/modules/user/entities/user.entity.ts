@@ -28,6 +28,7 @@ export class UserEntity extends CommonEntity implements IUserEntity {
     name: 'pwd',
     type: 'varchar',
     length: 100,
+    select: false,
   })
   pwd: string
 
@@ -78,6 +79,7 @@ export class UserEntity extends CommonEntity implements IUserEntity {
     type: 'varchar',
     length: 36,
     charset: 'ascii',
+    select: false,
   })
   salt: string
 
@@ -89,6 +91,8 @@ export class UserEntity extends CommonEntity implements IUserEntity {
 
   @OneToOne(() => ProfileEntity, (profile) => profile.user, {
     cascade: true,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
     createForeignKeyConstraints: false,
     eager: true,
   })

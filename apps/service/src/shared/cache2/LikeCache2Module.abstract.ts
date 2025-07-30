@@ -4,7 +4,7 @@ import { Cache } from '@nestjs/cache-manager'
 import { BaseModule } from '@/common/abstracts/BaseModule.abstract'
 import { DEFAULT_CACHE_TTL } from '@/configs/constants'
 
-export interface Cache2ModuleOptions {
+export interface LikeCache2ModuleOptions {
   /** 子类名 */
   className: string
   /** redis缓存实例 */
@@ -14,11 +14,11 @@ export interface Cache2ModuleOptions {
   /** 队列实例(用于延迟删除,需要提供消费者文件,文件内要注入子类来提供删除方法) */
   queue?: Queue
 }
-export abstract class Cache2Module extends BaseModule {
+export abstract class LikeCache2Module extends BaseModule {
   redis: Redis
   memory: Cache
   queue?: Queue
-  constructor(cache2ModuleOptions: Cache2ModuleOptions) {
+  constructor(cache2ModuleOptions: LikeCache2ModuleOptions) {
     const { className, redis, memory, queue } = cache2ModuleOptions
     super(className)
     this.redis = redis

@@ -10,12 +10,12 @@ import { create } from 'svg-captcha'
 import { CAPTCHA_LENGTH } from '@/common/constants'
 import { getCode, uuid_v4 } from '@/common/utils'
 import { APP_CONFIG_KEY } from '@/configs'
-import { Cache2Module } from '../cache/Cache2Module.abstract'
+import { LikeCache2Module } from '../cache2/LikeCache2Module.abstract'
 import { EmailService } from '../email/services/email.service'
 import { CAPTCHA_REDIS_CLIENT_TOKEN } from './constants'
 
 @Injectable()
-export class CaptchaService extends Cache2Module implements ICaptchaService {
+export class CaptchaService extends LikeCache2Module implements ICaptchaService {
   constructor(
     @Inject(CACHE_MANAGER) memory: Cache,
     @Inject(CAPTCHA_REDIS_CLIENT_TOKEN) redis: Redis,
