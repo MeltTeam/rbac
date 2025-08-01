@@ -11,5 +11,5 @@ export default {
   semi: false,
   singleQuote: true,
   printWidth: 150,
-  plugins: [],
+  plugins: ['prettier-plugin-ejs'],
 }

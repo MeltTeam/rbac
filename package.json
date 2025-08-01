@@ -22,7 +22,9 @@
     "build:service": "pnpm --filter @apps/service build",
     "docker:dev:start": "docker-compose -f docker-compose.dev.yml up -d --build",
     "docker:dev:stop": "docker-compose -f docker-compose.dev.yml stop",
-    "docker:dev:del": "docker-compose -f docker-compose.dev.yml down --volumes"
+    "docker:dev:del": "docker-compose -f docker-compose.dev.yml down --volumes",
+    "lint-staged": "npx lint-staged",
+    "prepare": "husky"
   },
   "devDependencies": {
     "@commitlint/cli": "catalog:cli",

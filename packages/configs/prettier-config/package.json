@@ -14,6 +14,7 @@
     "lint": "eslint . --fix"
   },
   "devDependencies": {
-    "prettier": "catalog:cli"
+    "prettier": "catalog:cli",
+    "prettier-plugin-ejs": "catalog:cli"
   }
 }
