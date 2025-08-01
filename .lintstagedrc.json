@@ -1,10 +1,6 @@
 {
-  "apps/api/{src,apps,libs}/**/*.ts": [
-    "pnpm --filter=@app/api format",
-    "pnpm --filter=@app/api lint"
-  ],
-  "apps/web/src/**/*.{ts,tsx,js,jsx,vue}": [
-    "pnpm --filter=@app/web format",
-    "pnpm --filter=@app/web lint"
-  ]
+  "*.{ts,tsx,js,jsx,mjs,cjs}": ["eslint --fix", "prettier --write"],
+  "*.vue": ["eslint --fix", "prettier --write"],
+  "*.{html,css}": ["prettier --write"],
+  "*.{md,json,ejs,yaml}": ["prettier --write"]
 }

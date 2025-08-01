@@ -337,6 +337,9 @@ catalogs:
     '@iconify/vue':
       specifier: ^5.0.0
       version: 5.0.0
+    '@intlify/unplugin-vue-i18n':
+      specifier: ^6.0.8
+      version: 6.0.8
     '@unocss/reset':
       specifier: ^66.1.4
       version: 66.3.3
@@ -355,6 +358,9 @@ catalogs:
     vue:
       specifier: ^3.5.13
       version: 3.5.17
+    vue-i18n:
+      specifier: ^11.1.11
+      version: 11.1.11
     vue-router:
       specifier: ^4.5.0
       version: 4.5.1
@@ -635,7 +641,7 @@ importers:
         specifier: catalog:web_prod
         version: 5.0.0(vue@3.5.17(typescript@5.8.3))
       '@intlify/unplugin-vue-i18n':
-        specifier: ^6.0.8
+        specifier: catalog:web_prod
         version: 6.0.8(@vue/compiler-dom@3.5.17)(eslint@9.31.0(jiti@2.4.2))(rollup@4.45.1)(typescript@5.8.3)(vue-i18n@11.1.11(vue@3.5.17(typescript@5.8.3)))(vue@3.5.17(typescript@5.8.3))
       '@unocss/reset':
         specifier: catalog:web_prod
@@ -668,7 +674,7 @@ importers:
         specifier: catalog:web_prod
         version: 3.5.17(typescript@5.8.3)
       vue-i18n:
-        specifier: ^11.1.11
+        specifier: catalog:web_prod
         version: 11.1.11(vue@3.5.17(typescript@5.8.3))
       vue-router:
         specifier: catalog:web_prod
@@ -774,6 +780,9 @@ importers:
       prettier:
         specifier: catalog:cli
         version: 3.6.2
+      prettier-plugin-ejs:
+        specifier: ^1.0.3
+        version: 1.0.3(prettier@3.6.2)
 
   packages/types:
     devDependencies:
@@ -7911,6 +7920,11 @@ packages:
   prettier-linter-helpers@1.0.0:
     resolution: {integrity: sha512-GbK2cP9nraSSUF9N2XwUwqfzlAFlMNYYl+ShE/V+H8a9uNl/oUqB1w2EL54Jh0OlyRSd8RfWYJ3coVS4TROP2w==}
     engines: {node: '>=6.0.0'}
+
+  prettier-plugin-ejs@1.0.3:
+    resolution: {integrity: sha512-wTL4U/ou6dHHp1ZTfS67SHVb/dRgVhpIOTgCvkgdqF/Lw6A472W90dxFtsWSXIR7GmLZRgZb2PdArR9ozxX7cg==}
+    peerDependencies:
+      prettier: 2.x - 3.x
 
   prettier@3.6.2:
     resolution: {integrity: sha512-I7AIg5boAr5R0FFtJ6rCfD+LFsWHp81dolrFD8S79U9tb8Az2nGrJncnMSnys+bpQJfRUzqs9hnA81OAA3hCuQ==}
@@ -18504,6 +18518,10 @@ snapshots:
   prettier-linter-helpers@1.0.0:
     dependencies:
       fast-diff: 1.3.0
+
+  prettier-plugin-ejs@1.0.3(prettier@3.6.2):
+    dependencies:
+      prettier: 3.6.2
 
   prettier@3.6.2: {}
 

@@ -12,6 +12,7 @@ catalogs:
   #web和server
   # 工程化相关依赖
   cli:
+    prettier-plugin-ejs: ^1.0.3
     '@rollup/plugin-commonjs': ^28.0.6
     '@rollup/plugin-node-resolve': ^16.0.1
     '@rollup/plugin-typescript': ^12.1.4
