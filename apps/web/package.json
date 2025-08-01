@@ -14,8 +14,12 @@
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --build",
-    "format": "prettier --write src/",
-    "lint": "eslint . --fix"
+    "format:fix": "prettier --write \"**/*.{ts,cjs,mjs,js,ejs,md,html,css,scss,md,json,vue}\"",
+    "format": "prettier --check \"**/*.{ts,cjs,mjs,js,ejs,md,html,css,scss,md,json,vue}\"",
+    "eslint:fix": "eslint \"**/*.{ts,cjs,mjs,js,vue}\" --fix",
+    "eslint": "eslint \"**/*.{ts,cjs,mjs,js,vue}\"",
+    "lint:fix": "pnpm format:fix && pnpm eslint:fix",
+    "lint": "pnpm format && pnpm eslint"
   },
   "dependencies": {
     "@iconify-json/icon-park": "catalog:web_prod",

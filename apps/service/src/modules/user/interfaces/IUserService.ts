@@ -1,5 +1,5 @@
 import type { UpdateResult } from 'typeorm'
-import type { DelDto, PatchIdDto, PatchDto } from '../dtos'
+import type { DelDto, PatchDto, PatchIdDto } from '../dtos'
 import type { AddVo } from '../vos'
 
 export interface AddOptions {
