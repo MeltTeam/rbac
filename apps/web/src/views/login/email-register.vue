@@ -120,7 +120,7 @@ const formItems = computed<IFormItems[]>(() => [
     type: 'Button',
     key: 'back',
     attrs: {
-      onClick: () => goTo('SvgLogin'),
+      onClick: () => goTo('svg-login'),
     },
     slots: '返回',
   },

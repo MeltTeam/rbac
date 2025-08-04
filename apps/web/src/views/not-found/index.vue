@@ -5,7 +5,5 @@ defineOptions({
 </script>
 
 <template>
-  <div>404</div>
+  <h1 class="color-amber">404</h1>
 </template>
-
-<style></style>

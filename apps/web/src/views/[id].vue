@@ -1,5 +1,7 @@
 <script lang="ts" setup></script>
 
 <template>
-  <div>root</div>
+  <h1 class="color-amber">id</h1>
 </template>
+
+<style></style>

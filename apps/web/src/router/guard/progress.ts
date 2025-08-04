@@ -6,8 +6,9 @@ import 'nprogress/nprogress.css'
  * @param router 路由实例
  */
 function createProgressGuard(router: Router) {
-  router.beforeEach(() => {
+  router.beforeEach((_to, _from, next) => {
     nProgress?.start()
+    return next()
   })
   router.afterEach(() => {
     nProgress?.done()

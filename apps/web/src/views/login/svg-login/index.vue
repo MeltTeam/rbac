@@ -1,25 +1,29 @@
 <!-- eslint-disable style/quote-props -->
 <script lang="ts" setup>
-import type { ILoginByEmailDto } from '@packages/types'
+import type { ILoginBySvgDto } from '@packages/types'
 import type { FormInstance, FormRules } from 'element-plus'
 import type { IFormItems } from '@/components'
 import { Icon } from '@iconify/vue'
+import { api } from '@/api'
 import { AsyncMForm } from '@/components'
-import { CAPTCHA, CAPTCHA_LENGTH, EMAIL, PWD, PWD_MAX, PWD_MIN, USER_NAME, USER_NAME_MAX, USER_NAME_MIN } from '@/constants'
+import { CAPTCHA, CAPTCHA_LENGTH, PWD, PWD_MAX, PWD_MIN, USER_NAME, USER_NAME_MAX, USER_NAME_MIN } from '@/constants'
+import { t } from '@/i18n'
 import { goTo } from '@/router'
+import { CaptchaImg } from '../components'
 
 defineOptions({
-  name: 'EmailLogin',
+  name: 'SvgLogin',
 })
 // 状态
-const formData = reactive<ILoginByEmailDto>({
+const formData = reactive<ILoginBySvgDto>({
   username: '',
   password: '',
   captcha: '',
-  email: '',
+  token: '',
 })
 const formInstance = ref<FormInstance | null>(null)
-const rules = reactive<FormRules<ILoginByEmailDto>>({
+const captchaImgUrl = ref<null | string>(null)
+const rules = reactive<FormRules<ILoginBySvgDto>>({
   username: [
     { required: true, message: `请输入${USER_NAME}`, trigger: ['blur', 'change'] },
     { min: USER_NAME_MIN, max: USER_NAME_MAX, message: `${USER_NAME}长度 ${USER_NAME_MIN} ~ ${USER_NAME_MAX}`, trigger: ['blur', 'change'] },
@@ -32,11 +36,19 @@ const rules = reactive<FormRules<ILoginByEmailDto>>({
     { required: true, message: `请输入${CAPTCHA}`, trigger: ['blur', 'change'] },
     { min: CAPTCHA_LENGTH, max: CAPTCHA_LENGTH, message: `${CAPTCHA}长度 ${CAPTCHA_LENGTH}`, trigger: ['blur', 'change'] },
   ],
-  email: [{ required: true, message: `请输入${EMAIL}`, trigger: ['blur', 'change'] }],
 })
 function setInstance(_formInstance: any) {
   formInstance.value = _formInstance ?? null
 }
+async function getSvg() {
+  formData.captcha = ''
+  const {
+    data: { svg, token },
+  } = await api.loginBySvgCaptcha()
+  formData.token = token
+  captchaImgUrl.value = svg
+}
+getSvg()
 const submitDisabled = computed<boolean>(() => {
   const length = formInstance.value?.fields.length
   return formInstance.value?.fields.filter((item) => item.validateState === 'success').length !== length
@@ -46,10 +58,11 @@ const formItems = computed<IFormItems[]>(() => [
     type: 'Input',
     key: 'username',
     props: {
-      placeholder: '请输入用户名',
+      placeholder: t('请输入用户名'),
       autocomplete: 'off',
       'prefix-icon': h(Icon, {
         icon: 'icon-park-outline:user',
+        color: '#bbb',
       }),
     },
   },
@@ -59,21 +72,11 @@ const formItems = computed<IFormItems[]>(() => [
     props: {
       'show-password': true,
       type: 'password',
-      placeholder: '请输入密码',
+      placeholder: t('请输入密码'),
       autocomplete: 'off',
       'prefix-icon': h(Icon, {
         icon: 'icon-park-outline:key',
-      }),
-    },
-  },
-  {
-    type: 'Input',
-    key: 'email',
-    props: {
-      placeholder: '请输入邮箱',
-      autocomplete: 'off',
-      'prefix-icon': h(Icon, {
-        icon: 'icon-park-outline:email-lock',
+        color: '#bbb',
       }),
     },
   },
@@ -81,7 +84,7 @@ const formItems = computed<IFormItems[]>(() => [
     type: 'Input',
     key: 'captcha',
     props: {
-      placeholder: '请输入验证码',
+      placeholder: t('请输入验证码'),
       autocomplete: 'off',
       'prefix-icon': h(Icon, {
         icon: 'icon-park-outline:unlock-one',
@@ -91,14 +94,18 @@ const formItems = computed<IFormItems[]>(() => [
     span: 14,
   },
   {
-    type: 'Button',
-    key: 'captchaEmail',
-    props: {
-      type: 'primary',
-      disabled: formData.email === '',
+    type: () => h(CaptchaImg, { captchaImgUrl: captchaImgUrl.value ?? undefined }),
+    key: 'captchaImg',
+    attrs: {
+      onClick: async () => {
+        await getSvg()
+      },
     },
-    slots: '发送',
     span: 10,
+  },
+  {
+    type: 'Template',
+    key: 'register',
   },
   {
     type: 'Button',
@@ -114,19 +121,31 @@ const formItems = computed<IFormItems[]>(() => [
         })
       },
     },
-    slots: '确认',
+    slots: t('确认'),
   },
   {
     type: 'Button',
-    key: 'back',
+    key: 'EmailLogin',
     attrs: {
-      onClick: () => goTo('SvgLogin'),
+      onClick: () => goTo('email-login'),
     },
-    slots: '返回',
+    slots: t('邮箱登录'),
   },
 ])
 </script>
 
 <template>
-  <AsyncMForm :ref="setInstance" validate-on-rule-change form-title="邮箱登录" :form-items="formItems" :rules="rules" :model="formData"></AsyncMForm>
+  <AsyncMForm :ref="setInstance" validate-on-rule-change :form-title="t('登录')" :form-items="formItems" :rules="rules" :model="formData">
+    <template #register>
+      <div class="w-full flex justify-between">
+        <div>
+          <ElText>{{ t('没有账号?') }}</ElText>
+          <ElButton type="primary" link @click="goTo('email-register')">{{ t('去注册') }}</ElButton>
+        </div>
+        <div>
+          <ElButton class="" type="primary" link @click="goTo('reset-pwd')">{{ t('忘记密码?') }}</ElButton>
+        </div>
+      </div>
+    </template>
+  </AsyncMForm>
 </template>

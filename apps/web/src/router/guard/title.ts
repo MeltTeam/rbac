@@ -1,8 +1,11 @@
 import type { Router } from 'vue-router'
 
-export default function createProgressGuard(router: Router) {
-  router.afterEach((to, _from, _next) => {
-    const { docTitle } = to.meta
-    window.document.title = (docTitle as string) || '.'
+function createTitleGuard(router: Router) {
+  router.beforeEach((to, _from, next) => {
+    const { title } = to.meta
+    window.document.title = (title as string) || import.meta.env.VITE_APP_TITLE
+    return next()
   })
+  router.afterEach(() => {})
 }
+export { createTitleGuard }
