@@ -5,11 +5,6 @@
     "baseUrl": "./src",
     "module": "ESNext",
     "moduleResolution": "node",
-    "paths": {
-      "@/*": ["src/*"],
-      "@/req": ["src/api/request"],
-      "@/res": ["src/api/response"]
-    },
     "types": ["node"],
     "strict": true,
     "declaration": true,

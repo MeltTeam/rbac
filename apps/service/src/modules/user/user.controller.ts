@@ -1,7 +1,7 @@
 import type { DelUserOK } from './interfaces/IUserController'
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common'
 import { BaseModule } from '@/common/abstracts/BaseModule.abstract'
-import { AddDto, DelDto, FindAllDto } from './dtos'
+import { AddDto, DelDto, FindAllDto, FindOneDto } from './dtos'
 import { UserService } from './user.service'
 
 @Controller('user')
@@ -27,7 +27,12 @@ export class UserController extends BaseModule {
   }
 
   @Get(':id')
-  async findOne() {}
+  async findOneById(@Param() findOneDto: FindOneDto) {
+    const { id } = findOneDto
+    return this.userService.findOne({
+      id,
+    })
+  }
 
   @Patch()
   async patch() {}

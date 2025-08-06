@@ -25,5 +25,5 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true
   },
-  "include": ["src/**/*", "../../packages/types/src/api/enums/dataScope.enum.ts"]
+  "include": ["src/**/*", "../../packages/types/src/enums/dataScope.enum.ts"]
 }

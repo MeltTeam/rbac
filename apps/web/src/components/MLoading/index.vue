@@ -11,8 +11,8 @@ const props = withDefaults(defineProps<IMLoadingProps>(), {
 </script>
 
 <template>
-  <div class="MLoading_container z-36 bg-[#212121] wh-full f-c-c">
-    <div class="flex-col gap-[8px] f-c-c">
+  <div class="MLoading_container z-36 wh-full flex-center bg-[#212121]">
+    <div class="flex-center flex-col gap-[8px]">
       <section class="dots_container">
         <div v-for="i in props.count" :key="`dot${i}`" class="dot"></div>
       </section>

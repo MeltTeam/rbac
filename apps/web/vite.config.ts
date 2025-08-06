@@ -26,9 +26,9 @@ export default defineConfig({
     host: '0.0.0.0',
     hmr: true,
     port: 4002,
-    warmup: {
-      clientFiles: ['./index.html', './src/{views,components}/*'],
-    },
+    // warmup: {
+    //   clientFiles: ['./index.html', './src/{views,components}/*'],
+    // },
   },
   build: {
     outDir: 'dist',

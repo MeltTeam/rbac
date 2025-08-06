@@ -1,7 +1,7 @@
-import type { AddVo } from './add.vo'
+import type { UserVo } from './user.vo'
 
 export class FindAllVo {
-  data: AddVo[]
+  data: UserVo[]
   /** 总数 */
   total: number
   /** 第几页 */

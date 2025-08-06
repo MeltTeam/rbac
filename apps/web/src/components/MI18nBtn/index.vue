@@ -1,16 +1,20 @@
 <script lang="ts" setup>
 import type { AppLocale } from '@/i18n'
 import { Icon } from '@iconify/vue'
+import { useRoute } from 'vue-router'
 import { getLanguage, localeKeys, setLanguage } from '@/i18n'
+import { setDocumentTitle } from '@/router/guard'
 
 defineOptions({
   name: 'MI18nBtn',
 })
+const route = useRoute()
 function _setLanguage(locale: AppLocale) {
   setLanguage(locale)
+  setDocumentTitle(route.meta)
   ElMessage({
     message: locale,
-    type: 'primary',
+    type: 'success',
     duration: 1000,
   })
 }

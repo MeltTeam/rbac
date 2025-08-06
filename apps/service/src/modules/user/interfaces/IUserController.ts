@@ -1,5 +1,5 @@
 import type { AddDto, DelDto, PatchDto, PatchIdDto } from '../dtos'
-import type { AddVo } from '../vos'
+import type { UserVo } from '../vos'
 
 export type DelUserOK = '删除用户成功'
 export type PatchUserOK = '修改用户成功'
@@ -8,7 +8,7 @@ export class IUserController {
    * 添加用户接口
    * @param addDto 添加用户参数
    */
-  add: (addDto: AddDto) => Promise<AddVo>
+  add: (addDto: AddDto) => Promise<UserVo>
 
   /**
    * 删除用户接口

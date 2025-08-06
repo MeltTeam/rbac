@@ -5,8 +5,9 @@ import { setUpI18n } from './i18n'
 import { pluginsInstall } from './plugins'
 import { setUpPinia } from './store'
 import '@unocss/reset/tailwind-compat.css'
-import '@/assets/css/base.css'
 import 'element-plus/theme-chalk/dark/css-vars.css'
+import '@/assets/css/base.css'
+import '@/assets/css/var.css'
 
 const app = createApp(App)
 

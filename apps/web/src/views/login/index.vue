@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import { LoginLayout } from '@/layout'
+import { LOGIN_KEEP_ALIVE } from '@/router/modules/Login'
 
 defineOptions({
-  name: 'LoginView',
+  name: 'Login',
 })
 </script>
 
@@ -10,7 +11,7 @@ defineOptions({
   <LoginLayout>
     <RouterView v-slot="{ Component }">
       <Transition name="slide-down" mode="out-in">
-        <KeepAlive :include="[]" :max="[].length">
+        <KeepAlive :include="LOGIN_KEEP_ALIVE" :max="LOGIN_KEEP_ALIVE.length">
           <Component :is="Component" />
         </KeepAlive>
       </Transition>

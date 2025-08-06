@@ -1,5 +1,6 @@
 /* eslint-disable style/quote-props */
 import { defineConfig, presetAttributify, presetIcons, presetWind3, transformerDirectives, transformerVariantGroup } from 'unocss'
+import { gCssVars, themeVars } from './theme/vars'
 
 export default defineConfig({
   content: {
@@ -8,6 +9,14 @@ export default defineConfig({
       exclude: ['node_modules/**', 'dist/**'],
     },
   },
+  preflights: [
+    {
+      async getCSS(context) {
+        gCssVars(context)
+        return ``
+      },
+    },
+  ],
   presets: [
     // 兼容Tailwind CSS v3 / Windi CSS配置
     presetWind3({
@@ -29,23 +38,27 @@ export default defineConfig({
         'vertical-align': 'middle',
       },
       // 打包时分包
-      collections: {
-        iconPark: () => import('@iconify-json/icon-park/icons.json').then((i) => i.default),
-      },
+      // collections: {
+      //   iconPark: () => import('@iconify-json/icon-park/icons.json').then((i) => i.default),
+      // },
     }),
   ],
-  rules: [
-    ['wh-full', { width: '100%', height: '100%' }],
-    ['wh-screen', { width: '100vw', height: '100vh' }],
-    ['auto-wh', { width: 'auto', height: 'auto' }],
-    [
-      'f-c-c',
-      {
-        display: 'flex',
-        'align-items': 'center',
-        'justify-content': 'center',
-      },
-    ],
+  // 白名单生成
+  // safelist: [...themeSafelist],
+  // 注入自定义主题变量
+  theme: {
+    ...themeVars,
+  },
+  // 组合新类名
+  shortcuts: [
+    {
+      'wh-full': 'w-full h-full',
+      'wh-screen': 'w-screen h-screen',
+      'wh-auto': 'w-auto h-auto',
+      'flex-center': 'flex justify-center items-center',
+      'flex-col': 'flex flex-col',
+      'flex-col-center': 'flex-col flex-center',
+    },
   ],
   transformers: [
     // 指令配置,例子:tailwindcss的@apply

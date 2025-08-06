@@ -1,4 +1,4 @@
-import type { SexEnum, StatusEnum } from 'api/enums'
+import type { SexEnum, StatusEnum } from '../enums'
 
 /** 用户档案 */
 export interface IUserProfile {
@@ -31,7 +31,7 @@ export interface IUserProfile {
 }
 
 /** 新增用户响应数据 */
-export interface IAddUserVo {
+export interface IUserVo {
   /** 用户ID */
   id: string
   /** 创建者 */

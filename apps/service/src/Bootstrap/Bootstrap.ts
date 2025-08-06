@@ -47,7 +47,7 @@ export class Bootstrap implements IBootstrap {
         const isAllowed = allowedOrigins.includes(origin) || isLocalNetwork
         callback(null, isAllowed)
       },
-      methods: 'GET,PATCH,POST,DELETE',
+      methods: 'GET,PATCH,POST,DELETE,HEAD',
       allowedHeaders: 'Content-Type,Authorization',
       credentials: true,
       maxAge: 3600,

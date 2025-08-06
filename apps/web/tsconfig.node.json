@@ -2,12 +2,24 @@
   "extends": "@tsconfig/node22/tsconfig.json",
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
-
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "types": ["node"],
     "noEmit": true
   },
-  "include": ["vite.config.*", "vitest.config.*", "cypress.config.*", "nightwatch.conf.*", "playwright.config.*", "eslint.config.*", "uno.config.*"],
+  "ts-node": {
+    "esm": true, // 让 ts-node 走 ESM 路径
+    "transpileOnly": true // 可选，提速
+  },
+  "include": [
+    "vite.config.*",
+    "vitest.config.*",
+    "cypress.config.*",
+    "nightwatch.conf.*",
+    "playwright.config.*",
+    "eslint.config.*",
+    "uno.config.*",
+    "theme/**/*"
+  ],
   "exclude": ["node_modules", "dist"]
 }

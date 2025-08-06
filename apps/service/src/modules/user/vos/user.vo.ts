@@ -1,7 +1,8 @@
+import type { IUserProfile, IUserVo } from '@packages/types'
 import type { UserEntity } from '../entities/user.entity'
 import type { ProfileEntity } from '@/modules/user/entities/profile.entity'
 
-export class Profile {
+export class Profile implements IUserProfile {
   id: string
   createdBy: string
   updatedBy: string
@@ -31,7 +32,7 @@ export class Profile {
     this.avatar = avatar
   }
 }
-export class AddVo {
+export class UserVo implements IUserVo {
   id: string
   createdBy: string
   updatedBy: string

@@ -1,6 +1,6 @@
 import type { UpdateResult } from 'typeorm'
 import type { DelDto, PatchDto, PatchIdDto } from '../dtos'
-import type { AddVo } from '../vos'
+import type { UserVo } from '../vos'
 
 export interface AddOptions {
   /** 用户名 */
@@ -19,7 +19,7 @@ export interface IUserService {
    * @param errorMsg 错误信息
    * @param by 操作者，默认sys
    */
-  add: (addOptions: AddOptions, errorMsg: string, by: string) => Promise<AddVo>
+  add: (addOptions: AddOptions, errorMsg: string, by: string) => Promise<UserVo>
   /**
    * 删除用户
    * @param delDto 删除用户参数

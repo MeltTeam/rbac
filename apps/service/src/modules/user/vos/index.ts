@@ -1,2 +1,2 @@
-export * from './add.vo'
+export * from './user.vo'
 export * from './findAll.vo'

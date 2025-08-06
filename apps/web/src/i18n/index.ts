@@ -1,8 +1,8 @@
 import type { App } from 'vue'
 import messages from '@intlify/unplugin-vue-i18n/messages'
 import { useLocalStorage } from '@vueuse/core'
-import crypto from 'crypto-js'
 import { createI18n } from 'vue-i18n'
+import map from './locales/zh-CN.json'
 
 export const localeKeys = ['zh-CN', 'en-US'] as const
 export type AppLocale = (typeof localeKeys)[number]
@@ -22,6 +22,8 @@ export function getLanguage(): AppLocale | null {
   }
   return null
 }
+const jsonMap = new Map<string, string>()
+Object.entries(map).forEach(([key, value]) => jsonMap.set((value as any)?.loc?.source as string, key))
 export function setLanguage(locale?: AppLocale) {
   if (!locale) locale = localeKeys[0]
   i18n.global.locale.value = locale
@@ -29,7 +31,9 @@ export function setLanguage(locale?: AppLocale) {
   document.documentElement.setAttribute('lang', locale)
 }
 export function t(key: any) {
-  return _t(crypto.MD5(key).toString().substring(0, 8))
+  const hasKey = jsonMap.get(key)
+  if (!hasKey) return ''
+  return _t(hasKey)
 }
 export function setUpI18n(app: App<Element>) {
   app.use(i18n)

@@ -1,4 +1,4 @@
-import type { Repository } from 'typeorm'
+import type { FindOptionsWhere, Repository } from 'typeorm'
 import type { AddDto, DelDto, FindAllDto } from './dtos'
 import type { AppConfigType } from '@/configs'
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
@@ -10,7 +10,7 @@ import { sha256, uuid_v4, wordArray } from '@/common/utils'
 import { APP_CONFIG_KEY } from '@/configs'
 import { ProfileEntity } from './entities/profile.entity'
 import { UserEntity } from './entities/user.entity'
-import { AddVo, FindAllVo } from './vos'
+import { FindAllVo, UserVo } from './vos'
 
 interface AddOptions extends AddDto {
   /** 邮箱 */
@@ -73,7 +73,7 @@ export class UserService extends BaseModule {
     newUser.profile = newProfile
     try {
       const user = await this.userRepository.save(newUser)
-      const VO = new AddVo(user)
+      const VO = new UserVo(user)
       return VO
     } catch (e) {
       this.logger.error(`${this.add.name}:${e.message}`)
@@ -103,6 +103,8 @@ export class UserService extends BaseModule {
 
   async findAll(findAllDto: FindAllDto) {
     let { limit = 10, page = 1 } = findAllDto
+    if (limit > 100 || limit <= 0) throw new HttpException('limit不在范围内', HttpStatus.BAD_REQUEST)
+    if (page <= 0) throw new HttpException('page不在范围内', HttpStatus.BAD_REQUEST)
     limit = +limit
     page = +page
     const skip = (page - 1) * limit
@@ -112,11 +114,20 @@ export class UserService extends BaseModule {
       order: { createdAt: 'DESC' },
     })
     const VO = new FindAllVo()
-    VO.data = data.map((data) => new AddVo(data))
+    VO.data = data.map((data) => new UserVo(data))
     VO.limit = limit
     VO.page = page
     VO.total = total
     VO.totalPages = Math.ceil(total / limit)
+    return VO
+  }
+
+  async findOne(where: FindOptionsWhere<UserEntity> | FindOptionsWhere<UserEntity>[]) {
+    const user = await this.userRepository.findOne({
+      where,
+    })
+    if (!user) throw new HttpException('该用户不存在', HttpStatus.BAD_REQUEST)
+    const VO = new UserVo(user)
     return VO
   }
 
