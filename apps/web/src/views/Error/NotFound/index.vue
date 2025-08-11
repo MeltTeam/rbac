@@ -1,7 +1,5 @@
 <script lang="ts" setup>
-defineOptions({
-  name: 'NotFound',
-})
+defineOptions({ name: 'NotFound' })
 </script>
 
 <template>

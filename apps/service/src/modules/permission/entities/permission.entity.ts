@@ -1,18 +1,18 @@
-import type { IResourceEntity } from '../interfaces/IResourceEntity'
-import { CheckEnum, ResourceTypeEnum, SortOrderEnum } from '@packages/types'
+import type { IPermissionEntity } from '../interfaces/IPermissionEntity'
+import { CheckEnum, PermissionTypeEnum, SortOrderEnum } from '@packages/types'
 import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm'
 import { CommonEntity } from '@/common/entities/common.entity'
 import { RoleEntity } from '@/modules/role/entities/role.entity'
 
-/** 资源表实体 */
-@Entity({ name: 'resource', comment: '资源表' })
-export class ResourceEntity extends CommonEntity implements IResourceEntity {
+/** 权限表实体 */
+@Entity({ name: 'permission', comment: '权限表' })
+export class PermissionEntity extends CommonEntity implements IPermissionEntity {
   constructor() {
     super()
   }
 
   @Column({
-    comment: '资源名',
+    comment: '权限名',
     name: 'name',
     type: 'varchar',
     length: 64,
@@ -20,9 +20,9 @@ export class ResourceEntity extends CommonEntity implements IResourceEntity {
   })
   name: string
 
-  @Index('IDX_RESOURCE_PARENT_ID', ['parent_id'])
+  @Index('IDX_PERMISSION_PARENT_ID', ['parent_id'])
   @Column({
-    comment: '父级资源ID',
+    comment: '父级权限ID',
     name: 'parent_id',
     type: 'varchar',
     length: 36,
@@ -39,7 +39,7 @@ export class ResourceEntity extends CommonEntity implements IResourceEntity {
   ancestors: string
 
   @Column({
-    comment: '资源编码',
+    comment: '权限编码',
     name: 'code',
     type: 'varchar',
     length: 100,
@@ -47,7 +47,7 @@ export class ResourceEntity extends CommonEntity implements IResourceEntity {
   })
   code: string
 
-  @Index('IDX_RESOURCE_SORT_ORDER', ['sort_order'])
+  @Index('IDX_PERMISSION_SORT_ORDER', ['sort_order'])
   @Column({
     comment: '显示顺序',
     name: 'sort_order',
@@ -134,15 +134,15 @@ export class ResourceEntity extends CommonEntity implements IResourceEntity {
   isVisible: CheckEnum
 
   @Column({
-    comment: '资源类型',
+    comment: '权限类型',
     name: 'type',
     type: 'tinyint',
     unsigned: true,
-    default: ResourceTypeEnum.MENU,
+    default: PermissionTypeEnum.MENU,
   })
-  type: ResourceTypeEnum
+  type: PermissionTypeEnum
 
-  @ManyToOne(() => RoleEntity, (role) => role.resources)
+  @ManyToOne(() => RoleEntity, (role) => role.permissions)
   @JoinColumn({
     name: 'role_id',
     referencedColumnName: 'id',

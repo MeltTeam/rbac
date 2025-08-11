@@ -1,7 +1,7 @@
 import type { BasicColorMode, UseColorModeReturn } from '@vueuse/core'
 import { useColorMode, useCycleList } from '@vueuse/core'
 
-export interface IThemeState {
+export interface IModeState {
   /** 模式 */
   mode: UseColorModeReturn<BasicColorMode>
   /** 切换下一个模式 */
@@ -9,8 +9,8 @@ export interface IThemeState {
   /** 是否为暗黑模式 */
   isDark: globalThis.ComputedRef<boolean>
 }
-export const useTheme = defineStore('THEME', {
-  state: (): IThemeState => {
+export const useMode = defineStore('MODE', {
+  state: (): IModeState => {
     const mode = useColorMode({ emitAuto: true })
     const { state, next: _next } = useCycleList(['dark', 'auto', 'light'] as const, { initialValue: mode })
     watchEffect(() => (mode.value = state.value))
@@ -26,7 +26,7 @@ export const useTheme = defineStore('THEME', {
   },
   actions: {
     /** 切换模式 */
-    toggleTheme(e: MouseEvent) {
+    toggleMode(e: MouseEvent) {
       const old = this.isDark
       if (!document.startViewTransition) return this._next()
       const transition = document.startViewTransition(this._next)

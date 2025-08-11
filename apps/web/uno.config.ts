@@ -1,6 +1,6 @@
 /* eslint-disable style/quote-props */
 import { defineConfig, presetAttributify, presetIcons, presetWind3, transformerDirectives, transformerVariantGroup } from 'unocss'
-import { gCssVars, themeVars } from './theme/vars'
+import { themeVars } from './theme/vars'
 
 export default defineConfig({
   content: {
@@ -9,10 +9,11 @@ export default defineConfig({
       exclude: ['node_modules/**', 'dist/**'],
     },
   },
+
   preflights: [
     {
-      async getCSS(context) {
-        gCssVars(context)
+      getCSS: (_) => {
+        // console.warn((theme as any).colors)
         return ``
       },
     },

@@ -2,9 +2,7 @@
 import { AsyncMForm } from '@/components'
 import { useEmailRegister } from './useEmailRegister'
 
-defineOptions({
-  name: 'EmailRegister',
-})
+defineOptions({ name: 'EmailRegister' })
 const { setInstance, formItems, formRules, formData, getFormTitle } = useEmailRegister()
 </script>
 

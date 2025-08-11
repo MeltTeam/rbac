@@ -2,9 +2,7 @@
 import { AsyncMForm } from '@/components'
 import { useEmailLogin } from './useEmailLogin'
 
-defineOptions({
-  name: 'EmailLogin',
-})
+defineOptions({ name: 'EmailLogin' })
 const { setInstance, formItems, formRules, formData, getFormTitle } = useEmailLogin()
 </script>
 

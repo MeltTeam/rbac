@@ -9,7 +9,8 @@
   },
   "scripts": {
     "dev": "vite",
-    "g:i18n": "node ./script/generateLocales.js",
+    "g:i18n": "node ./script/gI18n.mjs",
+    "g:css": "node ./script/gCss.mjs",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "vite build",

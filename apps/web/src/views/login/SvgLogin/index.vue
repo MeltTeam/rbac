@@ -4,9 +4,7 @@ import { t } from '@/i18n'
 import { goTo } from '@/router'
 import { useSvgLogin } from './useSvgLogin'
 
-defineOptions({
-  name: 'SvgLogin',
-})
+defineOptions({ name: 'SvgLogin' })
 const { formData, formRules, setInstance, formItems, getFormTitle } = useSvgLogin()
 </script>
 
@@ -19,7 +17,7 @@ const { formData, formRules, setInstance, formItems, getFormTitle } = useSvgLogi
           <ElButton type="primary" link @click="goTo('EmailRegister')">{{ t('去注册') }}</ElButton>
         </div>
         <div>
-          <ElButton class="" type="primary" link @click="goTo('ResetPwd')">{{ t('忘记密码?') }}</ElButton>
+          <ElButton type="primary" link @click="goTo('ResetPwd')">{{ t('忘记密码?') }}</ElButton>
         </div>
       </div>
     </template>

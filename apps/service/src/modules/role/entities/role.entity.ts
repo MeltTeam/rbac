@@ -3,7 +3,7 @@ import { CheckEnum, DataScopeEnum, SortOrderEnum } from '@packages/types'
 import { Column, Entity, Index, OneToMany } from 'typeorm'
 import { CommonEntity } from '@/common/entities/common.entity'
 import { DeptEntity } from '@/modules/dept/entities/dept.entity'
-import { ResourceEntity } from '@/modules/resource/entities/resource.entity'
+import { PermissionEntity } from '@/modules/permission/entities/permission.entity'
 import { UserEntity } from '@/modules/user/entities/user.entity'
 
 /** 角色表实体 */
@@ -60,19 +60,19 @@ export class RoleEntity extends CommonEntity implements IRoleEntity {
   deptTreeCheckStrictly: CheckEnum
 
   @Column({
-    comment: '资源树是否关联显示',
-    name: 'resources_tree_check_strictly',
+    comment: '权限树是否关联显示',
+    name: 'permissions_tree_check_strictly',
     type: 'tinyint',
     unsigned: true,
     default: CheckEnum.TRUE,
   })
-  resourcesTreeCheckStrictly: CheckEnum
+  permissionsTreeCheckStrictly: CheckEnum
 
   @OneToMany(() => UserEntity, (user) => user.role)
   users: UserEntity[]
 
-  @OneToMany(() => ResourceEntity, (resource) => resource.role)
-  resources: ResourceEntity[]
+  @OneToMany(() => PermissionEntity, (permission) => permission.role)
+  permissions: PermissionEntity[]
 
   @OneToMany(() => DeptEntity, (dept) => dept.role)
   depts: DeptEntity[]

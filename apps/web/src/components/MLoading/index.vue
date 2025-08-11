@@ -1,9 +1,7 @@
 <script lang="ts" setup>
 import type { IMLoadingProps } from './IMLoading'
 
-defineOptions({
-  name: 'MLoading',
-})
+defineOptions({ name: 'MLoading' })
 const props = withDefaults(defineProps<IMLoadingProps>(), {
   count: 5,
   title: import.meta.env.VITE_APP_TITLE,
@@ -23,9 +21,9 @@ const props = withDefaults(defineProps<IMLoadingProps>(), {
 
 <style scoped>
 .MLoading_container {
-  --color-1: #b3d4fc;
-  --color-2: #6793fb;
-  --color-shadow-1: rgba(178, 212, 252, 0.7);
+  --color-1: rgb(var(--primary-color-50));
+  --color-2: rgb(var(--primary-color));
+  --color-shadow-1: rgba(var(--primary-color), 0.7);
   --color-shadow-2: rgba(178, 212, 252, 0);
   --size: 20px;
   --size-radius: calc(20px / 2);

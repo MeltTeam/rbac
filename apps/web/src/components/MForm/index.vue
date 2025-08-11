@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { componentType, IFormItems, MFormProps, TComponentMap } from './IMForm'
 import { h } from 'vue'
+import { MButton } from '@/components'
 
 defineOptions({ name: 'MForm' })
 const props = withDefaults(defineProps<MFormProps>(), {
@@ -15,7 +16,7 @@ const _formProps = computed(() => {
 })
 const componentMap: TComponentMap = {
   Input: ElInput,
-  Button: ElButton,
+  Button: MButton,
   /** 用插槽 */
   Template: false,
 }
@@ -41,10 +42,14 @@ function getSlots(item: IFormItems) {
 </script>
 
 <template>
-  <div class="MForm_container min-h-full min-w-full text-center">
+  <div class="MForm_container min-h-full min-w-full px-[4px] text-center">
     <slot name="mFormTitle">
       <template v-if="props.formTitle">
-        <h1 class="MForm_title select-none py-[.5rem] text-2xl font-black dark:color-white">{{ props.formTitle }}</h1>
+        <h1
+          class="MForm_title select-none py-[.5rem] text-2xl color-slate-950 font-black text-shadow-lg shadow-slate-500/40 dark:color-white dark:shadow-primary/40"
+        >
+          {{ props.formTitle }}
+        </h1>
       </template>
     </slot>
     <ElForm v-bind="{ ...$attrs, ..._formProps }" :ref="changeRef">

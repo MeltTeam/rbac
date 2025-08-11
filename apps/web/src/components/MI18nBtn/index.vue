@@ -5,9 +5,7 @@ import { useRoute } from 'vue-router'
 import { getLanguage, localeKeys, setLanguage } from '@/i18n'
 import { setDocumentTitle } from '@/router/guard'
 
-defineOptions({
-  name: 'MI18nBtn',
-})
+defineOptions({ name: 'MI18nBtn' })
 const route = useRoute()
 function _setLanguage(locale: AppLocale) {
   setLanguage(locale)
@@ -22,9 +20,9 @@ function _setLanguage(locale: AppLocale) {
 
 <template>
   <ElDropdown size="large" placement="bottom" trigger="click" popper-class="MI18nBtn_container">
-    <ElButton class="border-none bg-transparent">
+    <ElButton class="m-0 border-none">
       <template #icon>
-        <Icon icon="icon-park-outline:translate" class="color-black dark:color-white" />
+        <Icon icon="icon-park-outline:translate" class="cursor-pointer color-black dark:color-white" />
       </template>
     </ElButton>
     <template v-if="localeKeys.length > 0" #dropdown>

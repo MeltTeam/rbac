@@ -5,7 +5,7 @@ export const loginRoutes: RouteRecordRaw[] = [
   {
     name: 'Login',
     path: '/login',
-    component: () => import('@/views/Login/index.vue'),
+    component: () => import('@/layout/LoginLayout.vue'),
     redirect: '/login/svg-login',
     children: [
       {
@@ -21,7 +21,7 @@ export const loginRoutes: RouteRecordRaw[] = [
         path: 'email-login',
         component: () => import('@/views/Login/EmailLogin/index.vue'),
         meta: {
-          title: '登录',
+          title: '邮箱登录',
         },
       },
       {

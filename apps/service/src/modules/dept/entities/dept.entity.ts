@@ -90,7 +90,7 @@ export class DeptEntity extends CommonEntity implements IDeptEntity {
   })
   sortOrder: SortOrderEnum
 
-  @ManyToOne(() => RoleEntity, (role) => role.resources)
+  @ManyToOne(() => RoleEntity, (role) => role.permissions)
   @JoinColumn({
     name: 'role_id',
     referencedColumnName: 'id',

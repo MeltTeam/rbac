@@ -18,7 +18,7 @@ export class HttpUtils implements IHttpUtils {
 
   baseConfig: THttpConfig = {
     baseURL: import.meta.env.VITE_API_BASE_URL ?? 'http://127.0.0.1:4001/dev',
-    timeout: 10000,
+    timeout: 2000,
     headers: {
       'Content-Type': 'application/json',
     },
@@ -50,14 +50,14 @@ export class HttpUtils implements IHttpUtils {
   }
 
   async requestInterceptors(config: TRequest) {
-    // 加载条
-    if (config?.showLoading) nProgress.start()
     // 处理限制请求
     const limit = this.requestLimit(config)
     if (limit) return Promise.reject(limit)
     // 处理上一次重复请求
     const duplicate = this.requestDuplicate(config)
     if (duplicate) config = duplicate
+    // 加载条
+    if (config?.showLoading) nProgress.start()
     return config
   }
 

@@ -1,6 +1,6 @@
 import type { CheckEnum, DataScopeEnum, SortOrderEnum } from '@packages/types'
 import type { DeptEntity } from '@/modules/dept/entities/dept.entity'
-import type { ResourceEntity } from '@/modules/resource/entities/resource.entity'
+import type { PermissionEntity } from '@/modules/permission/entities/permission.entity'
 import type { UserEntity } from '@/modules/user/entities/user.entity'
 
 /** 角色表实体接口 */
@@ -15,13 +15,13 @@ export interface IRoleEntity {
   dataScope: DataScopeEnum
   /** 部门树是否关联显示(10:是 20:否 默认:10) */
   deptTreeCheckStrictly: CheckEnum
-  /** 资源树是否关联显示(10:是 20:否 默认:10) */
-  resourcesTreeCheckStrictly: CheckEnum
+  /** 权限树是否关联显示(10:是 20:否 默认:10) */
+  permissionsTreeCheckStrictly: CheckEnum
 
   /** 角色1-N用户 */
   users: UserEntity[]
-  /** 角色1-N资源 */
-  resources: ResourceEntity[]
+  /** 角色1-N权限 */
+  permissions: PermissionEntity[]
   /** 角色1-N部门 */
   depts: DeptEntity[]
 }

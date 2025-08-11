@@ -1,19 +1,14 @@
 <script lang="ts" setup>
 import { Icon } from '@iconify/vue'
-import { useTheme } from '@/store'
+import { goTo } from '@/router'
 
-defineOptions({
-  name: 'MThemeBtn',
-})
-const theme = useTheme()
+defineOptions({ name: 'MThemeBtn' })
 </script>
 
 <template>
-  <ElButton class="MThemeBtn_container border-none bg-transparent" @click="theme.toggleTheme">
+  <ElButton class="MThemeBtn_container m-0 flex-center border-none" @click="goTo('Test')">
     <template #icon>
-      <Icon v-if="theme.mode === 'light'" icon="icon-park-outline:moon" class="color-black" />
-      <Icon v-if="theme.mode === 'auto'" icon="icon-park-outline:sun-one" class="color-black dark:color-white" />
-      <Icon v-if="theme.mode === 'dark'" icon="icon-park-outline:switch-one" class="color-white" />
+      <Icon class="cursor-pointer color-primary" icon="icon-park-outline:color-filter" />
     </template>
   </ElButton>
 </template>

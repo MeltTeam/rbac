@@ -47,7 +47,7 @@ export type IResponseFormatOptions<T extends 'OK' | 'ERROR' = 'OK' | 'ERROR'> = 
   : Omit<IBaseOptions<T>, 'okData'>
 
 /** 响应格式化 */
-export class ResponseFormat<T extends 'OK' | 'ERROR' = 'OK' | 'ERROR'> {
+export class ResponseFormat<T extends 'OK' | 'ERROR' = 'OK' | 'ERROR'> implements IResponseFormat {
   code: number
   msg: string
   data: any

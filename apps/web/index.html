@@ -18,9 +18,9 @@
           --color-red: rgb(251, 84, 84);
         }
         .routerLoading_container {
-          --color-1: #b3d4fc;
-          --color-2: #6793fb;
-          --color-shadow-1: rgba(178, 212, 252, 0.7);
+          --color-1: rgb(var(--primary-color-50));
+          --color-2: rgb(var(--primary-color));
+          --color-shadow-1: rgb(var(--primary-color) / 0.7);
           --color-shadow-2: rgba(178, 212, 252, 0);
           --size: 20px;
           --size-radius: calc(20px / 2);
@@ -157,6 +157,19 @@
         </div>
       </div>
     </div>
+    <script>
+      function initTheme() {
+        const PRIMARY_COLOR50 = 'primaryColor50'
+        const PRIMARY_COLOR = 'PRIMARY_COLOR'
+        const primaryColor50 = localStorage.getItem(PRIMARY_COLOR50)
+        const primaryColor = localStorage.getItem(PRIMARY_COLOR)
+        if (!primaryColor50) window.localStorage.setItem(PRIMARY_COLOR50, '239 246 255')
+        if (!primaryColor) window.localStorage.setItem(PRIMARY_COLOR, '59 130 246')
+        window.document.documentElement.style.setProperty('--primary-color-50', primaryColor50)
+        window.document.documentElement.style.setProperty('--primary-color', primaryColor)
+      }
+      initTheme()
+    </script>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
