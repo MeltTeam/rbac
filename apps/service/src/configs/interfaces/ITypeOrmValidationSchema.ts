@@ -12,4 +12,6 @@ export interface ITypeOrmValidationSchema {
   ORM_SYNCHRONIZE: boolean
   ORM_AUTO_LOAD_ENTITIES: boolean
   ORM_LOGGING: boolean
+  ORM_RETRY_ATTEMPTS: number
+  ORM_RETRY_DELAY: number
 }

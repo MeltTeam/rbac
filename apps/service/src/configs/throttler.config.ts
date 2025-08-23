@@ -21,7 +21,7 @@ export const ThrottlerConfig = registerAs(THROTTLER_CONFIG_KEY, (): IThrottlerCo
   return {
     throttlersConfig: {
       throttlers: [
-        /** 1分钟100次 */
+        /** 1分钟50次 */
         {
           name: value.THROTTLER_DEFAULT_NAME,
           ttl: value.THROTTLER_DEFAULT_TTL, // 1分钟

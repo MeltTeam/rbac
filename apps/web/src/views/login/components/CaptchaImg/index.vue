@@ -9,8 +9,8 @@ const props = defineProps<ICaptchaImgProps>()
 <template>
   <MButton class="CaptchaImg_container max-h-[32px] flex-center cursor-pointer select-none overflow-hidden border rounded-[4px] p-0">
     <template v-if="props.captchaImgUrl">
-      <img :src="props.captchaImgUrl" :alt="t('图片验证码')" class="block h-full w-full object-cover" />
+      <img :src="props.captchaImgUrl" :alt="t('views.Login.components.CaptchaImg.alt')" class="block h-full w-full object-cover" />
     </template>
-    <template v-else> {{ t('图片占位') }} </template>
+    <template v-else> {{ t('views.Login.components.CaptchaImg.text') }} </template>
   </MButton>
 </template>

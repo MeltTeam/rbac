@@ -1,9 +1,9 @@
+import type { Cache2Service } from '@cache2/cache2.service'
 import type { FindOptionsWhere, ObjectLiteral, Repository } from 'typeorm'
 import type { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity'
-import type { Cache2Service } from '@/shared/cache2/cache2.service'
-import { BaseModule } from '@/common/abstracts/BaseModule.abstract'
-import { DB_NULL } from '@/common/constants'
-import { uuid_v4 } from '@/common/utils'
+import { BaseModule } from '@abstracts/index'
+import { DB_NULL } from '@constants/index'
+import { uuid_v4 } from '@utils/index'
 
 export interface RepositoryCacheOptions<RepositoryEntity extends ObjectLiteral> {
   /** 子类名 */

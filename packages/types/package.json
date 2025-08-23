@@ -10,7 +10,11 @@
   "scripts": {
     "ts:init": "tsc --init",
     "build": "rollup -c",
-    "preinstall": "pnpm build"
+    "preinstall": "pnpm build",
+    "clear:modules": "if exist node_modules (rmdir /s /q node_modules)",
+    "clear:dist": "if exist dist (rmdir /s /q dist)",
+    "clear:cache": "if exist .rollup.cache (rmdir /s /q .rollup.cache)",
+    "clear": "pnpm clear:dist && pnpm clear:cache && pnpm clear:modules"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "catalog:cli",

@@ -2,6 +2,7 @@
 import type { componentType, IFormItems, MFormProps, TComponentMap } from './IMForm'
 import { h } from 'vue'
 import { MButton } from '@/components'
+import { t } from '@/i18n'
 
 defineOptions({ name: 'MForm' })
 const props = withDefaults(defineProps<MFormProps>(), {
@@ -48,7 +49,7 @@ function getSlots(item: IFormItems) {
         <h1
           class="MForm_title select-none py-[.5rem] text-2xl color-slate-950 font-black text-shadow-lg shadow-slate-500/40 dark:color-white dark:shadow-primary/40"
         >
-          {{ props.formTitle }}
+          {{ t(props.formTitle) }}
         </h1>
       </template>
     </slot>

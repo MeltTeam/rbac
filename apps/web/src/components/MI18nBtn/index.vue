@@ -2,14 +2,16 @@
 import type { AppLocale } from '@/i18n'
 import { Icon } from '@iconify/vue'
 import { useRoute } from 'vue-router'
-import { getLanguage, localeKeys, setLanguage } from '@/i18n'
-import { setDocumentTitle } from '@/router/guard'
+import { localeKeys, t } from '@/i18n'
+import { useApp } from '@/store/modules/app'
 
 defineOptions({ name: 'MI18nBtn' })
 const route = useRoute()
-function _setLanguage(locale: AppLocale) {
-  setLanguage(locale)
-  setDocumentTitle(route.meta)
+const app = useApp()
+const { setLocale, setTitle } = app
+function _setLocale(locale: AppLocale) {
+  setLocale(locale)
+  setTitle(route.meta.title as string)
   ElMessage({
     message: locale,
     type: 'success',
@@ -19,18 +21,20 @@ function _setLanguage(locale: AppLocale) {
 </script>
 
 <template>
-  <ElDropdown size="large" placement="bottom" trigger="click" popper-class="MI18nBtn_container">
-    <ElButton class="m-0 border-none">
-      <template #icon>
-        <Icon icon="icon-park-outline:translate" class="cursor-pointer color-black dark:color-white" />
+  <ElTooltip :auto-close="500" placement="bottom" :content="t('components.MI18nBtn.content')">
+    <ElDropdown size="large" placement="bottom" trigger="click" popper-class="MI18nBtn_container">
+      <ElButton class="m-0 border-none">
+        <template #icon>
+          <Icon icon="icon-park-outline:translate" class="cursor-pointer color-black dark:color-white" />
+        </template>
+      </ElButton>
+      <template v-if="localeKeys.length > 0" #dropdown>
+        <ElDropdownMenu>
+          <ElDropdownItem v-for="item in localeKeys" :key="item" :disabled="app.locale === item" @click="_setLocale(item)">
+            {{ t(`common.locale.${item}`) }}
+          </ElDropdownItem>
+        </ElDropdownMenu>
       </template>
-    </ElButton>
-    <template v-if="localeKeys.length > 0" #dropdown>
-      <ElDropdownMenu>
-        <ElDropdownItem v-for="item in localeKeys" :key="item" :disabled="getLanguage() === item" @click="_setLanguage(item)">
-          {{ item }}
-        </ElDropdownItem>
-      </ElDropdownMenu>
-    </template>
-  </ElDropdown>
+    </ElDropdown>
+  </ElTooltip>
 </template>

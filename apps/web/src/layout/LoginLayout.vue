@@ -23,8 +23,8 @@ onMounted(() => setTimeout(() => (isLoading.value = false), 500))
       <div class="right flex-1">
         <div class="flex justify-end pb-2">
           <div class="flex rounded-[.5rem] bg-white shadow-lg shadow-slate-500/40 dark:bg-slate-950 dark:shadow-primary/40">
-            <MI18nBtn />
             <MThemeBtn />
+            <MI18nBtn />
             <MModeBtn />
           </div>
         </div>

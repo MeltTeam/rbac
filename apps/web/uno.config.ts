@@ -1,6 +1,6 @@
 /* eslint-disable style/quote-props */
 import { defineConfig, presetAttributify, presetIcons, presetWind3, transformerDirectives, transformerVariantGroup } from 'unocss'
-import { themeVars } from './theme/vars'
+import { themeVars } from './plugins/uno/vars'
 
 export default defineConfig({
   content: {
@@ -13,7 +13,7 @@ export default defineConfig({
   preflights: [
     {
       getCSS: (_) => {
-        // console.warn((theme as any).colors)
+        // console.warn((theme as any).colors.red)
         return ``
       },
     },

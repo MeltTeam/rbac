@@ -4,18 +4,19 @@ export const APP_PID = process.pid
 export const DB_NULL = 'N'
 /** UUID v4 长度 */
 export const UUID_V4_LENGTH = 36
-
-// 用户相关
-/** 用户别名 key */
-export const NICK_NAME = '别名'
-/** 用户ID key */
-export const USER_ID = '用户ID'
-/** 用户名 key */
-export const USER_NAME = '用户名'
-/** 用户名最小长度 */
-export const USER_NAME_MIN = 2
-/** 用户名最大长度 */
-export const USER_NAME_MAX = 64
+/** 系统默认操作者 */
+export const SYSTEM_DEFAULT_BY = 'system'
+/** 系统默认备注 */
+export const SYSTEM_DEFAULT_REMARK = SYSTEM_DEFAULT_BY
+/** 系统异常消息 */
+export const SYSTEM_EXCEPTION_MSG = '系统异常，请稍后重试或者联系系统管理员'
+// 备注相关
+/** 备注 key */
+export const REMARK = '备注'
+/** 备注最小长度 */
+export const REMARK_MIN = 1
+/** 备注最大长度 */
+export const REMARK_MAX = 500
 
 // 邮箱相关
 /** 邮箱 key */

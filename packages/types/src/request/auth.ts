@@ -1,10 +1,10 @@
 /** 邮箱验证码接口参数校验 */
-export interface IEmailCaptchaDto {
+export interface IEmailCaptchaDTO {
   /** 邮箱 */
   email: string
 }
 /** 邮箱登录接口参数校验 */
-export interface ILoginByEmailDto {
+export interface ILoginByEmailDTO {
   /** 用户名 */
   username: string
   /** 密码 */
@@ -15,7 +15,7 @@ export interface ILoginByEmailDto {
   captcha: string
 }
 /** svg登录接口参数校验 */
-export interface ILoginBySvgDto {
+export interface ILoginBySvgDTO {
   /** 用户名 */
   username: string
   /** 密码 */
@@ -26,9 +26,9 @@ export interface ILoginBySvgDto {
   captcha: string
 }
 /** 邮箱注册接口参数校验 */
-export interface IRegisterByEmailDto extends ILoginByEmailDto {}
+export interface IRegisterByEmailDTO extends ILoginByEmailDTO {}
 /** 邮箱重置密码接口参数校验 */
-export interface IResetPwdByEmailDto extends ILoginByEmailDto {
+export interface IResetPwdByEmailDTO extends ILoginByEmailDTO {
   /** 确认密码 */
   confirmPwd: string
 }

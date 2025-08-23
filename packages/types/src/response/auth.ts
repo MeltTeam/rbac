@@ -10,7 +10,7 @@ export interface IUserInfo {
   loginAt: Date
 }
 /** 登录接口响应数据 */
-export interface ILoginVo {
+export interface ILoginVO {
   /** 用户信息 */
   userInfo: IUserInfo
   /** 短TOKEN */
@@ -19,7 +19,7 @@ export interface ILoginVo {
   refreshToken: string
 }
 /** svg验证码接口响应数据 */
-export interface ISvgCaptchaVo {
+export interface ISvgCaptchaVO {
   /** 验证码凭证 */
   token: string
   /** svg验证码 */

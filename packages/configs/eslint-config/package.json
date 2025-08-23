@@ -11,7 +11,9 @@
   "scripts": {
     "test": "node ./src/index.mjs",
     "format": "prettier --write src/",
-    "lint": "eslint . --fix"
+    "lint": "eslint . --fix",
+    "clear:modules": "if exist node_modules (rmdir /s /q node_modules)",
+    "clear": "pnpm clear:modules"
   },
   "devDependencies": {
     "@antfu/eslint-config": "catalog:cli",

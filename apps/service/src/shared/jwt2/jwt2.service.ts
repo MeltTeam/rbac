@@ -1,12 +1,12 @@
+import type { UserInfo } from '@auth/vos'
 import type { Response as ExpressResponse } from 'express'
 import type Redis from 'ioredis'
-import type { IJwt2Service, IRedisToken, ISetRedisTokenOptions, TokenType } from './interfaces/IJwt2Service'
-import type { UserInfo } from '@/modules/auth/vos/login.vo'
+import type { IJwt2Service, IRedisToken, ISetRedisTokenOptions, TokenType } from './IJwt2'
+import { LikeCache2Module } from '@cache2/LikeCache2Module.abstract'
 import { Cache, CACHE_MANAGER } from '@nestjs/cache-manager'
 import { Inject, Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
-import { LikeCache2Module } from '../cache2/LikeCache2Module.abstract'
-import { JWT_REDIS_CLIENT_TOKEN } from './constants'
+import { JWT_REDIS_CLIENT_TOKEN } from './jwt2.constant'
 
 @Injectable()
 export class Jwt2Service extends LikeCache2Module implements IJwt2Service {

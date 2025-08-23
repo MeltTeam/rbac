@@ -1,16 +1,18 @@
 import type { SexEnum } from '../enums'
 /** 添加用户接口参数校验 */
-export interface IAddUserDto {
+export interface IAddUserDTO {
   /** 用户名 */
-  username: string
+  name: string
   /** 密码 */
-  password: string
+  pwd: string
+  /** 备注 */
+  remark?: string
 }
 
 /** 修改用户接口参数校验 */
-export interface IPatchUserDto {
+export interface IPatchUserDTO {
   /** 用户名 */
-  username?: string
+  name?: string
   /** 别名 */
   nickName?: string
   /** 性别 */
@@ -23,4 +25,14 @@ export interface IPatchUserDto {
   phone?: string
   /** 头像 */
   avatar?: string
+  /** 备注 */
+  remark?: string
+}
+
+/** 修改用户密码接口参数校验 */
+export interface IUpdatePwdUserDTO {
+  /** 密码 */
+  pwd: string
+  /** 备注 */
+  remark?: string
 }

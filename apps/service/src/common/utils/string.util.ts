@@ -1,9 +1,10 @@
+import { isEmpty } from 'lodash-es'
 /**
  * 判断字符串是否有空字符串
  * @param str 字符串
  */
 export function hasSpace(str: string) {
-  return str.includes(' ') || /\s/.test(str)
+  return isEmpty(str)
 }
 
 /**

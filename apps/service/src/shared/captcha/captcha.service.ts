@@ -1,18 +1,18 @@
-import type { ISvgCaptchaVo } from '@packages/types'
+import type { ISvgCaptchaVO } from '@packages/types'
 import type { ConfigObject } from 'svg-captcha'
-import type { CaptchaType, ICaptchaService, ICreateCaptchaKey } from './interfaces/ICaptchaService'
+import type { CaptchaType, ICaptchaService, ICreateCaptchaKey } from './ICaptcha'
 import type { AppConfigType } from '@/configs'
+import { LikeCache2Module } from '@cache2/LikeCache2Module.abstract'
+import { CAPTCHA_LENGTH } from '@constants/index'
+import { EmailService } from '@email/email.service'
 import { Cache, CACHE_MANAGER } from '@nestjs/cache-manager'
 import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
+import { getCode, uuid_v4 } from '@utils/index'
 import Redis from 'ioredis'
 import { create } from 'svg-captcha'
-import { CAPTCHA_LENGTH } from '@/common/constants'
-import { getCode, uuid_v4 } from '@/common/utils'
 import { APP_CONFIG_KEY } from '@/configs'
-import { LikeCache2Module } from '../cache2/LikeCache2Module.abstract'
-import { EmailService } from '../email/services/email.service'
-import { CAPTCHA_REDIS_CLIENT_TOKEN } from './constants'
+import { CAPTCHA_REDIS_CLIENT_TOKEN } from './captcha.constant'
 
 @Injectable()
 export class CaptchaService extends LikeCache2Module implements ICaptchaService {
@@ -34,7 +34,7 @@ export class CaptchaService extends LikeCache2Module implements ICaptchaService 
     return `${name}:${id}:${type}`
   }
 
-  async generateSvgCaptcha(type: CaptchaType, svgCaptchaConfig?: ConfigObject): Promise<ISvgCaptchaVo> {
+  async generateSvgCaptcha(type: CaptchaType, svgCaptchaConfig?: ConfigObject): Promise<ISvgCaptchaVO> {
     const background = `#${getCode(6, 16)}`
     const token = uuid_v4()
     const key = this.createCaptchaKey({

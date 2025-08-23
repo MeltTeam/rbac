@@ -19,7 +19,8 @@
     "playwright.config.*",
     "eslint.config.*",
     "uno.config.*",
-    "theme/**/*"
+    "theme/**/*",
+    "plugins/uno/vars.ts"
   ],
   "exclude": ["node_modules", "dist"]
 }

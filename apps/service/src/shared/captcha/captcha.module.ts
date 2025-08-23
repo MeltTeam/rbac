@@ -1,10 +1,10 @@
-import type { CaptchaConfigType } from '@/configs/captcha.config'
+import type { CaptchaConfigType } from '@/configs'
 import { Module } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { CAPTCHA_CONFIG_KEY } from '@/configs/captcha.config'
-import { RedisModule } from '@/shared/redis/redis.module'
+import { RedisModule } from '@redis/redis.module'
+import { CAPTCHA_CONFIG_KEY } from '@/configs'
+import { CAPTCHA_REDIS_CLIENT_TOKEN } from './captcha.constant'
 import { CaptchaService } from './captcha.service'
-import { CAPTCHA_REDIS_CLIENT_TOKEN } from './constants'
 /** 验证码模块(连redis的db3) */
 @Module({
   imports: [

@@ -2,9 +2,9 @@ import type { JwtConfigType } from '@/configs'
 import { Module } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { JwtModule, JwtService } from '@nestjs/jwt'
+import { RedisModule } from '@redis/redis.module'
 import { JWT_CONFIG_KEY } from '@/configs'
-import { RedisModule } from '@/shared/redis/redis.module'
-import { JWT_REDIS_CLIENT_TOKEN } from './constants'
+import { JWT_REDIS_CLIENT_TOKEN } from './jwt2.constant'
 import { Jwt2Service } from './jwt2.service'
 
 @Module({

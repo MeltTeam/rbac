@@ -1,8 +1,18 @@
-import type { ICommonEntity } from './interfaces/ICommonEntity'
+import type { ICommonEntity } from './ICommonEntity'
+import { SYSTEM_DEFAULT_BY, SYSTEM_DEFAULT_REMARK } from '@constants/index'
 import { StatusEnum } from '@packages/types'
+import { uuid_v4 } from '@utils/index'
 import { Expose } from 'class-transformer'
-import { BeforeInsert, Column, CreateDateColumn, DeleteDateColumn, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
-import { uuid_v4 } from '@/common/utils'
+import {
+  BeforeInsert,
+  BeforeSoftRemove,
+  BeforeUpdate,
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm'
 
 /** 实体公共字段 */
 export abstract class CommonEntity implements ICommonEntity {
@@ -93,7 +103,6 @@ export abstract class CommonEntity implements ICommonEntity {
   })
   remark: string | null
 
-  // @Index('IDX_STATUS', ['status'])
   @Column({
     comment: '状态',
     name: 'status',
@@ -105,7 +114,35 @@ export abstract class CommonEntity implements ICommonEntity {
 
   @Expose()
   @BeforeInsert()
-  generateId() {
+  init() {
+    const now = new Date()
+    const by = SYSTEM_DEFAULT_BY
+    const remark = SYSTEM_DEFAULT_REMARK
     if (!this.id) this.id = uuid_v4()
+    if (!this.remark) this.remark = `${remark}_create`
+    if (!this.createdBy) this.createdBy = by
+    if (!this.createdAt) this.createdAt = now
+    if (!this.updatedBy) this.updatedBy = by
+    if (!this.updatedAt) this.updatedAt = now
+  }
+
+  @Expose()
+  @BeforeUpdate()
+  updateInit() {
+    const by = SYSTEM_DEFAULT_BY
+    const remark = SYSTEM_DEFAULT_REMARK
+    if (!this.remark) this.remark = `${remark}_update`
+    if (!this.updatedBy) this.updatedBy = by
+    if (!this.updatedAt) this.updatedAt = new Date()
+  }
+
+  @Expose()
+  @BeforeSoftRemove()
+  softRemoveInit() {
+    const by = SYSTEM_DEFAULT_BY
+    const remark = SYSTEM_DEFAULT_REMARK
+    if (!this.remark) this.remark = `${remark}_del`
+    if (!this.deletedBy) this.deletedBy = by
+    if (!this.deletedAt) this.deletedAt = new Date()
   }
 }

@@ -23,12 +23,10 @@ const iconRef = ref('icon-park-outline:components')
 setTimeout(() => {
   iconRef.value = 'mdi:account-cash-outline'
 }, 10000)
-const isLoading = ref(true)
-onMounted(() => setTimeout(() => (isLoading.value = false), 500))
 </script>
 
 <template>
-  <div v-mLoading="isLoading" class="mb-4 wh-screen flex-col-center bg-white dark:bg-black">
+  <div class="mb-4 wh-screen flex-col-center bg-white dark:bg-black">
     <div class="mb-4 flex">
       <Icon :icon="iconRef"></Icon>
     </div>

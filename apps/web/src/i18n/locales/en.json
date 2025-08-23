@@ -1,0 +1,38 @@
+{
+  "common": {
+    "locale": {
+      "zh-cn": "zh-cn",
+      "en": "en"
+    }
+  },
+  "components": {
+    "MI18nBtn": {
+      "content": "Language"
+    },
+    "MModeBtn": {
+      "content": "Mode"
+    }
+  },
+  "views": {
+    "Login": {
+      "components": {
+        "CaptchaImg": {
+          "text": "Code",
+          "alt": "Code"
+        }
+      },
+      "SvgLogin": {
+        "title": "Login"
+      },
+      "EmailLogin": {
+        "title": "EmailLogin"
+      },
+      "EmailRegister": {
+        "title": "EmailRegister"
+      },
+      "ResetPwd": {
+        "title": "ResetPwd"
+      }
+    }
+  }
+}

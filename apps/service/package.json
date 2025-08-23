@@ -7,7 +7,9 @@
     "node": ">=20.19.2"
   },
   "scripts": {
-    "doc": "npx @compodoc/compodoc -p tsconfig.json -s -o",
+    "clear:modules": "if exist node_modules (rmdir /s /q node_modules)",
+    "clear:dist": "if exist dist (rmdir /s /q dist)",
+    "clear": "pnpm clear:dist && pnpm clear:modules",
     "build": "nest build",
     "format:fix": "prettier --write \"{src,apps,libs}/**/*.{ts,cjs,mjs,js,ejs,md,html,css,md,json}\"",
     "format": "prettier --check \"{src,apps,libs}/**/*.{ts,cjs,mjs,js,ejs,md,html,css,md,json}\"",
@@ -16,8 +18,7 @@
     "lint:fix": "pnpm format:fix && pnpm eslint:fix",
     "lint": "pnpm format && pnpm eslint",
     "start": "nest start",
-    "dev": "cross-env ENV_NAME=dev nest start --watch",
-    "dev:hot": "cross-env ENV_NAME=dev nest build --webpack --webpackPath webpack-hmr.config.cjs --watch",
+    "dev": "cross-env ENV_NAME=dev nest build --webpack --webpackPath webpack-hmr.config.cjs --watch",
     "pm2:start": "cross-env pm2_home=.pm2 pm2 start ecosystem.config.js",
     "pm2:stop": "cross-env pm2_home=.pm2 pm2 stop ecosystem.config.js",
     "pm2:restart": "cross-env pm2_home=.pm2 pm2 restart ecosystem.config.js",
@@ -34,7 +35,6 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@compodoc/compodoc": "catalog:api_prod",
     "@nest-lab/throttler-storage-redis": "catalog:api_prod",
     "@nestjs-modules/mailer": "catalog:api_prod",
     "@nestjs/axios": "catalog:api_prod",
@@ -49,6 +49,7 @@
     "@nestjs/passport": "catalog:api_prod",
     "@nestjs/platform-express": "catalog:api_prod",
     "@nestjs/swagger": "catalog:api_prod",
+    "@nestjs/terminus": "catalog:api_prod",
     "@nestjs/throttler": "catalog:api_prod",
     "@nestjs/typeorm": "catalog:api_prod",
     "@packages/types": "workspace:*",
@@ -65,7 +66,9 @@
     "etag": "catalog:api_prod",
     "ioredis": "catalog:api_prod",
     "joi": "catalog:api_prod",
+    "lodash-es": "catalog:cli",
     "mysql2": "catalog:api_prod",
+    "nestjs-cls": "catalog:api_prod",
     "nodemailer": "catalog:api_prod",
     "passport": "catalog:api_prod",
     "passport-jwt": "catalog:api_prod",
@@ -75,7 +78,9 @@
     "rxjs": "catalog:api_prod",
     "svg-captcha": "catalog:api_prod",
     "typeorm": "catalog:api_prod",
-    "uuid": "catalog:cli"
+    "uuid": "catalog:cli",
+    "winston": "catalog:api_prod",
+    "winston-daily-rotate-file": "catalog:api_prod"
   },
   "devDependencies": {
     "@configs/eslint-config": "workspace:*",
@@ -88,6 +93,7 @@
     "@types/etag": "catalog:api_dev",
     "@types/express": "catalog:api_dev",
     "@types/jest": "catalog:api_dev",
+    "@types/lodash-es": "catalog:cli",
     "@types/node": "catalog:cli",
     "@types/nodemailer": "catalog:api_dev",
     "@types/passport-jwt": "catalog:api_dev",

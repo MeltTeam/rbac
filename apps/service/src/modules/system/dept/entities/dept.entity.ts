@@ -1,0 +1,99 @@
+import type { IDeptEntity } from '../IDept'
+import { CommonEntity } from '@entities/common.entity'
+import { SortOrderEnum } from '@packages/types'
+import { RoleEntity } from '@role/entities/role.entity'
+import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm'
+
+/** 部门表实体 */
+@Entity({ name: 'sys_dept', comment: '部门表' })
+export class DeptEntity extends CommonEntity implements IDeptEntity {
+  constructor() {
+    super()
+  }
+
+  @Column({
+    comment: '部门名',
+    name: 'name',
+    type: 'varchar',
+    length: 64,
+    unique: true,
+  })
+  name: string
+
+  @Index('IDX_DEPT_PARENT_ID', ['parent_id'])
+  @Column({
+    comment: '父级部门ID',
+    name: 'parent_id',
+    type: 'varchar',
+    length: 36,
+    charset: 'ascii',
+  })
+  parentId: string
+
+  @Column({
+    comment: '祖级列表',
+    name: 'ancestors',
+    type: 'text',
+    charset: 'utf8mb4',
+  })
+  ancestors: string
+
+  @Index('IDX_DEPT_LEADER_ID', ['leader_id'])
+  @Column({
+    comment: '部门负责人ID',
+    name: 'leader_id',
+    type: 'varchar',
+    length: 36,
+    charset: 'ascii',
+  })
+  leaderId: string
+
+  @Index('IDX_DEPT_EMAIL_ID', ['email'])
+  @Column({
+    comment: '部门邮箱',
+    name: 'email',
+    type: 'varchar',
+    length: 254,
+    unique: true,
+    nullable: true,
+    default: null,
+  })
+  email?: string | null
+
+  @Column({
+    comment: '部门电话',
+    name: 'phone',
+    type: 'varchar',
+    length: 11,
+    unique: true,
+    nullable: true,
+    default: null,
+  })
+  phone?: string | null
+
+  @Column({
+    comment: '部门编码',
+    name: 'code',
+    type: 'varchar',
+    length: 100,
+    unique: true,
+  })
+  code: string
+
+  @Index('IDX_DEPT_SORT_ORDER', ['sort_order'])
+  @Column({
+    comment: '显示顺序',
+    name: 'sort_order',
+    type: 'tinyint',
+    unsigned: true,
+    default: SortOrderEnum.HIGH_PRIORITY,
+  })
+  sortOrder: SortOrderEnum
+
+  @ManyToOne(() => RoleEntity, (role) => role.permissions)
+  @JoinColumn({
+    name: 'role_id',
+    referencedColumnName: 'id',
+  })
+  role: RoleEntity
+}

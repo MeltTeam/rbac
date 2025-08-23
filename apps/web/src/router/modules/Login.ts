@@ -13,7 +13,7 @@ export const loginRoutes: RouteRecordRaw[] = [
         path: 'svg-login',
         component: () => import('@/views/Login/SvgLogin/index.vue'),
         meta: {
-          title: '登录',
+          title: 'views.Login.SvgLogin.title',
         },
       },
       {
@@ -21,7 +21,7 @@ export const loginRoutes: RouteRecordRaw[] = [
         path: 'email-login',
         component: () => import('@/views/Login/EmailLogin/index.vue'),
         meta: {
-          title: '邮箱登录',
+          title: 'views.Login.EmailLogin.title',
         },
       },
       {
@@ -29,7 +29,7 @@ export const loginRoutes: RouteRecordRaw[] = [
         path: 'email-register',
         component: () => import('@/views/Login/EmailRegister/index.vue'),
         meta: {
-          title: '邮箱注册',
+          title: 'views.Login.EmailRegister.title',
         },
       },
       {
@@ -37,7 +37,7 @@ export const loginRoutes: RouteRecordRaw[] = [
         path: 'reset-pwd',
         component: () => import('@/views/Login/ResetPwd/index.vue'),
         meta: {
-          title: '重置密码',
+          title: 'views.Login.ResetPwd.title',
         },
       },
     ],

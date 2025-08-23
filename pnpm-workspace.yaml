@@ -12,6 +12,8 @@ catalogs:
   #web和server
   # 工程化相关依赖
   cli:
+    '@types/lodash-es': ^4.17.12
+    lodash-es: ^4.17.21
     '@types/css': ^0.0.38
     css: ^3.0.0
     prettier-plugin-ejs: ^1.0.3
@@ -43,43 +45,61 @@ catalogs:
     uuid: ^11.1.0
   # api生产依赖
   api_prod:
-    cookie-parser: ^1.4.7
-    '@compodoc/compodoc': 1.1.25
-    ejs: ^3.1.10
-    nodemailer: ^7.0.3
-    joi: ^17.13.3
-    '@nest-lab/throttler-storage-redis': ^1.1.0
-    ioredis: ^5.6.1
-    '@nestjs-modules/mailer': ^2.0.2
-    '@nestjs/event-emitter': ^3.0.1
-    '@nestjs/jwt': ^10.2.0
-    'passport-jwt': ^4.0.1
-    '@nestjs/axios': ^4.0.0
-    '@nestjs/throttler': ^6.4.0
-    'svg-captcha': ^1.4.0
-    pm2: ^6.0.8
-    typeorm: 0.3.20
+    # 核心
+    '@nestjs/common': ^10.4.19
     rxjs: ^7.8.1
     reflect-metadata: ^0.2.2
-    passport: ^0.7.0
-    'passport-local': ^1.0.0
-    '@nestjs/bullmq': ^11.0.2
-    '@nestjs/cache-manager': ^2.3.0
-    '@nestjs/common': ^10.4.19
-    '@nestjs/config': ^4.0.2
     '@nestjs/core': ^10.4.19
     '@nestjs/mapped-types': ^2.1.0
-    '@nestjs/passport': ^11.0.5
+    '@nestjs/event-emitter': ^3.0.1
     '@nestjs/platform-express': ^10.4.19
-    '@nestjs/swagger': ^8.1.1
-    '@nestjs/typeorm': ^10.0.2
-    mysql2: ^3.14.1
+    # 请求
     etag: ^1.8.1
-    cross-env: ^7.0.3
     class-validator: ^0.14.1
     class-transformer: ^0.5.1
-    bullmq: ^5.54.0
+    nestjs-cls: ^6.0.1
+    # 数据库
+    '@nestjs/typeorm': ^10.0.2
+    mysql2: ^3.14.1
+    typeorm: 0.3.20
+    # 配置
+    joi: ^17.13.3
+    '@nestjs/config': ^4.0.2
+    cross-env: ^7.0.3
+    # 日志
+    winston-daily-rotate-file: ^5.0.0
+    winston: ^3.17.0
+    # 缓存
+    '@nestjs/cache-manager': ^2.3.0
     cache-manager: ^5.7.6
+    # 邮箱
+    ejs: ^3.1.10
+    nodemailer: ^7.0.3
+    '@nestjs-modules/mailer': ^2.0.2
+    # 鉴权
+    '@nestjs/jwt': ^10.2.0
+    'passport-jwt': ^4.0.1
+    cookie-parser: ^1.4.7
+    '@nestjs/passport': ^11.0.5
+    'passport-local': ^1.0.0
+    passport: ^0.7.0
+    # 健康
+    '@nestjs/terminus': ^10.3.0
+    # 节流器
+    '@nestjs/throttler': ^6.4.0
+    '@nest-lab/throttler-storage-redis': ^1.1.0
+    # 验证码
+    'svg-captcha': ^1.4.0
+    ioredis: ^5.6.1
+    # 第三方请求
+    '@nestjs/axios': ^3.1.3
+    # 队列
+    '@nestjs/bullmq': ^11.0.2
+    bullmq: ^5.54.0
+    # 部署
+    pm2: ^6.0.8
+    # 文档
+    '@nestjs/swagger': ^8.1.1
   # api开发依赖
   api_dev:
     '@types/cookie-parser': ^1.4.9
@@ -110,11 +130,12 @@ catalogs:
     '@nestjs/testing': ^10.4.19
   # web生产依赖
   web_prod:
+    '@iconify/json': ^2.2.371
+    '@iconify/vue': ^5.0.0
+    chroma-js: ^3.1.2
     '@intlify/unplugin-vue-i18n': ^6.0.8
     vue-i18n: ^11.1.11
     '@vueuse/core': ^13.5.0
-    '@iconify/vue': ^5.0.0
-    '@iconify-json/icon-park': ^1.2.2
     element-plus: ^2.9.11
     nprogress: ^0.2.0
     vue: ^3.5.13
@@ -123,6 +144,7 @@ catalogs:
     '@unocss/reset': ^66.1.4
   # web开发依赖
   web_dev:
+    '@types/chroma-js': ^3.1.1
     '@unocss/preset-icons': ^66.3.3
     vite-plugin-compression: ^0.5.1
     vite-plugin-imagemin: ^0.6.1

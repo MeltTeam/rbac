@@ -1,14 +1,11 @@
 import type { NestExpressApplication } from '@nestjs/platform-express'
 import type { IBootstrap } from './IBootstrap'
 import type { AppConfigInterface } from '@/configs'
+import { APP_PID } from '@constants/index'
 import { Logger, ValidationPipe } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { NestFactory } from '@nestjs/core'
 import cookieParser from 'cookie-parser'
-import { APP_PID } from '@/common/constants'
-import { FormatExceptionFilter } from '@/common/http/filters/formatException.filter'
-import { ThrottlerExceptionFilter } from '@/common/http/filters/throttlerException.filter'
-import { FormatResponseInterceptor } from '@/common/http/interceptors/formatResponse.interceptor'
 import { APP_CONFIG_KEY } from '@/configs'
 
 /** 启动类 */
@@ -39,6 +36,7 @@ export class Bootstrap implements IBootstrap {
 
   async init(): Promise<void> {
     const app = Bootstrap.app
+    app.enableShutdownHooks()
     /** 跨域 */
     app.enableCors({
       origin: (origin, callback) => {
@@ -66,15 +64,8 @@ export class Bootstrap implements IBootstrap {
         forbidNonWhitelisted: true,
       }),
     )
-
-    /** 添加全局响应拦截器 */
-    app.useGlobalInterceptors(new FormatResponseInterceptor())
-
     /** X-Forwarded-For读原始IP */
     app.set('trust proxy', 'loopback')
-
-    /** 添加全局异常过滤器 */
-    app.useGlobalFilters(new FormatExceptionFilter(), new ThrottlerExceptionFilter())
 
     const { globalPrefix } = this.appConfig!
     /** 设置全局前缀 */

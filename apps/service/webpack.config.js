@@ -4,7 +4,6 @@ const CopyPlugin = require('copy-webpack-plugin')
 /**
  * webpack配置
  * @param {*} options nest-cli中webpack默认配置
- * @returns
  */
 module.exports = function (options) {
   // 添加打包分析插件

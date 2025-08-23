@@ -31,7 +31,7 @@ export interface IUserProfile {
 }
 
 /** 新增用户响应数据 */
-export interface IUserVo {
+export interface IUserVO {
   /** 用户ID */
   id: string
   /** 创建者 */

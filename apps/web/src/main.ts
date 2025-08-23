@@ -4,6 +4,7 @@ import router from '@/router'
 import { setUpI18n } from './i18n'
 import { pluginsInstall } from './plugins'
 import { setUpPinia } from './store'
+// 格式化
 import '@unocss/reset/tailwind-compat.css'
 import '@/assets/css/base.css'
 import '@/assets/css/uno-vars.css'

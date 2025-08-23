@@ -3,8 +3,8 @@ import type { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectio
 import { Module } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { createMysqlDatabase } from '@/common/utils'
 import { TYPEORM_CONFIG_KEY } from '@/configs'
+import { createMysqlDatabase } from './database.util'
 
 /** 数据库模块 */
 @Module({

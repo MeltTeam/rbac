@@ -15,7 +15,7 @@ import { defineConfig } from 'vite'
 import viteCompression from 'vite-plugin-compression'
 import { createHtmlPlugin } from 'vite-plugin-html'
 import viteImagemin from 'vite-plugin-imagemin'
-import { preImgs } from './plugins/preImgs'
+import { preImgs } from './plugins/vite/preImgs'
 
 const isProd = env.NODE_ENV === 'production'
 console.clear()

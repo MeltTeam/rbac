@@ -1,5 +1,5 @@
-import { Bootstrap } from './Bootstrap/Bootstrap'
-import { RootModule } from './root.module'
+import { Bootstrap } from '@/Bootstrap/Bootstrap'
+import { RootModule } from '@/root.module'
 /** 热重载指令 */
 declare const module: any
 Bootstrap.create(RootModule)
@@ -8,7 +8,10 @@ Bootstrap.create(RootModule)
     await bootstrap.listen()
     if (module.hot) {
       module.hot.accept()
-      module.hot.dispose(() => Bootstrap.app.close())
+      module.hot.dispose(() => {
+        console.clear()
+        Bootstrap.app.close()
+      })
     }
   })
   .catch((e) => {

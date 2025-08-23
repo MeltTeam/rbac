@@ -47,15 +47,12 @@ export const TypeOrmConfig = registerAs(TYPEORM_CONFIG_KEY, (): TypeOrmModuleOpt
     autoLoadEntities: value.ORM_AUTO_LOAD_ENTITIES,
     /** 是否打印日志（默认：false） */
     logging: value.ORM_LOGGING,
-    retryAttempts: 2,
-    retryDelay: 1000,
     ...baseDataSourceOptions(),
   }
 })
 
 /** mysql配置类型 */
 export type TypeOrmConfigType = ConfigType<typeof TypeOrmConfig>
-
 /** 数据迁移数据源 */
 export const baseDataSource = new DataSource({
   ...baseDataSourceOptions(),

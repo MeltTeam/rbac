@@ -1,14 +1,14 @@
 import type { CacheConfigType } from '@/configs'
 import { CacheModule } from '@nestjs/cache-manager'
-import { Module } from '@nestjs/common'
+import { Logger, Module } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
+import { RedisModule } from '@redis/redis.module'
 import { CACHE_CONFIG_KEY } from '@/configs'
-import { RedisModule } from '../redis/redis.module'
+import { CACHE_REDIS_CLIENT_TOKEN } from './cache2.constant'
+import { Cache2Processor } from './cache2.processor'
 import { Cache2Service } from './cache2.service'
-import { CACHE_REDIS_CLIENT_TOKEN } from './constants'
-import { Cache2Processor } from './processors/cache2.processor'
 
-/** 内存缓存模块 */
+/** 缓存模块 */
 @Module({
   imports: [
     /** Memory 缓存模块 */
@@ -23,6 +23,7 @@ import { Cache2Processor } from './processors/cache2.processor'
     /** Redis 缓存模块 */
     RedisModule.forRootAsync({
       isGlobal: true,
+      logger: new Logger(Cache2Module.name),
       serviceClass: [Cache2Service],
       redisClientToken: CACHE_REDIS_CLIENT_TOKEN,
       useFactory: async (configService: ConfigService) => {

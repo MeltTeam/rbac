@@ -36,32 +36,27 @@
   opacity: 0;
 }
 
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s ease;
-}
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-
 .slide-left-enter-active,
 .slide-left-leave-active,
 .slide-right-enter-active,
 .slide-right-leave-active {
-  @apply transition-all-3 opacity-0;
+  transition: all 0.2s ease-in-out;
 }
 
 .slide-left-enter-from {
-  @apply translate-x-8;
+  transform: translateX(3rem);
+  opacity: 0;
 }
 .slide-left-leave-to {
-  @apply -translate-x-8;
+  transform: translateX(-3rem);
+  opacity: 0;
 }
 
 .slide-right-enter-from {
-  @apply -translate-x-8;
+  transform: translateX(-3rem);
+  opacity: 0;
 }
 .slide-right-leave-to {
-  @apply translate-x-8;
+  transform: translateX(3rem);
+  opacity: 0;
 }

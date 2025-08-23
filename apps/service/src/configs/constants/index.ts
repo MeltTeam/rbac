@@ -9,15 +9,20 @@ export const DEFAULT_REDIS_HOST = '127.0.0.1'
 export const DEFAULT_REDIS_PORT = 6379
 export const DEFAULT_REDIS_USERNAME = 'default'
 export const DEFAULT_REDIS_PASSWORD = 'Aa123456'
+export const DEFAULT_REDIS_ENABLE_AUTO_PIPELINING = true
+export const DEFAULT_REDIS_COMMAND_TIMEOUT = 6000
+export const DEFAULT_REDIS_CONNECT_TIMEOUT = 5000
+export const DEFAULT_REDIS_ENABLE_OFFLINE_QUEUE = true
+export const DEFAULT_REDIS_KEEP_ALIVE = 30000
 /** cache配置相关 */
 export const DEFAULT_CACHE_TTL = 7 * 1000
 export const DEFAULT_CACHE_MEMORY_NAME = 'MEMORY'
 export const DEFAULT_CACHE_MEMORY_MAX = 500
 export const DEFAULT_CACHE_MEMORY_TTL = DEFAULT_CACHE_TTL
-export const DEFAULT_CACHE_REDIS_DB = 1
+export const DEFAULT_CACHE_REDIS_DB = 2
 export const DEFAULT_CACHE_REDIS_TTL = DEFAULT_CACHE_TTL
 /** captcha配置相关 */
-export const DEFAULT_CAPTCHA_REDIS_DB = 2
+export const DEFAULT_CAPTCHA_REDIS_DB = 4
 /** jwt配置相关 */
 export const DEFAULT_JWT_SECRET = DEFAULT_APP_NAME
 export const DEFAULT_JWT_EXPIRES_IN = '30m'
@@ -27,12 +32,12 @@ export const DEFAULT_JWT_REFRESH_TOKEN_EXPIRES_IN = '7d'
 export const DEFAULT_JWT_ACCESS_TOKEN_COOKIE_EXPIRES_IN = 30 * 60 * 1000
 export const DEFAULT_JWT_REFRESH_TOKEN_COOKIE_EXPIRES_IN = 7 * 24 * 60 * 60 * 1000
 /** queue配置相关 */
-export const DEFAULT_QUEUE_DB = 4
+export const DEFAULT_QUEUE_DB = 1
 /** throttler配置相关 */
 export const DEFAULT_THROTTLER_REDIS_DB = 0
 export const DEFAULT_THROTTLER_DEFAULT_NAME = 'default'
 export const DEFAULT_THROTTLER_DEFAULT_TTL = 60000
-export const DEFAULT_THROTTLER_DEFAULT_LIMIT = 100
+export const DEFAULT_THROTTLER_DEFAULT_LIMIT = 50
 export const DEFAULT_THROTTLER_STRICT_NAME = 'strict'
 export const DEFAULT_THROTTLER_STRICT_TTL = 1000
 export const DEFAULT_THROTTLER_STRICT_LIMIT = 3
@@ -59,8 +64,6 @@ export const DEFAULT_ORM_EXTRA = {
   maxIdle: 0,
   /** 空闲连接超时，以毫秒为单位，默认值为 60000 ms */
   idleTimeout: 60000,
-  /** 大数字支持 */
-  supportBigNumbers: true,
   /** 日期字符串格式 */
   dateStrings: true,
   /** 等待队列长度(0=无限制) */
@@ -73,6 +76,8 @@ export const DEFAULT_ORM_EXTRA = {
 export const DEFAULT_ORM_SYNCHRONIZE = false
 export const DEFAULT_ORM_AUTO_LOAD_ENTITIES = true
 export const DEFAULT_ORM_LOGGING = false
+export const DEFAULT_ORM_RETRY_ATTEMPTS = 50
+export const DEFAULT_ORM_RETRY_DELAY = 3000
 /** 邮箱配置相关 */
 export const DEFAULT_EMAIL_HOST = 'smtp.qq.com'
 export const DEFAULT_EMAIL_PORT = 587

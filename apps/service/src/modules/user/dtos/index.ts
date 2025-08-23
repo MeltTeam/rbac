@@ -1,5 +1,0 @@
-export * from './add.dto'
-export * from './del.dto'
-export * from './findAll.dto'
-export * from './findOne.dto'
-export * from './patch.dto'

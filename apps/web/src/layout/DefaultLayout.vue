@@ -63,7 +63,7 @@ defineOptions({ name: 'DefaultLayout' })
       <ElMain class="bg-red-2 dark:bg-slate-900">
         <PageLayout>
           <RouterView v-slot="{ Component }">
-            <Transition name="slide-down" mode="out-in">
+            <Transition name="slide-right" mode="out-in">
               <!-- <KeepAlive :include="LOGIN_KEEP_ALIVE" :max="LOGIN_KEEP_ALIVE.length"> -->
               <Component :is="Component" />
               <!-- </KeepAlive> -->

@@ -1,14 +1,12 @@
-import type { RouteMeta, Router } from 'vue-router'
-import { t } from '@/i18n'
+import type { Router } from 'vue-router'
+import { useApp } from '@/store/modules/app'
 
-function setDocumentTitle(meta: RouteMeta) {
-  window.document.title = t(meta.title as string) || import.meta.env.VITE_APP_TITLE
-}
 function createTitleGuard(router: Router) {
   router.beforeEach((to, _from, next) => {
-    setDocumentTitle(to.meta)
+    const app = useApp()
+    app.setTitle(to.meta.title as string)
     return next()
   })
   router.afterEach(() => {})
 }
-export { createTitleGuard, setDocumentTitle }
+export { createTitleGuard }

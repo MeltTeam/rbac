@@ -12,7 +12,7 @@ export const homeRoutes: RouteRecordRaw[] = [
         path: 'workspace',
         component: () => import('@/views/Workspace/index.vue'),
         meta: {
-          title: '工作台',
+          title: 'VIEWS.WORKSPACE.TITLE',
         },
       },
       {
@@ -20,7 +20,15 @@ export const homeRoutes: RouteRecordRaw[] = [
         path: 'test',
         component: () => import('@/views/Test/index.vue'),
         meta: {
-          title: '测试',
+          title: 'VIEWS.WORKSPACE.TITLE',
+        },
+      },
+      {
+        name: 'ColorPalette',
+        path: 'color-palette',
+        component: () => import('@/views/ColorPalette/index.vue'),
+        meta: {
+          title: 'VIEWS.TEST.TITLE',
         },
       },
     ],
