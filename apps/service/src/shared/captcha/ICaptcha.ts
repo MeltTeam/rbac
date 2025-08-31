@@ -7,22 +7,41 @@ export type CaptchaName = 'svg' | 'email'
 export type CaptchaType = 'test' | 'register' | 'login' | 'resetPwd'
 
 /** 创建验证码key的配置 */
-export interface ICreateCaptchaKey {
+export interface ICreateCaptchaKeyOptions {
   /** 验证码名 */
   name: CaptchaName
+  /** 验证码类型 */
+  type: CaptchaType
   /** 唯一ID */
   id: string
-  /** 验证码类型 */
+}
+
+/** 节流锁配置 */
+export interface IThrottleLockOptions extends ICreateCaptchaKeyOptions {
+  /** 节流时间 */
+  timer: number
+  /** 次数 */
+  num: number
+}
+
+export interface IGenerateEmailCaptchaOptions {
+  /** 接收方 */
+  to: string
+  /** 主题 */
+  subject: string
+  /** 模板名 */
+  template: string
+  /** 验证码类型(用于redis同一个邮箱不同功能的key) */
   type: CaptchaType
 }
 
-/** redis服务接口 */
+/** 验证码服务接口 */
 export interface ICaptchaService {
   /**
    * 创建验证码key
    * @param options 创建验证码key的配置
    */
-  createCaptchaKey: (options: ICreateCaptchaKey) => string
+  createCaptchaKey: (options: ICreateCaptchaKeyOptions) => string
 
   /**
    * 生成svg验证码
@@ -32,41 +51,27 @@ export interface ICaptchaService {
   generateSvgCaptcha: (type: CaptchaType, svgCaptchaConfig?: SvgCaptchaConfig) => Promise<ISvgCaptchaVO>
 
   /**
-   * 删除svg验证码
-   * @param token 凭证
-   * @param type 验证码类型
-   */
-  delSvgCaptcha: (token: string, type: CaptchaType) => Promise<void>
-
-  /**
-   * 验证svg验证码
-   * @param token 凭证
-   * @param text 验证码
-   * @param type 验证码类型
-   */
-  verifySvgCaptcha: (token: string, text: string, type: CaptchaType) => Promise<void>
-
-  /**
    * 生成邮箱验证码
-   * @param to 接收方
-   * @param subject 主题
-   * @param template 模板名
-   * @param type 验证码类型(用于redis同一个邮箱不同功能的key)
+   * @param options 生成邮箱验证码配置
    */
-  generateEmailCaptcha: (to: string, subject: string, template: string, type: CaptchaType) => Promise<string>
+  generateEmailCaptcha: (options: IGenerateEmailCaptchaOptions) => Promise<string>
 
   /**
-   * 删除邮箱验证码
-   * @param email 邮箱
-   * @param type 验证码类型(用于redis同一个邮箱不同功能的key)
+   * 删除验证码
+   * @param options 创建验证码key的配置
    */
-  delEmailCaptcha: (email: string, type: CaptchaType) => Promise<void>
+  delCaptcha: (options: ICreateCaptchaKeyOptions) => Promise<void>
 
   /**
-   * 验证邮箱验证码
-   * @param email 邮箱
+   * 验证验证码
    * @param code 验证码
-   * @param type 验证码类型(用于redis同一个邮箱不同功能的key)
+   * @param options 创建验证码key的配置
    */
-  verifyEmailCaptcha: (email: string, code: string, type: CaptchaType) => Promise<void>
+  verifyCaptcha: (code: string, options: ICreateCaptchaKeyOptions) => Promise<void>
+
+  /**
+   * 节流锁
+   * @param options 节流锁配置
+   */
+  throttleLock: (options: IThrottleLockOptions) => Promise<void>
 }

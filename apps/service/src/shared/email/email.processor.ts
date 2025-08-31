@@ -2,23 +2,22 @@ import type SMTPConnection from 'nodemailer/lib/smtp-connection'
 import type { AppConfigType, EmailConfigType } from '@/configs'
 import { MailerService } from '@nestjs-modules/mailer'
 import { Processor, WorkerHost } from '@nestjs/bullmq'
-import { Logger } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { EMAIL_QUEUE_TOKEN } from '@queues/queues.constant'
+import { WinstonService } from '@winston/winston.service'
 import { Job } from 'bullmq'
 import { APP_CONFIG_KEY, EMAIL_CONFIG_KEY, EMAIL_SERVICE_KEYS } from '@/configs'
 
 /** 邮件队列处理 */
 @Processor(EMAIL_QUEUE_TOKEN)
 export class EmailProcessor extends WorkerHost {
-  logger: Logger
+  logger: WinstonService
 
   constructor(
     private readonly mailerService: MailerService,
     private readonly configService: ConfigService,
   ) {
     super()
-    this.logger = new Logger(EmailProcessor.name)
   }
 
   /** 处理 */
@@ -38,10 +37,10 @@ export class EmailProcessor extends WorkerHost {
         })
         await job.log(JSON.stringify(res))
         return
-      } catch (e) {
-        lastError = e
-        this.logger.debug(e.message)
-        await job.log(`邮件发送失败:${e.message}`)
+      } catch (error) {
+        lastError = error
+        this.logger.debug(error.message, EmailProcessor.name)
+        await job.log(`邮件发送失败:${error.message}`)
       }
     }
     if (lastError) throw lastError

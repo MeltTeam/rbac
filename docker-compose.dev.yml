@@ -11,8 +11,7 @@ services:
     # 自动重启
     restart: always
     container_name: dev_rbac_mysql
-    image: mysql:lts
-    user: root
+    image: bitnami/mysql:8.4.2
     # 密码认证
     environment:
       - MYSQL_ROOT_PASSWORD=Aa123456
@@ -21,10 +20,10 @@ services:
       - '3306:3306'
       - '33060:33060'
     volumes:
-      - ./docker-volumes/mysql/data:/var/lib/mysql
-      - ./docker-volumes/mysql/config:/etc/mysql/conf.d
-      - ./docker-volumes/mysql/log:/var/log/mysql
-      - ./docker-volumes/mysql/run:/var/run/mysqld
+      - ./docker-volumes/mysql/data:/bitnami/mysql/data
+      - ./docker-volumes/mysql/conf:/opt/bitnami/mysql/conf
+      - ./docker-volumes/mysql/log:/opt/bitnami/mysql/logs
+      - ./docker-volumes/mysql/tmp:/opt/bitnami/mysql/tmp
     networks:
       dev_rbac_network:
         ipv4_address: 192.168.3.3
@@ -33,7 +32,6 @@ services:
     restart: always
     container_name: dev_rbac_redis
     image: bitnami/redis:7.4.0
-    user: root
     # 密码认证
     environment:
       - REDIS_PASSWORD=Aa123456
@@ -41,13 +39,32 @@ services:
     ports:
       - '6379:6379'
     volumes:
-      - ./docker-volumes/redis/data:/data
-      - ./docker-volumes/redis/config:/etc/redis
-      - ./docker-volumes/redis/log:/var/log/redis
-      - ./docker-volumes/redis/run:/var/run/redis
+      - ./docker-volumes/redis/data:/bitnami/redis/data
+      - ./docker-volumes/redis/etc:/opt/bitnami/redis/etc
+      - ./docker-volumes/redis/logs:/opt/bitnami/redis/logs
+      - ./docker-volumes/redis/tmp:/opt/bitnami/redis/tmp
     networks:
       dev_rbac_network:
         ipv4_address: 192.168.3.4
+  dev_rbac_mongodb:
+    # 自动重启
+    restart: always
+    container_name: dev_rbac_mongodb
+    image: bitnami/mongodb:8.0.13
+    # 密码认证
+    environment:
+      - MONGODB_ROOT_PASSWORD=Aa123456
+      - TZ=Asia/Shanghai
+    ports:
+      - '27017:27017'
+    volumes:
+      - ./docker-volumes/mongodb/data:/bitnami/mongodb
+      - ./docker-volumes/mongodb/conf:/opt/bitnami/mongodb/conf
+      - ./docker-volumes/mongodb/logs:/opt/bitnami/mongodb/logs
+      - ./docker-volumes/mongodb/tmp:/opt/bitnami/mongodb/tmp
+    networks:
+      dev_rbac_network:
+        ipv4_address: 192.168.3.5
   # dev_rbac_web
   # dev_rbac_web:
   #   # 自动重启

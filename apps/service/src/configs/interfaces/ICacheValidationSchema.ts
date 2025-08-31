@@ -1,5 +1,6 @@
 import type { IBaseValidationSchema } from './IBaseValidationSchema'
 
+/** cache配置验证接口 */
 export interface ICacheValidationSchema extends IBaseValidationSchema {
   CACHE_MEMORY_NAME: string
   CACHE_MEMORY_MAX: number

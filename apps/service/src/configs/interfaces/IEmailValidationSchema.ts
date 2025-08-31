@@ -1,3 +1,4 @@
+/** 邮箱配置验证接口 */
 export interface IEmailValidationSchema {
   EMAIL_HOST: string
   EMAIL_PORT: number

@@ -1,4 +1,4 @@
-import type { Logger } from '@nestjs/common'
+import type { WinstonService } from '@winston/winston.service'
 import type { RedisClient } from 'bullmq'
 import type { Cluster, RedisOptions } from 'ioredis'
 import { Redis } from 'ioredis'
@@ -16,13 +16,22 @@ export interface IInitRedisReturn {
   /** redis配置对象 */
   redisConfig: RedisOptions
 }
+export interface IInitRedisOptions {
+  /** Redis客户端配置对象 */
+  redisConfig: RedisOptions
+  /** 日志服务 */
+  logger?: WinstonService
+  /** 日志上下文 */
+  loggerContext?: string
+}
 /**
  * 初始化Redis客户端
  * @param redisConfig Redis客户端配置对象
  * @param logger 日志记录器
  * @returns 返回初始化后的Redis客户端实例
  */
-export async function initRedis(redisConfig: RedisOptions, logger?: Logger): Promise<IInitRedisReturn> {
+export async function initRedis(options: IInitRedisOptions): Promise<IInitRedisReturn> {
+  const { redisConfig, loggerContext, logger } = options
   /** 统一配置 */
   redisConfig!.enableAutoPipelining = DEFAULT_REDIS_ENABLE_AUTO_PIPELINING
   redisConfig!.commandTimeout = DEFAULT_REDIS_COMMAND_TIMEOUT
@@ -37,14 +46,14 @@ export async function initRedis(redisConfig: RedisOptions, logger?: Logger): Pro
     return recoverableErrors.some((e) => error.message.includes(e))
   }
   const redisClient = new Redis(redisConfig)
-  if (logger) {
+  if (logger && loggerContext) {
     const redisInfo: string = `redis${redisConfig.db} `
-    redisClient.on('end', () => logger.warn(`${redisInfo}连接已手动关闭`))
-    redisClient.on('connect', () => logger.log(`${redisInfo}连接成功`))
-    redisClient.on('error', (error) => logger.error(`${redisInfo}${error.message}`))
-    redisClient.on('connecting', () => logger.warn(`${redisInfo}连接中...`))
-    redisClient.on('reconnecting', () => logger.warn(`${redisInfo}重新连接中...`))
-    redisClient.on('close', () => logger.warn(`${redisInfo}连接已关闭`))
+    redisClient.on('end', () => logger.info(`${redisInfo}连接已手动关闭`, loggerContext))
+    redisClient.on('connect', () => logger.info(`${redisInfo}连接成功`, loggerContext))
+    redisClient.on('error', (error) => logger.error(`${redisInfo}${error.message}`, loggerContext))
+    redisClient.on('connecting', () => logger.info(`${redisInfo}连接中...`, loggerContext))
+    redisClient.on('reconnecting', () => logger.info(`${redisInfo}重新连接中...`, loggerContext))
+    redisClient.on('close', () => logger.info(`${redisInfo}连接已关闭`, loggerContext))
   }
   return { redisClient, redisConfig }
 }

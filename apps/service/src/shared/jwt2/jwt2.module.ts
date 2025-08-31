@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { JwtModule, JwtService } from '@nestjs/jwt'
 import { RedisModule } from '@redis/redis.module'
+import { WinstonService } from '@winston/winston.service'
 import { JWT_CONFIG_KEY } from '@/configs'
 import { JWT_REDIS_CLIENT_TOKEN } from './jwt2.constant'
 import { Jwt2Service } from './jwt2.service'
@@ -27,9 +28,13 @@ import { Jwt2Service } from './jwt2.service'
         return connectConfig
       },
       inject: [ConfigService],
+      logger: Jwt2Module.logger,
+      loggerContext: Jwt2Module.name,
     }),
   ],
   providers: [Jwt2Service, JwtService],
   exports: [Jwt2Service, JwtService],
 })
-export class Jwt2Module {}
+export class Jwt2Module {
+  static logger: WinstonService = new WinstonService()
+}

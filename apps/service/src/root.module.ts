@@ -1,15 +1,18 @@
 import type { MiddlewareConsumer, NestModule } from '@nestjs/common'
 import type { ConfigFactory } from '@nestjs/config'
 import { BusinessModule } from '@business/business.module'
-import { FormatResFilter } from '@filters/formatRes.filter'
-import { FormatResInterceptor } from '@interceptors/formatRes.interceptor'
+import { HttpExceptionFilter } from '@filters/httpException.filter'
+import { systemExceptionFilter } from '@filters/systemException.filter'
+import { HttpInterceptor } from '@interceptors/http.interceptor'
 import { LoggerMiddleware } from '@middlewares/logger.middleware'
 import { Module } from '@nestjs/common'
-import { ConfigModule as Config2Module } from '@nestjs/config'
+import { ConfigModule as Config2Module, ConfigService } from '@nestjs/config'
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core'
 import { SharedModule } from '@shared/shared.module'
 import { Throttler2ExceptionFilter } from '@throttler2/throttler2.filter'
 import { Throttler2Guard } from '@throttler2/throttler2.guard'
+import { WINSTON_DEFAULT_CONFIG } from '@winston/winston.constant'
+import { WinstonModule } from '@winston/winston.module'
 import { ClsModule } from 'nestjs-cls'
 import { ALL_CONFIG } from '@/configs'
 /** 根模块 */
@@ -27,6 +30,16 @@ import { ALL_CONFIG } from '@/configs'
       load: [...Object.values<ConfigFactory>(ALL_CONFIG)],
       cache: true,
     }),
+    WinstonModule.forRootAsync({
+      isGlobal: true,
+      useFactory: async (_configService: ConfigService) => {
+        // const { level } = configService.get<WinstonConfigType>(WINSTON_CONFIG_KEY)!
+        // const { name } = configService.get<AppConfigType>(APP_CONFIG_KEY)!
+
+        return WINSTON_DEFAULT_CONFIG
+      },
+      inject: [ConfigService],
+    }),
     /** 请求上下文模块 */
     ClsModule.forRoot({ global: true }),
     SharedModule,
@@ -35,12 +48,13 @@ import { ALL_CONFIG } from '@/configs'
   providers: [
     // 节流器守卫
     { provide: APP_GUARD, useClass: Throttler2Guard },
+    { provide: APP_FILTER, useClass: systemExceptionFilter },
+    // http异常过滤器
+    { provide: APP_FILTER, useClass: HttpExceptionFilter },
     // 节流器异常过滤器
     { provide: APP_FILTER, useClass: Throttler2ExceptionFilter },
-    // 全局异常过滤器
-    { provide: APP_FILTER, useClass: FormatResFilter },
-    // 全局响应拦截器
-    { provide: APP_INTERCEPTOR, useClass: FormatResInterceptor },
+    // http拦截器
+    { provide: APP_INTERCEPTOR, useClass: HttpInterceptor },
   ],
 })
 export class RootModule implements NestModule {

@@ -6,9 +6,9 @@ export interface IEmailCaptchaDTO {
 /** 邮箱登录接口参数校验 */
 export interface ILoginByEmailDTO {
   /** 用户名 */
-  username: string
+  name: string
   /** 密码 */
-  password: string
+  pwd: string
   /** 邮箱 */
   email: string
   /** 验证码 */
@@ -17,9 +17,9 @@ export interface ILoginByEmailDTO {
 /** svg登录接口参数校验 */
 export interface ILoginBySvgDTO {
   /** 用户名 */
-  username: string
+  name: string
   /** 密码 */
-  password: string
+  pwd: string
   /** 验证码凭证 */
   token: string
   /** 验证码 */
@@ -31,4 +31,10 @@ export interface IRegisterByEmailDTO extends ILoginByEmailDTO {}
 export interface IResetPwdByEmailDTO extends ILoginByEmailDTO {
   /** 确认密码 */
   confirmPwd: string
+}
+
+/** 刷新令牌接口参数校验 */
+export interface IRefreshTokenDto {
+  /** 刷新token */
+  refreshToken?: string
 }

@@ -33,6 +33,7 @@
       "@email/*": ["src/shared/email/*"],
       "@health/*": ["src/shared/health/*"],
       "@jwt2/*": ["src/shared/jwt2/*"],
+      "@winston/*": ["src/shared/winston/*"],
       "@queues/*": ["src/shared/queues/*"],
       "@redis/*": ["src/shared/redis/*"],
       "@throttler2/*": ["src/shared/throttler2/*"],

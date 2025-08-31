@@ -6,7 +6,7 @@ import { AppValidationSchema } from './validationSchema'
 export const APP_CONFIG_KEY = 'APP_CONFIG_KEY'
 
 /** app配置接口 */
-export interface AppConfigInterface {
+export interface IAppConfig {
   /** app名称 */
   name: string
   /** app端口 */
@@ -17,10 +17,23 @@ export interface AppConfigInterface {
   globalPrefix: string
   /** app盐 */
   salt: string
+  /** 跨域处理 */
+  cors: {
+    /** 允许跨域的源(,隔开) */
+    origins: string
+    /** 允许跨域的请求方法类型 */
+    methods: string
+    /** 允许跨域的请求头属性 */
+    headers: string
+    /** 允许跨域携带凭证 */
+    credentials: boolean
+    /** OPTIONS请求预检结果缓存的时间 */
+    maxAge: number
+  }
 }
 
 /** app配置 */
-export const AppConfig = registerAs(APP_CONFIG_KEY, (): AppConfigInterface => {
+export const AppConfig = registerAs(APP_CONFIG_KEY, (): IAppConfig => {
   const { error, value } = AppValidationSchema.validate(process.env, {
     allowUnknown: true,
     abortEarly: false,
@@ -32,6 +45,13 @@ export const AppConfig = registerAs(APP_CONFIG_KEY, (): AppConfigInterface => {
     hostname: value.APP_HOSTNAME,
     globalPrefix: value.APP_GLOBAL_PREFIX,
     salt: value.APP_SALT,
+    cors: {
+      origins: value.APP_CORS_ORIGINS,
+      methods: value.APP_CORS_METHODS,
+      headers: value.APP_CORS_HEADERS,
+      credentials: value.APP_CORS_CREDENTIALS,
+      maxAge: value.APP_CORS_MAX_AGE,
+    },
   }
 })
 /** app配置类型 */

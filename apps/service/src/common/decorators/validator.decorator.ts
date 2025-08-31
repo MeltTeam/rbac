@@ -2,12 +2,12 @@ import type { ValidationArguments, ValidationOptions } from 'class-validator'
 import { applyDecorators } from '@nestjs/common'
 import { IsEmail, IsJWT, IsNotEmpty, Length, Matches, registerDecorator } from 'class-validator'
 /**
- * 验证输入长度
+ * 验证输入字符串长度
  * @param min 最小长度
  * @param max 最大长度
  * @param name key名
  */
-export function InputLength(min: number, max: number, name: string) {
+export function InputStringLength(min: number, max: number, name: string) {
   return applyDecorators.apply(this, [
     Length(min, max, {
       message: `${name}${min === max ? `长度为${min}位` : `在 ${min} ~ ${max} 位之间`}`,

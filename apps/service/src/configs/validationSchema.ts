@@ -8,9 +8,15 @@ import type {
   IQueueValidationSchema,
   IThrottlerValidationSchema,
   ITypeOrmValidationSchema,
+  IWinstonValidationSchema,
 } from './interfaces'
 import Joi from 'joi'
 import {
+  DEFAULT_APP_CORS_CREDENTIALS,
+  DEFAULT_APP_CORS_HEADERS,
+  DEFAULT_APP_CORS_MAX_AGE,
+  DEFAULT_APP_CORS_METHODS,
+  DEFAULT_APP_CORS_ORIGINS,
   DEFAULT_APP_GLOBAL_PREFIX,
   DEFAULT_APP_HOSTNAME,
   DEFAULT_APP_NAME,
@@ -62,7 +68,14 @@ import {
   DEFAULT_THROTTLER_STRICT_LIMIT,
   DEFAULT_THROTTLER_STRICT_NAME,
   DEFAULT_THROTTLER_STRICT_TTL,
+  DEFAULT_WINSTON_DATE_PATTERN,
+  DEFAULT_WINSTON_DIRNAME,
+  DEFAULT_WINSTON_FILENAME,
+  DEFAULT_WINSTON_LEVEL,
+  DEFAULT_WINSTON_MAX_FILES,
+  DEFAULT_WINSTON_MAX_SIZE,
 } from './constants'
+import { LEVEL_TYPE } from './interfaces'
 
 /** 公共配置验证 */
 export const BaseValidationSchema = Joi.object<IBaseValidationSchema>({
@@ -79,6 +92,11 @@ export const AppValidationSchema = BaseValidationSchema.append<IAppValidationSch
   APP_HOSTNAME: Joi.string().default(DEFAULT_APP_HOSTNAME),
   APP_GLOBAL_PREFIX: Joi.string().default(DEFAULT_APP_GLOBAL_PREFIX),
   APP_SALT: Joi.string().default(DEFAULT_APP_SALT),
+  APP_CORS_ORIGINS: Joi.string().default(DEFAULT_APP_CORS_ORIGINS),
+  APP_CORS_METHODS: Joi.string().default(DEFAULT_APP_CORS_METHODS),
+  APP_CORS_HEADERS: Joi.string().default(DEFAULT_APP_CORS_HEADERS),
+  APP_CORS_CREDENTIALS: Joi.boolean().default(DEFAULT_APP_CORS_CREDENTIALS),
+  APP_CORS_MAX_AGE: Joi.number().default(DEFAULT_APP_CORS_MAX_AGE),
 })
 
 /** cache配置验证 */
@@ -175,4 +193,16 @@ export const EmailValidationSchema = BaseValidationSchema.append<IEmailValidatio
   EMAIL_PASS: Joi.string().required(),
   EMAIL_SECURE: Joi.boolean().default(DEFAULT_EMAIL_SECURE),
   EMAIL_TEMPLATE_DIR: Joi.string().default(DEFAULT_EMAIL_TEMPLATE_DIR),
+})
+
+/** winston配置验证 */
+export const WinstonValidationSchema = BaseValidationSchema.append<IWinstonValidationSchema>({
+  WINSTON_LEVEL: Joi.string()
+    .valid(...LEVEL_TYPE)
+    .default(DEFAULT_WINSTON_LEVEL),
+  WINSTON_DIRNAME: Joi.string().default(DEFAULT_WINSTON_DIRNAME),
+  WINSTON_FILENAME: Joi.string().default(DEFAULT_WINSTON_FILENAME),
+  WINSTON_DATE_PATTERN: Joi.string().default(DEFAULT_WINSTON_DATE_PATTERN),
+  WINSTON_MAX_SIZE: Joi.string().default(DEFAULT_WINSTON_MAX_SIZE),
+  WINSTON_MAX_FILES: Joi.string().default(DEFAULT_WINSTON_MAX_FILES),
 })

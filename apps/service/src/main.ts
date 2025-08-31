@@ -1,19 +1,13 @@
-import { Bootstrap } from '@/Bootstrap/Bootstrap'
+import { Bootstrap } from '@/bootstrap/bootstrap'
 import { RootModule } from '@/root.module'
-/** 热重载指令 */
-declare const module: any
+
 Bootstrap.create(RootModule)
   .then(async (bootstrap) => {
-    await bootstrap.init()
+    await bootstrap.initConfig()
+    await bootstrap.initGlobalSettings()
+    await bootstrap.initMiddlewares()
+    await bootstrap.initPipes()
+    bootstrap.enableHotReload()
     await bootstrap.listen()
-    if (module.hot) {
-      module.hot.accept()
-      module.hot.dispose(() => {
-        console.clear()
-        Bootstrap.app.close()
-      })
-    }
   })
-  .catch((e) => {
-    console.log(e)
-  })
+  .catch((e) => console.error(e))

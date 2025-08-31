@@ -1,4 +1,6 @@
 export * from './authBusiness.enum'
+export * from './captchaBusiness.enum'
+export * from './commonBusiness.enum'
 export * from './deptBusiness.enum'
 export * from './permissionBusiness.enum'
 export * from './postBusiness.enum'

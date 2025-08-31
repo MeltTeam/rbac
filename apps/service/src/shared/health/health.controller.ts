@@ -4,6 +4,8 @@ import { DiskHealthIndicator, HealthCheckService, MemoryHealthIndicator, TypeOrm
 import { Throttle } from '@nestjs/throttler'
 import { QUEUE_REDIS_CLIENT_TOKEN } from '@queues/queues.constant'
 import { THROTTLER2_REDIS_CLIENT_TOKEN } from '@throttler2/throttler2.constant'
+import { WINSTON_SERVICE_TOKEN } from '@winston/winston.constant'
+import { WinstonService } from '@winston/winston.service'
 import Redis from 'ioredis'
 import { SystemException } from '@/common/exceptions'
 import { RedisHealthIndicator } from './redis.health'
@@ -19,6 +21,7 @@ export class HealthController {
     @Inject(THROTTLER2_REDIS_CLIENT_TOKEN) private readonly throttler2Redis: Redis,
     @Inject(QUEUE_REDIS_CLIENT_TOKEN) private readonly queueRedis: Redis,
     @Inject(CACHE_REDIS_CLIENT_TOKEN) private readonly cache2Redis: Redis,
+    @Inject(WINSTON_SERVICE_TOKEN) private readonly logger: WinstonService,
   ) {}
 
   @Throttle({
@@ -67,6 +70,15 @@ export class HealthController {
 
   @Get()
   async a() {
+    const name = HealthController.name
+    this.logger.log('log', name)
+    this.logger.error('error', name)
+    this.logger.warn('warn', name)
+    this.logger.info('info', name)
+    this.logger.http('http', name)
+    this.logger.verbose('verbose', name)
+    this.logger.debug('debug', name)
+    // throw new BusinessException('1', 500)
     try {
       this.redisHealthIndicator.test()
     } catch (error) {

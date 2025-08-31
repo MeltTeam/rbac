@@ -6,7 +6,7 @@ import { CacheValidationSchema } from './validationSchema'
 
 /** cache配置key */
 export const CACHE_CONFIG_KEY = 'CACHE_CONFIG_KEY'
-export interface CacheOptionsInterface {
+export interface ICacheOptions {
   memory: CacheOptions<Record<any, any>>
   redis: {
     connectConfig: RedisOptions
@@ -15,7 +15,7 @@ export interface CacheOptionsInterface {
 }
 
 /** cache配置 */
-export const CacheConfig = registerAs(CACHE_CONFIG_KEY, (): CacheOptionsInterface => {
+export const CacheConfig = registerAs(CACHE_CONFIG_KEY, (): ICacheOptions => {
   const { error, value } = CacheValidationSchema.validate(process.env, {
     allowUnknown: true,
     abortEarly: false,

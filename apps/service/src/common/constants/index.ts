@@ -18,20 +18,6 @@ export const REMARK_MIN = 1
 /** 备注最大长度 */
 export const REMARK_MAX = 500
 
-// 邮箱相关
-/** 邮箱 key */
-export const EMAIL = '邮箱'
-
-// 密码相关
-/** 确认密码 key */
-export const CONFIRM_PWD = '确认密码'
-/** 密码 key */
-export const PWD = '密码'
-/** 密码最小长度 */
-export const PWD_MIN = 8
-/** 密码最大长度 */
-export const PWD_MAX = 64
-
 // 验证码相关
 /** 验证码 key */
 export const CAPTCHA = '验证码'

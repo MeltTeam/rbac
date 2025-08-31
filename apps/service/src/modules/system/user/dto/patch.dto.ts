@@ -1,21 +1,21 @@
 import type { IPatchUserDTO } from '@packages/types'
-import { EMAIL, REMARK, REMARK_MAX, REMARK_MIN } from '@constants/index'
-import { InputEmail, InputLength, InputSpace } from '@decorators/index'
+import { REMARK, REMARK_MAX, REMARK_MIN } from '@constants/index'
+import { InputEmail, InputSpace, InputStringLength } from '@decorators/index'
 import { SexEnum } from '@packages/types'
 import { IsDate, IsEnum, IsOptional, IsPhoneNumber } from 'class-validator'
-import { NICK_NAME, USER_NAME, USER_NAME_MAX, USER_NAME_MIN } from '../user.constant'
+import { EMAIL, NICK_NAME, USER_AVATAR, USER_NAME, USER_NAME_MAX, USER_NAME_MIN } from '../user.constant'
 import { DelIdDTO } from './del.dto'
 
 export class PatchIdDTO extends DelIdDTO {}
 
 export class PatchDTO implements IPatchUserDTO {
-  @InputLength(USER_NAME_MIN, USER_NAME_MAX, USER_NAME)
   @InputSpace(USER_NAME)
+  @InputStringLength(USER_NAME_MIN, USER_NAME_MAX, USER_NAME)
   @IsOptional()
   name?: string
 
-  @InputLength(USER_NAME_MIN, USER_NAME_MAX, NICK_NAME)
   @InputSpace(NICK_NAME)
+  @InputStringLength(USER_NAME_MIN, USER_NAME_MAX, NICK_NAME)
   @IsOptional()
   nickName?: string
 
@@ -31,23 +31,23 @@ export class PatchDTO implements IPatchUserDTO {
   @IsOptional()
   birthday?: Date
 
-  @InputEmail()
   @InputSpace(EMAIL)
+  @InputEmail()
   @IsOptional()
   email?: string
 
-  @IsPhoneNumber('CH', {
+  @IsPhoneNumber('CN', {
     message: '请输入正确的手机号格式',
   })
   @IsOptional()
   phone?: string
 
-  @InputSpace('头像')
+  @InputSpace(USER_AVATAR)
   @IsOptional()
   avatar?: string
 
-  @InputLength(REMARK_MIN, REMARK_MAX, REMARK)
   @InputSpace(REMARK)
+  @InputStringLength(REMARK_MIN, REMARK_MAX, REMARK)
   @IsOptional()
   remark?: string
 }

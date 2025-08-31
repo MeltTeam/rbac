@@ -6,6 +6,7 @@ import type { RoleEntity } from '../role/entities/role.entity'
 import type { AddDTO } from './dto/add.dto'
 import type { DelIdDTO } from './dto/del.dto'
 import type { FindAllDTO } from './dto/findAll.dto'
+import type { FindOneIdDTO } from './dto/findOne.dto'
 import type { PatchDTO, PatchIdDTO } from './dto/patch.dto'
 import type { UserEntity } from './entities/user.entity'
 import type { UserProfileEntity } from './entities/userProfile.entity'
@@ -68,38 +69,53 @@ export interface AddOptions extends AddDTO {
 /** 用户模块服务接口 */
 export interface IUserService {
   /**
-   * 添加
+   * 密码明文和密码密文对比
+   * @param currentPwd 当前密码明文
+   * @param userSalt 用户盐
+   * @param encryptedPwd 密码密文
+   */
+  compare: (currentPwd: string, userSalt: string, encryptedPwd: string) => Promise<boolean>
+
+  /**
+   * 密码明文加密
+   * @param pwd 密码明文
+   * @param userSalt 用户盐
+   */
+  encryptPassword: (pwd: string, userSalt: string) => Promise<string>
+
+  /**
+   * 添加处理
    * @param addOptions 添加参数
    * @param by 操作者，默认sys
    */
-  add: (addOptions: AddOptions, by: string) => Promise<UserVO>
+  handlerAdd: (addOptions: AddOptions, by: string) => Promise<UserVO>
 
   /**
-   * 删除
+   * 删除处理
    * @param delIdDTO 删除参数
    * @param by 操作者，默认sys
    */
-  del: (delIdDTO: DelIdDTO, by: string) => Promise<boolean>
+  handlerDel: (delIdDTO: DelIdDTO, by: string) => Promise<boolean>
 
   /**
-   * 分页查询
+   * 分页查询处理
    * @param findAllDTO 查询参数
    */
-  findAll: (findAllDTO: FindAllDTO) => Promise<FindAllVO>
+  handlerFindAll: (findAllDTO: FindAllDTO) => Promise<FindAllVO>
 
   /**
-   * 单个查询
+   * 单个查询处理
    * @param where 查询参数
    */
-  findOne: (where: FindOptionsWhere<UserEntity> | FindOptionsWhere<UserEntity>[]) => Promise<UserVO>
+  handlerFindOne: (where: FindOptionsWhere<UserEntity> | FindOptionsWhere<UserEntity>[]) => Promise<UserVO>
 
   /**
-   * 更新
+   * 更新处理
    * @param patchIdDTO 更新参数(ID)
    * @param patchDTO 更新参数
    * @param by 操作者，默认sys
    */
-  patch: (patchIdDTO: PatchIdDTO, patchDTO: PatchDTO, by?: string) => Promise<[UpdateResult, UpdateResult]>
+  handlerPatch: (patchIdDTO: PatchIdDTO, patchDTO: PatchDTO, by?: string) => Promise<[UpdateResult, UpdateResult]>
 }
 
 /** 用户模块控制器接口 */
@@ -111,15 +127,27 @@ export interface IUserController {
   add: (addDTO: AddDTO) => Promise<UserVO>
 
   /**
-   * 删除接口
+   * 根据id删除接口
    * @param delIdDTO 删除参数
    */
-  del: (delIdDTO: DelIdDTO) => Promise<typeof DEL_USER_OK>
+  delById: (delIdDTO: DelIdDTO) => Promise<typeof DEL_USER_OK>
 
   /**
-   * 修改接口
+   * 分页查询所有接口
+   * @param findAllDTO 查询参数
+   */
+  findAll: (findAllDTO: FindAllDTO) => Promise<FindAllVO>
+
+  /**
+   * 根据id查询单个信息接口
+   * @param findOneIdDTO 查询参数(id)
+   */
+  findOneById: (findOneIdDTO: FindOneIdDTO) => Promise<UserVO>
+
+  /**
+   * 根据id修改接口
    * @param patchIdDTO 修改参数(id)
    * @param patchDTO 修改参数
    */
-  patch: (patchIdDTO: PatchIdDTO, patchUserDTO: PatchDTO) => Promise<typeof PATCH_USER_OK>
+  patchById: (patchIdDTO: PatchIdDTO, patchUserDTO: PatchDTO) => Promise<typeof PATCH_USER_OK>
 }

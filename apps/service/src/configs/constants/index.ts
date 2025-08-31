@@ -4,6 +4,11 @@ export const DEFAULT_APP_PORT = 4001
 export const DEFAULT_APP_HOSTNAME = '0.0.0.0'
 export const DEFAULT_APP_GLOBAL_PREFIX = ''
 export const DEFAULT_APP_SALT = 'NEST_APP_SALT'
+export const DEFAULT_APP_CORS_ORIGINS = 'http://127.0.0.1:4002,http://localhost:4002'
+export const DEFAULT_APP_CORS_METHODS = 'GET,PATCH,POST,DELETE,HEAD'
+export const DEFAULT_APP_CORS_HEADERS = 'Content-Type,Authorization'
+export const DEFAULT_APP_CORS_CREDENTIALS = true
+export const DEFAULT_APP_CORS_MAX_AGE = 3600
 /** redis配置相关 */
 export const DEFAULT_REDIS_HOST = '127.0.0.1'
 export const DEFAULT_REDIS_PORT = 6379
@@ -22,11 +27,11 @@ export const DEFAULT_CACHE_MEMORY_TTL = DEFAULT_CACHE_TTL
 export const DEFAULT_CACHE_REDIS_DB = 2
 export const DEFAULT_CACHE_REDIS_TTL = DEFAULT_CACHE_TTL
 /** captcha配置相关 */
-export const DEFAULT_CAPTCHA_REDIS_DB = 4
+export const DEFAULT_CAPTCHA_REDIS_DB = 3
 /** jwt配置相关 */
 export const DEFAULT_JWT_SECRET = DEFAULT_APP_NAME
 export const DEFAULT_JWT_EXPIRES_IN = '30m'
-export const DEFAULT_JWT_REDIS_DB = 3
+export const DEFAULT_JWT_REDIS_DB = 4
 export const DEFAULT_JWT_ACCESS_TOKEN_EXPIRES_IN = '30m'
 export const DEFAULT_JWT_REFRESH_TOKEN_EXPIRES_IN = '7d'
 export const DEFAULT_JWT_ACCESS_TOKEN_COOKIE_EXPIRES_IN = 30 * 60 * 1000
@@ -83,3 +88,10 @@ export const DEFAULT_EMAIL_HOST = 'smtp.qq.com'
 export const DEFAULT_EMAIL_PORT = 587
 export const DEFAULT_EMAIL_SECURE = false
 export const DEFAULT_EMAIL_TEMPLATE_DIR = 'templates'
+/** 日志配置相关 */
+export const DEFAULT_WINSTON_LEVEL = 'info'
+export const DEFAULT_WINSTON_DIRNAME = 'logs'
+export const DEFAULT_WINSTON_FILENAME = '%DATE%'
+export const DEFAULT_WINSTON_DATE_PATTERN = 'YYYY-MM-DD'
+export const DEFAULT_WINSTON_MAX_SIZE = '5M'
+export const DEFAULT_WINSTON_MAX_FILES = '204'

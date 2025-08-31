@@ -1,19 +1,19 @@
 import type { Queue, RedisClient } from 'bullmq'
 import type { ILikeCache2Module, ILikeCache2ModuleOptions } from './ICache'
-import { BaseModule } from '@abstracts/index'
 import { Cache } from '@nestjs/cache-manager'
 import { redisIsOk } from '@redis/redis.utils'
 import { SystemException } from '@/common/exceptions'
 import { DEFAULT_CACHE_TTL } from '@/configs'
 
-export abstract class LikeCache2Module extends BaseModule implements ILikeCache2Module {
+export abstract class LikeCache2Module implements ILikeCache2Module {
   redis: RedisClient
   memory: Cache
   queue?: Queue
   queueRedis?: RedisClient
+  className: string
   constructor(cache2ModuleOptions: ILikeCache2ModuleOptions) {
     const { className, redis, memory, queue, queueRedis } = cache2ModuleOptions
-    super(className)
+    this.className = className
     this.redis = redis
     this.memory = memory
     if (queue) {
@@ -106,7 +106,7 @@ export abstract class LikeCache2Module extends BaseModule implements ILikeCache2
 
   async delayedDel(key: string, delay: number = 1000): Promise<void> {
     if (!this.queue && !this.queueRedis && redisIsOk(this.queueRedis!)) {
-      throw new SystemException({ error: new Error('未提供队列实例') })
+      throw new SystemException({ error: new Error('No queue instance provided') })
     }
     try {
       const existingJob = await this.queue?.getJob(key)
@@ -118,7 +118,7 @@ export abstract class LikeCache2Module extends BaseModule implements ILikeCache2
 
   async delayedDelMany(keys: string[], delay: number = 1000): Promise<void> {
     if (!this.queue && !this.queueRedis && redisIsOk(this.queueRedis!)) {
-      throw new SystemException({ error: new Error('未提供队列实例') })
+      throw new SystemException({ error: new Error('No queue instance provided') })
     }
     try {
       for (const key of keys) {

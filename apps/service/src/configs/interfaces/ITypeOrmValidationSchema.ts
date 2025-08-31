@@ -1,3 +1,4 @@
+/** typeorm配置验证接口 */
 export interface ITypeOrmValidationSchema {
   ORM_TYPE: string
   ORM_PORT: number

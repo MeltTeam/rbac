@@ -2,6 +2,7 @@ import type { CaptchaConfigType } from '@/configs'
 import { Module } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { RedisModule } from '@redis/redis.module'
+import { WinstonService } from '@winston/winston.service'
 import { CAPTCHA_CONFIG_KEY } from '@/configs'
 import { CAPTCHA_REDIS_CLIENT_TOKEN } from './captcha.constant'
 import { CaptchaService } from './captcha.service'
@@ -17,9 +18,13 @@ import { CaptchaService } from './captcha.service'
         return config
       },
       inject: [ConfigService],
+      logger: CaptchaModule.logger,
+      loggerContext: CaptchaModule.name,
     }),
   ],
   providers: [CaptchaService],
   exports: [CaptchaService],
 })
-export class CaptchaModule {}
+export class CaptchaModule {
+  static logger: WinstonService = new WinstonService()
+}

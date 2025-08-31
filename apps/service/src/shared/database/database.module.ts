@@ -3,6 +3,7 @@ import type { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectio
 import { Module } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { TypeOrmModule } from '@nestjs/typeorm'
+import { WinstonService } from '@winston/winston.service'
 import { TYPEORM_CONFIG_KEY } from '@/configs'
 import { createMysqlDatabase } from './database.util'
 
@@ -12,7 +13,11 @@ import { createMysqlDatabase } from './database.util'
     TypeOrmModule.forRootAsync({
       useFactory: async (configService: ConfigService) => {
         const config = configService.get<TypeOrmModuleOptions>(TYPEORM_CONFIG_KEY)!
-        await createMysqlDatabase(config as MysqlConnectionOptions)
+        await createMysqlDatabase({
+          config: config as MysqlConnectionOptions,
+          loggerContext: DatabaseModule.name,
+          logger: new WinstonService(),
+        })
         return config
       },
       inject: [ConfigService],

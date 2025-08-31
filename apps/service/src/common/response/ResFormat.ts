@@ -13,7 +13,7 @@ export interface IResFormatOptions<T = any> {
   /** 数据 */
   data: T
   /** 自定义业务状态码 */
-  code?: number
+  code?: number | string
   /** 自定义业务信息 */
   msg?: string
   /** 错误类 */
@@ -21,7 +21,7 @@ export interface IResFormatOptions<T = any> {
 }
 /** 响应格式化 */
 export class ResFormat<Data = any> implements IOKResponse<Data> {
-  code: number
+  code: number | string
   msg: string
   data: Data
   originUrl: string
@@ -32,7 +32,7 @@ export class ResFormat<Data = any> implements IOKResponse<Data> {
   constructor(options: IResFormatOptions<Data>) {
     const { response, request, data, code, msg, exception } = options
     const { statusCode } = response
-    this.code = code ?? (exception ? exception.getStatus() : statusCode)
+    this.code = (data as any).code ?? code ?? (exception ? exception.getStatus() : statusCode)
     this.msg = msg ?? (exception ? 'error' : 'success')
     if (exception) {
       const message = (data as { message: Array<string> }).message

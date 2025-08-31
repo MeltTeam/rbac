@@ -1,5 +1,6 @@
 import type { IBaseValidationSchema } from './IBaseValidationSchema'
 
+/** jwt配置验证接口 */
 export interface IJwtValidationSchema extends IBaseValidationSchema {
   JWT_SECRET: string
   JWT_EXPIRES_IN: string

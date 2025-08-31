@@ -1,16 +1,14 @@
 import type { IEmailService, ISendEmailOptions } from './IEmail'
-import { BaseModule } from '@abstracts/index'
 import { InjectQueue } from '@nestjs/bullmq'
 import { Injectable } from '@nestjs/common'
 import { EMAIL_QUEUE_TOKEN } from '@queues/queues.constant'
 import { Queue } from 'bullmq'
+import { SystemException } from '@/common/exceptions'
 
 /** 邮件服务 */
 @Injectable()
-export class EmailService extends BaseModule implements IEmailService {
-  constructor(@InjectQueue(EMAIL_QUEUE_TOKEN) private readonly emailQueue: Queue) {
-    super()
-  }
+export class EmailService implements IEmailService {
+  constructor(@InjectQueue(EMAIL_QUEUE_TOKEN) private readonly emailQueue: Queue) {}
 
   async sendEmail<T = any>(options: ISendEmailOptions<T>) {
     try {
@@ -21,9 +19,8 @@ export class EmailService extends BaseModule implements IEmailService {
         backoff: { type: 'exponential', delay: 1000 },
       })
       return true
-    } catch (e) {
-      this.logger.error(`${this.sendEmail.name}:${e.message}`)
-      return false
+    } catch (error) {
+      throw new SystemException({ error })
     }
   }
 }

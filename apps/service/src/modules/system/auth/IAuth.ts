@@ -1,12 +1,18 @@
-// import type { Request as ExpressRequest, Response as ExpressResponse } from 'express'
-
-export interface IAuthController {
-  /** svg验证码接口(登录) */
-  // loginBySvgCaptcha: () => Promise<SvgCaptchaVO>
-  // loginBySvg: (loginBySvgDTO: LoginBySvgDTO, res: ExpressResponse, req: ExpressRequest) => Promise<LoginVO>
-  /** 邮箱验证码接口(登录) */
-  // loginByEmailCaptcha: (EmailCaptchaDTO: EmailCaptchaDTO) => Promise<string>
-}
+import type { SEND_EMAIL_CAPTCHA_OK } from '@captcha/captcha.constant'
+import type { SvgCaptchaVO } from './vos'
+import { EmailCaptchaDTO } from './dtos/emailCaptcha.dto'
 
 /** 登录类型 */
 export type LoginType = 'email' | 'svg'
+export interface IAuthController {
+  /** svg验证码接口(登录) */
+  loginBySvgCaptcha: () => Promise<SvgCaptchaVO>
+  /**
+   * 邮箱验证码接口(登录)
+   * @param emailCaptchaDTO 邮箱验证码接口参数校验
+   */
+  loginByEmailCaptcha: (emailCaptchaDTO: EmailCaptchaDTO) => Promise<typeof SEND_EMAIL_CAPTCHA_OK>
+  // loginBySvg: (loginBySvgDTO: LoginBySvgDTO, res: ExpressResponse, req: ExpressRequest) => Promise<LoginVO>
+}
+
+export interface IAuthService {}

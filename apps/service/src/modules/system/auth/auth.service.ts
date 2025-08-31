@@ -1,5 +1,5 @@
-import { BaseModule } from '@abstracts/index'
+import type { IAuthService } from './IAuth'
 import { Injectable } from '@nestjs/common'
 
 @Injectable()
-export class AuthService extends BaseModule {}
+export class AuthService implements IAuthService {}

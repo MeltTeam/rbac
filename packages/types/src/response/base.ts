@@ -1,7 +1,7 @@
 /** 成功响应 */
 export interface IOKResponse<T = any> {
   /** 业务码 */
-  code: number
+  code: number | string
   /** 信息 */
   msg: string
   /** 数据 */

@@ -1,5 +1,6 @@
 import type { IBaseValidationSchema } from './IBaseValidationSchema'
 
+/** 节流配置验证接口 */
 export interface IThrottlerValidationSchema extends IBaseValidationSchema {
   THROTTLER_REDIS_HOST?: string
   THROTTLER_REDIS_PORT?: number
