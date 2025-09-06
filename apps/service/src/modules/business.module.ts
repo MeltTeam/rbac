@@ -1,5 +1,5 @@
 import { Global, Module } from '@nestjs/common'
-import { SystemModule } from '@system/index'
+import { SystemModule } from './system'
 /** 业务模块 */
 @Global()
 @Module({

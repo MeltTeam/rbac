@@ -1,8 +1,8 @@
 import type { IDeptEntity } from '../IDept'
-import { CommonEntity } from '@entities/common.entity'
 import { SortOrderEnum } from '@packages/types'
-import { RoleEntity } from '@role/entities/role.entity'
 import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm'
+import { CommonEntity } from '@/common/entities/common.entity'
+import { RoleEntity } from '@/modules/system/role/entities/role.entity'
 
 /** 部门表实体 */
 @Entity({ name: 'sys_dept', comment: '部门表' })

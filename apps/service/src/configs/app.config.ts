@@ -30,6 +30,11 @@ export interface IAppConfig {
     /** OPTIONS请求预检结果缓存的时间 */
     maxAge: number
   }
+  // csrf防御
+  // csrf: {
+  //   /** 密钥 */
+  //   secret: string
+  // }
 }
 
 /** app配置 */

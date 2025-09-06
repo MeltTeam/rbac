@@ -4,11 +4,11 @@ export enum UserBusiness {
   /** 用户未找到 */
   NOT_FOUND = '4100',
   /** 用户名已存在 */
-  NAME_ALREADY_EXISTS = '4102',
+  NAME_ALREADY_EXISTS = '4101',
   /** 邮箱已存在 */
-  EMAIL_ALREADY_EXISTS = '4103',
+  EMAIL_ALREADY_EXISTS = '4102',
   /** 电话号码已存在 */
-  PHONE_ALREADY_EXISTS = '4104',
+  PHONE_ALREADY_EXISTS = '4103',
 }
 
 /** 用户模块业务码文本映射 */

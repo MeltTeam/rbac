@@ -1,5 +1,5 @@
 import type { SortOrderEnum } from '@packages/types'
-import type { RoleEntity } from '@role/entities/role.entity'
+import type { RoleEntity } from '@/modules/system/role/entities/role.entity'
 
 /** 部门表实体接口 */
 export interface IDeptEntity {

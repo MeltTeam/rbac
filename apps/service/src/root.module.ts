@@ -1,25 +1,22 @@
 import type { MiddlewareConsumer, NestModule } from '@nestjs/common'
 import type { ConfigFactory } from '@nestjs/config'
-import { BusinessModule } from '@business/business.module'
-import { HttpExceptionFilter } from '@filters/httpException.filter'
-import { systemExceptionFilter } from '@filters/systemException.filter'
-import { HttpInterceptor } from '@interceptors/http.interceptor'
-import { LoggerMiddleware } from '@middlewares/logger.middleware'
 import { Module } from '@nestjs/common'
-import { ConfigModule as Config2Module, ConfigService } from '@nestjs/config'
+import { ConfigModule } from '@nestjs/config'
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core'
-import { SharedModule } from '@shared/shared.module'
-import { Throttler2ExceptionFilter } from '@throttler2/throttler2.filter'
-import { Throttler2Guard } from '@throttler2/throttler2.guard'
-import { WINSTON_DEFAULT_CONFIG } from '@winston/winston.constant'
-import { WinstonModule } from '@winston/winston.module'
-import { ClsModule } from 'nestjs-cls'
+import { HttpExceptionFilter } from '@/common/filters/httpException.filter'
+import { systemExceptionFilter } from '@/common/filters/systemException.filter'
+import { HttpInterceptor } from '@/common/interceptors/http.interceptor'
 import { ALL_CONFIG } from '@/configs'
+import { InfrastructureModule } from '@/infrastructure/infrastructure.module'
+import { Logger2Middleware } from '@/infrastructure/logger2/logger2.middleware'
+import { Throttler2ExceptionFilter } from '@/infrastructure/throttler2/throttler2.filter'
+import { Throttler2Guard } from '@/infrastructure/throttler2/throttler2.guard'
+import { BusinessModule } from '@/modules/business.module'
 /** 根模块 */
 @Module({
   imports: [
     /** 配置模块 */
-    Config2Module.forRoot({
+    ConfigModule.forRoot({
       isGlobal: true,
       expandVariables: true,
       validationOptions: {
@@ -30,19 +27,7 @@ import { ALL_CONFIG } from '@/configs'
       load: [...Object.values<ConfigFactory>(ALL_CONFIG)],
       cache: true,
     }),
-    WinstonModule.forRootAsync({
-      isGlobal: true,
-      useFactory: async (_configService: ConfigService) => {
-        // const { level } = configService.get<WinstonConfigType>(WINSTON_CONFIG_KEY)!
-        // const { name } = configService.get<AppConfigType>(APP_CONFIG_KEY)!
-
-        return WINSTON_DEFAULT_CONFIG
-      },
-      inject: [ConfigService],
-    }),
-    /** 请求上下文模块 */
-    ClsModule.forRoot({ global: true }),
-    SharedModule,
+    InfrastructureModule,
     BusinessModule,
   ],
   providers: [
@@ -59,6 +44,6 @@ import { ALL_CONFIG } from '@/configs'
 })
 export class RootModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware).forRoutes('*')
+    consumer.apply(Logger2Middleware).forRoutes('*')
   }
 }

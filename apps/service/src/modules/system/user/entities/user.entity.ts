@@ -1,10 +1,10 @@
 import type { IUserEntity } from '../IUser'
-import { CommonEntity } from '@entities/common.entity'
-import { PostEntity } from '@post/entities/post.entity'
-import { RoleEntity } from '@role/entities/role.entity'
-import { uuid_v4 } from '@utils/index'
 import { Expose } from 'class-transformer'
 import { BeforeInsert, Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm'
+import { CommonEntity } from '@/common/entities/common.entity'
+import { uuid_v4 } from '@/common/utils'
+import { PostEntity } from '@/modules/system/post/entities/post.entity'
+import { RoleEntity } from '@/modules/system/role/entities/role.entity'
 import { UserProfileEntity } from './userProfile.entity'
 
 /** 用户表实体 */
@@ -28,7 +28,6 @@ export class UserEntity extends CommonEntity implements IUserEntity {
     name: 'pwd',
     type: 'varchar',
     length: 100,
-    select: false,
   })
   pwd: string
 
@@ -79,7 +78,6 @@ export class UserEntity extends CommonEntity implements IUserEntity {
     type: 'varchar',
     length: 36,
     charset: 'ascii',
-    select: false,
   })
   salt: string
 

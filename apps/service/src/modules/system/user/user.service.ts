@@ -4,20 +4,20 @@ import type { FindAllDTO } from './dto/findAll.dto'
 import type { PatchDTO, PatchIdDTO } from './dto/patch.dto'
 import type { AddOptions, IUserService } from './IUser'
 import type { AppConfigType } from '@/configs'
-import { SYSTEM_DEFAULT_BY } from '@constants/index'
-import { CommonBusinessException } from '@exceptions/index'
 import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { InjectRepository } from '@nestjs/typeorm'
 import { CommonBusiness, UserBusiness } from '@packages/types'
-import { FindAllVO, UserVO } from '@user/vo'
-import { sha256, uuid_v4, wordArray } from '@utils/index'
 import { MD5 } from 'crypto-js'
 import { isEmpty, isUndefined } from 'lodash-es'
+import { SYSTEM_DEFAULT_BY } from '@/common/constants'
+import { CommonBusinessException } from '@/common/exceptions'
+import { sha256, uuid_v4, wordArray } from '@/common/utils'
 import { APP_CONFIG_KEY } from '@/configs'
 import { UserEntity } from './entities/user.entity'
 import { UserProfileEntity } from './entities/userProfile.entity'
 import { UserException } from './user.exception'
+import { FindAllVO, UserVO } from './vo'
 
 @Injectable()
 export class UserService implements IUserService {
@@ -42,16 +42,16 @@ export class UserService implements IUserService {
 
   async handlerAdd(addOptions: AddOptions, by: string = SYSTEM_DEFAULT_BY) {
     const { name, pwd, email } = addOptions
+    const hasUsername = await this.userRepository.findOne({
+      where: { name },
+    })
+    if (hasUsername) throw new UserException(UserBusiness.NAME_ALREADY_EXISTS)
     if (email) {
       const hasEmail = await this.userRepository.findOne({
         where: { profile: { email } },
       })
       if (hasEmail) throw new UserException(UserBusiness.EMAIL_ALREADY_EXISTS)
     }
-    const hasUsername = await this.userRepository.findOne({
-      where: { name },
-    })
-    if (hasUsername) throw new UserException(UserBusiness.NAME_ALREADY_EXISTS)
     // 新用户
     const USER_SALT = uuid_v4()
     const USER_PWD = await this.encryptPassword(pwd, USER_SALT)
@@ -123,11 +123,13 @@ export class UserService implements IUserService {
     const Profile = new UserProfileEntity()
     const updateUser = {} as UserEntity
     const updateProfile = {} as UserProfileEntity
+    // 组装两个表更新的字段
     for (const key in patchDTO) {
       const value = patchDTO[key]
       if (isUndefined(value)) {
         delete patchDTO[key]
       } else {
+        // 看看是不是表里的字段
         key in User && (updateUser[key] = value)
         key in Profile && (updateProfile[key] = value)
       }

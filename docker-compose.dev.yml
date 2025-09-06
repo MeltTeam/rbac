@@ -31,7 +31,7 @@ services:
     # 自动重启
     restart: always
     container_name: dev_rbac_redis
-    image: bitnami/redis:7.4.0
+    image: ccr.ccs.tencentyun.com/comps/redis:7.4.0
     # 密码认证
     environment:
       - REDIS_PASSWORD=Aa123456
@@ -40,7 +40,6 @@ services:
       - '6379:6379'
     volumes:
       - ./docker-volumes/redis/data:/bitnami/redis/data
-      - ./docker-volumes/redis/etc:/opt/bitnami/redis/etc
       - ./docker-volumes/redis/logs:/opt/bitnami/redis/logs
       - ./docker-volumes/redis/tmp:/opt/bitnami/redis/tmp
     networks:

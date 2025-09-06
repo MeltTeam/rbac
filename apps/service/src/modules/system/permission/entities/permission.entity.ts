@@ -1,8 +1,8 @@
-import type { IPermissionEntity } from '@permission/IPermission'
-import { CommonEntity } from '@entities/common.entity'
+import type { IPermissionEntity } from '@/modules/system/permission/IPermission'
 import { CheckEnum, PermissionTypeEnum, SortOrderEnum } from '@packages/types'
-import { RoleEntity } from '@role/entities/role.entity'
 import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm'
+import { CommonEntity } from '@/common/entities/common.entity'
+import { RoleEntity } from '@/modules/system/role/entities/role.entity'
 
 /** 权限表实体 */
 @Entity({ name: 'sys_permission', comment: '权限表' })

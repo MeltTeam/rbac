@@ -1,4 +1,3 @@
-import type { ICommonEntity } from '@entities/ICommonEntity'
 import type { SexEnum } from '@packages/types'
 import type { FindOptionsWhere, UpdateResult } from 'typeorm'
 import type { PostEntity } from '../post/entities/post.entity'
@@ -12,6 +11,7 @@ import type { UserEntity } from './entities/user.entity'
 import type { UserProfileEntity } from './entities/userProfile.entity'
 import type { DEL_USER_OK, PATCH_USER_OK } from './user.constant'
 import type { FindAllVO, UserVO } from './vo'
+import type { ICommonEntity } from '@/common/entities/ICommonEntity'
 
 /** 用户表实体接口 */
 export interface IUserEntity extends ICommonEntity {

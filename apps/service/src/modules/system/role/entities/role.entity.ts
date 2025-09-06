@@ -1,10 +1,10 @@
 import type { IRoleEntity } from '../IRole'
-import { DeptEntity } from '@dept/entities/dept.entity'
-import { CommonEntity } from '@entities/common.entity'
 import { CheckEnum, DataScopeEnum, SortOrderEnum } from '@packages/types'
-import { PermissionEntity } from '@permission/entities/permission.entity'
-import { UserEntity } from '@user/entities/user.entity'
 import { Column, Entity, Index, OneToMany } from 'typeorm'
+import { CommonEntity } from '@/common/entities/common.entity'
+import { DeptEntity } from '@/modules/system/dept/entities/dept.entity'
+import { PermissionEntity } from '@/modules/system/permission/entities/permission.entity'
+import { UserEntity } from '@/modules/system/user/entities/user.entity'
 
 /** 角色表实体 */
 @Entity({ name: 'sys_role', comment: '角色表' })

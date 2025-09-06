@@ -1,5 +1,5 @@
 import type { CheckEnum, PermissionTypeEnum, SortOrderEnum } from '@packages/types'
-import type { RoleEntity } from '@role/entities/role.entity'
+import type { RoleEntity } from '@/modules/system/role/entities/role.entity'
 
 /** 权限表实体接口 */
 export interface IPermissionEntity {

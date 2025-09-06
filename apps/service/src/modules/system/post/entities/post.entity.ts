@@ -1,8 +1,8 @@
 import type { IPostEntity } from '../IPost'
-import { CommonEntity } from '@entities/common.entity'
 import { SortOrderEnum } from '@packages/types'
-import { UserEntity } from '@user/entities/user.entity'
 import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm'
+import { CommonEntity } from '@/common/entities/common.entity'
+import { UserEntity } from '@/modules/system/user/entities/user.entity'
 
 /** 岗位表实体 */
 @Entity({ name: 'sys_post', comment: '岗位表' })

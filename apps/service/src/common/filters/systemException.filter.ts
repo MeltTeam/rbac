@@ -1,22 +1,16 @@
 import type { Request, Response } from 'express'
-import { SYSTEM_EXCEPTION_MSG } from '@constants/index'
-import { ArgumentsHost, Catch, ExceptionFilter, Inject, InternalServerErrorException } from '@nestjs/common'
+import { ArgumentsHost, Catch, ExceptionFilter, InternalServerErrorException } from '@nestjs/common'
 import { HttpStatus } from '@packages/types'
-import { ResFormat } from '@response/ResFormat'
-import { WINSTON_SERVICE_TOKEN } from '@winston/winston.constant'
-import { WinstonService } from '@winston/winston.service'
-import { ClsService } from 'nestjs-cls'
+import { SYSTEM_EXCEPTION_MSG } from '@/common/constants'
+import { ResFormat } from '@/common/response'
+import { Logger2Service } from '@/infrastructure/logger2/logger2.service'
 
 /** 系统异常过滤器 */
 @Catch()
 export class systemExceptionFilter implements ExceptionFilter {
-  @Inject(WINSTON_SERVICE_TOKEN)
-  winstonService: WinstonService
+  constructor(private readonly logger2Service: Logger2Service) {}
 
-  @Inject()
-  clsService: ClsService
-
-  catch(exception: any, host: ArgumentsHost) {
+  async catch(exception: any, host: ArgumentsHost) {
     console.warn('systemExceptionFilter')
     // http上下文
     const ctx = host.switchToHttp()
@@ -30,8 +24,7 @@ export class systemExceptionFilter implements ExceptionFilter {
       data,
       exception: new InternalServerErrorException(SYSTEM_EXCEPTION_MSG),
     })
-    const loggerInfo = this.winstonService.getLoggerInfo(this.clsService, status)
-    this.winstonService.action(loggerInfo, exception)
+    await this.logger2Service.action(response, exception)
     response.status(status).json(VO)
   }
 }

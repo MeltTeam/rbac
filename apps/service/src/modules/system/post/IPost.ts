@@ -1,5 +1,5 @@
 import type { SortOrderEnum } from '@packages/types'
-import type { UserEntity } from '@user/entities/user.entity'
+import type { UserEntity } from '@/modules/system/user/entities/user.entity'
 
 /** 岗位表实体接口 */
 export interface IPostEntity {

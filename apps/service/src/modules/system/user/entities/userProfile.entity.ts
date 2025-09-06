@@ -1,7 +1,7 @@
 import type { IUserProfileEntity } from '../IUser'
-import { CommonEntity } from '@entities/common.entity'
 import { SexEnum } from '@packages/types'
 import { Column, Entity, JoinColumn, OneToOne } from 'typeorm'
+import { CommonEntity } from '@/common/entities/common.entity'
 import { UserEntity } from './user.entity'
 
 /** 用户档案表实体 */

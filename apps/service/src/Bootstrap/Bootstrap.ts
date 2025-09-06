@@ -1,15 +1,16 @@
 import type { NestExpressApplication } from '@nestjs/platform-express'
 import type { IncomingMessage, Server, ServerResponse } from 'node:http'
 import type { IBootstrap } from './IBootstrap'
-import type { IAppConfig } from '@/configs'
-import { APP_PID } from '@constants/index'
+import type { IAppConfig, IJwtConfig } from '@/configs'
 import { ValidationPipe } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { NestFactory } from '@nestjs/core'
-import { WINSTON_SERVICE_TOKEN } from '@winston/winston.constant'
-import { WinstonService } from '@winston/winston.service'
 import cookieParser from 'cookie-parser'
-import { APP_CONFIG_KEY } from '@/configs'
+import helmet from 'helmet'
+import { APP_PID } from '@/common/constants'
+import { APP_CONFIG_KEY, JWT_CONFIG_KEY } from '@/configs'
+import { LOGGER2_SERVICE_TOKEN } from '@/infrastructure/logger2/logger2.constant'
+import { WinstonLogger } from '@/infrastructure/logger2/logger2.util'
 
 /** 热更新模块 */
 declare const module: any
@@ -17,9 +18,11 @@ declare const module: any
 /** 应用引导类 */
 export class Bootstrap implements IBootstrap {
   /** 日志服务 */
-  protected logger: WinstonService
+  protected logger: WinstonLogger
   /** 应用配置 */
   protected appConfig: IAppConfig
+  /** JWT配置 */
+  protected jwtConfig: IJwtConfig
   /** 应用实例 */
   protected app: NestExpressApplication<Server<typeof IncomingMessage, typeof ServerResponse>>
   /** 应用引导实例 */
@@ -33,7 +36,7 @@ export class Bootstrap implements IBootstrap {
   public static async create(rootModule?: any) {
     if (!Bootstrap.instance && !rootModule) throw new Error('There is no application instance, please provide the root module')
     if (!Bootstrap.instance) {
-      const logger = new WinstonService()
+      const logger = new WinstonLogger()
       Bootstrap.instance = new Bootstrap()
       Bootstrap.instance.logger = logger
       Bootstrap.instance.app = await NestFactory.create<NestExpressApplication>(rootModule, {
@@ -47,6 +50,7 @@ export class Bootstrap implements IBootstrap {
     this.logger.info('Initializing config...', Bootstrap.name)
     const configService = this.app.get(ConfigService)
     this.appConfig = configService.get<IAppConfig>(APP_CONFIG_KEY)!
+    this.jwtConfig = configService.get<IJwtConfig>(JWT_CONFIG_KEY)!
     this.logger.info('Config initialized successfully', Bootstrap.name)
     // ...各种配置
   }
@@ -76,6 +80,43 @@ export class Bootstrap implements IBootstrap {
 
     // 开启cookie解析
     this.app.use(cookieParser())
+    // csrf防御
+    // const { doubleCsrfProtection } = doubleCsrf({
+    //   getSecret: () => sha256(`${name}-${hostname}-${port}`, wordArray(uuid_v4())),
+    //   getSessionIdentifier: (req: Request) => {
+    //     const authHeader = req.headers.authorization
+    //     if (!authHeader || !authHeader.startsWith('Bearer ')) return ''
+    //     const token = authHeader.split(' ')[1]
+    //     try {
+    //       const jwt = this.app.get<JwtService>(JwtService)
+    //       const decoded = jwt.verify(token, {
+    //         secret: this.jwtConfig.serviceConfig.secret,
+    //       })
+    //       console.warn(decoded)
+    //       return ''
+    //     } catch (error) {
+    //       this.logger.warn(error.message, Bootstrap.name)
+    //       return ''
+    //     }
+    //   },
+    //   cookieName: 'X-CSRF-Token',
+    //   cookieOptions: {
+    //     httpOnly: true,
+    //     sameSite: 'lax',
+    //     secure: false,
+    //   },
+    //   size: 64,
+    // })
+    // this.app.use(doubleCsrfProtection)
+    // web安全，常见漏洞
+    // https://docs.nestjs.com/security/helmet
+    this.app.use(
+      helmet({
+        crossOriginOpenerPolicy: { policy: 'same-origin-allow-popups' },
+        crossOriginResourcePolicy: false,
+        contentSecurityPolicy: false,
+      }),
+    )
     this.logger.info('Middlewares initialized successfully', Bootstrap.name)
   }
 
@@ -107,7 +148,7 @@ export class Bootstrap implements IBootstrap {
     await this.checkInitConfig()
     this.logger.info('Initializing global settings...', Bootstrap.name)
     // 日志替换
-    this.app.useLogger(this.app.get<WinstonService>(WINSTON_SERVICE_TOKEN))
+    this.app.useLogger(this.app.get<WinstonLogger>(LOGGER2_SERVICE_TOKEN))
 
     // 应用关闭钩子
     this.app.enableShutdownHooks()

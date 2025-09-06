@@ -15,6 +15,7 @@
     "pnpm": ">=9.5.0"
   },
   "scripts": {
+    "open": "test.bat",
     "git:add": "git add .",
     "git:commit": "cz",
     "ri": "pnpm cls && pnpm i",

@@ -1,4 +1,4 @@
-import { UserEntity } from '@user/entities/user.entity'
+import { UserEntity } from '@/modules/system/user/entities/user.entity'
 
 export class UserInfo {
   id: string

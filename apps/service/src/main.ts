@@ -1,4 +1,4 @@
-import { Bootstrap } from '@/bootstrap/bootstrap'
+import { Bootstrap } from '@/Bootstrap/Bootstrap'
 import { RootModule } from '@/root.module'
 
 Bootstrap.create(RootModule)

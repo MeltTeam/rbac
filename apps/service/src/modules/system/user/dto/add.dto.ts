@@ -1,7 +1,7 @@
 import type { IAddUserDTO } from '@packages/types'
-import { REMARK, REMARK_MAX, REMARK_MIN } from '@constants/index'
-import { InputPwd, InputSpace, InputStringLength, NotEmpty } from '@decorators/index'
 import { IsOptional } from 'class-validator'
+import { REMARK, REMARK_MAX, REMARK_MIN } from '@/common/constants'
+import { InputPwd, InputSpace, InputStringLength, NotEmpty } from '@/common/decorators'
 import { PWD, PWD_MAX, PWD_MIN, USER_NAME, USER_NAME_MAX, USER_NAME_MIN } from '../user.constant'
 
 /** 添加用户接口参数校验 */

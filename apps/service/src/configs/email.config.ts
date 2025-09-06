@@ -2,7 +2,7 @@ import type { MailerOptions } from '@nestjs-modules/mailer'
 import type { ConfigType } from '@nestjs/config'
 import { EjsAdapter } from '@nestjs-modules/mailer/dist/adapters/ejs.adapter'
 import { registerAs } from '@nestjs/config'
-import { getPath } from '@utils/index'
+import { getPath } from '@/common/utils'
 import { EmailValidationSchema } from './validationSchema'
 
 /** email配置key */

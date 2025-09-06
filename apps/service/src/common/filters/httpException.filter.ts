@@ -1,20 +1,14 @@
 import type { Request, Response } from 'express'
-import { ArgumentsHost, Catch, ExceptionFilter, HttpException, Inject } from '@nestjs/common'
-import { ResFormat } from '@response/ResFormat'
-import { WINSTON_SERVICE_TOKEN } from '@winston/winston.constant'
-import { WinstonService } from '@winston/winston.service'
-import { ClsService } from 'nestjs-cls'
+import { ArgumentsHost, Catch, ExceptionFilter, HttpException } from '@nestjs/common'
+import { ResFormat } from '@/common/response'
+import { Logger2Service } from '@/infrastructure/logger2/logger2.service'
 
 /** http异常过滤器 */
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
-  @Inject(WINSTON_SERVICE_TOKEN)
-  winstonService: WinstonService
+  constructor(private readonly logger2Service: Logger2Service) {}
 
-  @Inject()
-  clsService: ClsService
-
-  catch(exception: any, host: ArgumentsHost) {
+  async catch(exception: any, host: ArgumentsHost) {
     console.warn('HttpExceptionFilter')
     // http上下文
     const ctx = host.switchToHttp()
@@ -28,8 +22,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       data,
       exception,
     })
-    const loggerInfo = this.winstonService.getLoggerInfo(this.clsService, status)
-    this.winstonService.action(loggerInfo, exception)
+    await this.logger2Service.action(response, exception)
     response.status(status).json(VO)
   }
 }

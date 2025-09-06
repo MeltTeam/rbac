@@ -1,8 +1,8 @@
 import type { IPatchUserDTO } from '@packages/types'
-import { REMARK, REMARK_MAX, REMARK_MIN } from '@constants/index'
-import { InputEmail, InputSpace, InputStringLength } from '@decorators/index'
 import { SexEnum } from '@packages/types'
 import { IsDate, IsEnum, IsOptional, IsPhoneNumber } from 'class-validator'
+import { REMARK, REMARK_MAX, REMARK_MIN } from '@/common/constants'
+import { InputEmail, InputSpace, InputStringLength } from '@/common/decorators'
 import { EMAIL, NICK_NAME, USER_AVATAR, USER_NAME, USER_NAME_MAX, USER_NAME_MIN } from '../user.constant'
 import { DelIdDTO } from './del.dto'
 

@@ -7,7 +7,6 @@ packages:
   # 工程化脚本
   - 'scripts'
 catalog:
-  chalk: ^5.6.0
 
 catalogs:
   #web和server
@@ -63,6 +62,8 @@ catalogs:
     '@nestjs/typeorm': ^10.0.2
     mysql2: ^3.14.1
     typeorm: 0.3.20
+    '@nestjs/mongoose': ^10.1.0
+    mongoose: ^8.18.0
     # 配置
     joi: ^17.13.3
     '@nestjs/config': ^4.0.2
@@ -70,6 +71,8 @@ catalogs:
     # 日志
     winston-daily-rotate-file: ^5.0.0
     winston: ^3.17.0
+    chalk: ^5.6.0
+    winston-mongodb: ^7.0.1
     # 缓存
     '@nestjs/cache-manager': ^2.3.0
     cache-manager: ^5.7.6
@@ -77,18 +80,21 @@ catalogs:
     ejs: ^3.1.10
     nodemailer: ^7.0.3
     '@nestjs-modules/mailer': ^2.0.2
-    # 鉴权
+    # 安全
+    csrf-csrf: ^4.0.3
+    helmet: ^8.1.0
     '@nestjs/jwt': ^10.2.0
     'passport-jwt': ^4.0.1
     cookie-parser: ^1.4.7
     '@nestjs/passport': ^11.0.5
     'passport-local': ^1.0.0
     passport: ^0.7.0
-    # 健康
-    '@nestjs/terminus': ^10.3.0
-    # 节流器
     '@nestjs/throttler': ^6.4.0
     '@nest-lab/throttler-storage-redis': ^1.1.0
+    # 健康
+    '@nestjs/terminus': ^10.3.0
+    # 定时任务
+    '@nestjs/schedule': ^6.0.0
     # 验证码
     'svg-captcha': ^1.4.0
     ioredis: ^5.6.1

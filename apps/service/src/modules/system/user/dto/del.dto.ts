@@ -1,6 +1,6 @@
 import type { IParamsIdDTO } from '@packages/types'
-import { UUID_V4_LENGTH } from '@constants/index'
-import { InputSpace, InputStringLength, NotEmpty } from '@decorators/index'
+import { UUID_V4_LENGTH } from '@/common/constants'
+import { InputSpace, InputStringLength, NotEmpty } from '@/common/decorators'
 import { USER_ID } from '../user.constant'
 
 export class DelIdDTO implements IParamsIdDTO {

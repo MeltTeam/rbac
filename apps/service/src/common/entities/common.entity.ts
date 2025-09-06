@@ -1,7 +1,5 @@
 import type { ICommonEntity } from './ICommonEntity'
-import { SYSTEM_DEFAULT_BY, SYSTEM_DEFAULT_REMARK } from '@constants/index'
 import { StatusEnum } from '@packages/types'
-import { uuid_v4 } from '@utils/index'
 import { Expose } from 'class-transformer'
 import {
   BeforeInsert,
@@ -13,6 +11,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm'
+import { SYSTEM_DEFAULT_BY, SYSTEM_DEFAULT_REMARK } from '@/common/constants'
+import { uuid_v4 } from '@/common/utils'
 
 /** 实体公共字段 */
 export abstract class CommonEntity implements ICommonEntity {
