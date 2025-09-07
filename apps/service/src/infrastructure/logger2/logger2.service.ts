@@ -1,13 +1,13 @@
 import type { Queue } from 'bullmq'
 import type { Response } from 'express'
 import type Redis from 'ioredis'
-import type { ILoggerInfo, ILoggerService } from './ILogger2'
+import type { ILogger2JobData, ILoggerInfo, ILoggerService, LoggerType } from './ILogger2'
 import type { WinstonLogger } from './logger2.util'
 import { InjectQueue } from '@nestjs/bullmq'
-import { Inject, Injectable } from '@nestjs/common'
+import { HttpException, Inject, Injectable } from '@nestjs/common'
 import dayjs from 'dayjs'
 import { ClsService } from 'nestjs-cls'
-import { SystemException } from '@/common/exceptions'
+import { BusinessException, SystemException } from '@/common/exceptions'
 import { LOGGER_QUEUE_TOKEN, QUEUE_REDIS_CLIENT_TOKEN } from '@/infrastructure/queues/queues.constant'
 import { redisIsOk } from '@/infrastructure/redis/redis.utils'
 import { LOGGER2_SERVICE_TOKEN } from './logger2.constant'
@@ -79,20 +79,26 @@ export class Logger2Service implements ILoggerService {
     }
   }
 
-  async action(response: Response, exception?: any) {
+  getLoggerType(exception?: unknown): LoggerType {
+    if (!exception) return '正常请求'
+    if (exception instanceof BusinessException) return '业务异常'
+    if (exception instanceof HttpException) return '内置HTTP异常'
+    if (exception instanceof SystemException) return '手动系统异常'
+    if (exception instanceof Error) return '非手动系统异常'
+    return '未知异常'
+  }
+
+  async action(response: Response, exception?: unknown) {
     try {
       const loggerInfo = this.getLoggerInfo(response)
       if (redisIsOk(this.queueRedis)) {
-        await this.loggerQueue.add(
-          'action',
-          { loggerInfo, exception },
-          {
-            /** 失败重试 */
-            attempts: 3,
-            /** 指数退避重试 */
-            backoff: { type: 'exponential', delay: 1000 },
-          },
-        )
+        const jobData = { loggerInfo, exception } as ILogger2JobData
+        await this.loggerQueue.add('action', jobData, {
+          /** 失败重试 */
+          attempts: 3,
+          /** 指数退避重试 */
+          backoff: { type: 'exponential', delay: 1000 },
+        })
       }
       return true
     } catch (error) {

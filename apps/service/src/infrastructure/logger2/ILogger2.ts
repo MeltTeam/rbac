@@ -24,6 +24,13 @@ export interface ILoggerInfo {
   executionTime: string
 }
 
+export type LoggerType = '正常请求' | '业务异常' | '内置HTTP异常' | '手动系统异常' | '非手动系统异常' | '未知异常'
+
+export interface ILogger2JobData {
+  loggerInfo: ILoggerInfo
+  exception: unknown
+}
+
 export interface IWinstonLogger extends LoggerService {
   /** 获取当前时间 */
   getTime: () => string
@@ -42,4 +49,10 @@ export interface ILoggerService extends LoggerService {
    * @param exception 异常对象
    */
   action: (response: Response, exception?: any) => Promise<boolean>
+
+  /**
+   * 获取日志类型
+   * @param exception 异常对象
+   */
+  getLoggerType: (exception?: unknown) => LoggerType
 }

@@ -19,7 +19,7 @@ export const QueueConfig = registerAs(QUEUE_CONFIG_KEY, (): QueueOptions => {
       port: value.QUEUE_PORT ?? value.REDIS_PORT,
       username: value.QUEUE_USERNAME ?? value.REDIS_USERNAME,
       password: value.QUEUE_PASSWORD ?? value.REDIS_PASSWORD,
-      db: value.QUEUE_DB,
+      db: value.QUEUE_REDIS_DB,
     },
   }
 })

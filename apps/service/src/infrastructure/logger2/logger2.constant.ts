@@ -19,8 +19,9 @@ export const levelsColors = {
 export const WINSTON_DEFAULT_CONFIG = {
   level: 'debug',
   format: format.combine(format.timestamp(), format.errors({ stack: true }), format.splat(), format.json()),
-  defaultMeta: { service: 'log-service' },
+  defaultMeta: { service: 'logs-service' },
   transports: [
+    // 类似nest控制台日志
     new transports.Console({
       format: format.combine(
         format.colorize({

@@ -37,7 +37,7 @@ export const DEFAULT_JWT_REFRESH_TOKEN_EXPIRES_IN = '7d'
 export const DEFAULT_JWT_ACCESS_TOKEN_COOKIE_EXPIRES_IN = 30 * 60 * 1000
 export const DEFAULT_JWT_REFRESH_TOKEN_COOKIE_EXPIRES_IN = 7 * 24 * 60 * 60 * 1000
 /** queue配置相关 */
-export const DEFAULT_QUEUE_DB = 1
+export const DEFAULT_QUEUE_REDIS_DB = 1
 /** throttler配置相关 */
 export const DEFAULT_THROTTLER_REDIS_DB = 0
 export const DEFAULT_THROTTLER_DEFAULT_NAME = 'default'
@@ -89,9 +89,9 @@ export const DEFAULT_EMAIL_PORT = 587
 export const DEFAULT_EMAIL_SECURE = false
 export const DEFAULT_EMAIL_TEMPLATE_DIR = 'templates'
 /** 日志配置相关 */
-export const DEFAULT_WINSTON_LEVEL = 'info'
-export const DEFAULT_WINSTON_DIRNAME = 'logs'
-export const DEFAULT_WINSTON_FILENAME = '%DATE%'
-export const DEFAULT_WINSTON_DATE_PATTERN = 'YYYY-MM-DD'
-export const DEFAULT_WINSTON_MAX_SIZE = '5M'
-export const DEFAULT_WINSTON_MAX_FILES = '204'
+export const DEFAULT_LOGGER_LEVEL = 'info'
+export const DEFAULT_LOGGER_DIRNAME = 'logs'
+export const DEFAULT_LOGGER_FILENAME = '%DATE%'
+export const DEFAULT_LOGGER_DATE_PATTERN = 'YYYY-MM-DD'
+export const DEFAULT_LOGGER_MAX_SIZE = '5M'
+export const DEFAULT_LOGGER_MAX_FILES = '204'

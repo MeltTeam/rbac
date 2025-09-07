@@ -5,10 +5,10 @@ import type {
   ICaptchaValidationSchema,
   IEmailValidationSchema,
   IJwtValidationSchema,
+  ILoggerValidationSchema,
   IQueueValidationSchema,
   IThrottlerValidationSchema,
   ITypeOrmValidationSchema,
-  IWinstonValidationSchema,
 } from './interfaces'
 import Joi from 'joi'
 import {
@@ -38,6 +38,12 @@ import {
   DEFAULT_JWT_REDIS_DB,
   DEFAULT_JWT_REFRESH_TOKEN_COOKIE_EXPIRES_IN,
   DEFAULT_JWT_SECRET,
+  DEFAULT_LOGGER_DATE_PATTERN,
+  DEFAULT_LOGGER_DIRNAME,
+  DEFAULT_LOGGER_FILENAME,
+  DEFAULT_LOGGER_LEVEL,
+  DEFAULT_LOGGER_MAX_FILES,
+  DEFAULT_LOGGER_MAX_SIZE,
   DEFAULT_ORM_AUTO_LOAD_ENTITIES,
   DEFAULT_ORM_CHARSET,
   DEFAULT_ORM_CONNECTOR_PACKAGE,
@@ -53,7 +59,7 @@ import {
   DEFAULT_ORM_TIMEZONE,
   DEFAULT_ORM_TYPE,
   DEFAULT_ORM_USERNAME,
-  DEFAULT_QUEUE_DB,
+  DEFAULT_QUEUE_REDIS_DB,
   DEFAULT_REDIS_HOST,
   DEFAULT_REDIS_PASSWORD,
   DEFAULT_REDIS_PORT,
@@ -68,12 +74,6 @@ import {
   DEFAULT_THROTTLER_STRICT_LIMIT,
   DEFAULT_THROTTLER_STRICT_NAME,
   DEFAULT_THROTTLER_STRICT_TTL,
-  DEFAULT_WINSTON_DATE_PATTERN,
-  DEFAULT_WINSTON_DIRNAME,
-  DEFAULT_WINSTON_FILENAME,
-  DEFAULT_WINSTON_LEVEL,
-  DEFAULT_WINSTON_MAX_FILES,
-  DEFAULT_WINSTON_MAX_SIZE,
 } from './constants'
 import { LEVEL_TYPE } from './interfaces'
 
@@ -142,7 +142,7 @@ export const QueueValidationSchema = BaseValidationSchema.append<IQueueValidatio
   QUEUE_PORT: Joi.number(),
   QUEUE_USERNAME: Joi.string(),
   QUEUE_PASSWORD: Joi.string(),
-  QUEUE_DB: Joi.number().min(0).max(15).default(DEFAULT_QUEUE_DB),
+  QUEUE_REDIS_DB: Joi.number().min(0).max(15).default(DEFAULT_QUEUE_REDIS_DB),
 })
 
 /** 节流配置验证 */
@@ -195,14 +195,14 @@ export const EmailValidationSchema = BaseValidationSchema.append<IEmailValidatio
   EMAIL_TEMPLATE_DIR: Joi.string().default(DEFAULT_EMAIL_TEMPLATE_DIR),
 })
 
-/** winston配置验证 */
-export const WinstonValidationSchema = BaseValidationSchema.append<IWinstonValidationSchema>({
-  WINSTON_LEVEL: Joi.string()
+/** logger配置验证 */
+export const LoggerValidationSchema = BaseValidationSchema.append<ILoggerValidationSchema>({
+  LOGGER_LEVEL: Joi.string()
     .valid(...LEVEL_TYPE)
-    .default(DEFAULT_WINSTON_LEVEL),
-  WINSTON_DIRNAME: Joi.string().default(DEFAULT_WINSTON_DIRNAME),
-  WINSTON_FILENAME: Joi.string().default(DEFAULT_WINSTON_FILENAME),
-  WINSTON_DATE_PATTERN: Joi.string().default(DEFAULT_WINSTON_DATE_PATTERN),
-  WINSTON_MAX_SIZE: Joi.string().default(DEFAULT_WINSTON_MAX_SIZE),
-  WINSTON_MAX_FILES: Joi.string().default(DEFAULT_WINSTON_MAX_FILES),
+    .default(DEFAULT_LOGGER_LEVEL),
+  LOGGER_DIRNAME: Joi.string().default(DEFAULT_LOGGER_DIRNAME),
+  LOGGER_FILENAME: Joi.string().default(DEFAULT_LOGGER_FILENAME),
+  LOGGER_DATE_PATTERN: Joi.string().default(DEFAULT_LOGGER_DATE_PATTERN),
+  LOGGER_MAX_SIZE: Joi.string().default(DEFAULT_LOGGER_MAX_SIZE),
+  LOGGER_MAX_FILES: Joi.string().default(DEFAULT_LOGGER_MAX_FILES),
 })

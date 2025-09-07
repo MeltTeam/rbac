@@ -6,5 +6,5 @@ export interface IQueueValidationSchema extends IBaseValidationSchema {
   QUEUE_PORT?: number
   QUEUE_USERNAME?: string
   QUEUE_PASSWORD?: string
-  QUEUE_DB: number
+  QUEUE_REDIS_DB: number
 }
