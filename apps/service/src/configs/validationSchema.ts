@@ -3,20 +3,17 @@ import type {
   IBaseValidationSchema,
   ICacheValidationSchema,
   ICaptchaValidationSchema,
+  ICorsValidationSchema,
   IEmailValidationSchema,
   IJwtValidationSchema,
   ILoggerValidationSchema,
+  IOrmValidationSchema,
   IQueueValidationSchema,
+  ISwaggerValidationSchema,
   IThrottlerValidationSchema,
-  ITypeOrmValidationSchema,
 } from './interfaces'
 import Joi from 'joi'
 import {
-  DEFAULT_APP_CORS_CREDENTIALS,
-  DEFAULT_APP_CORS_HEADERS,
-  DEFAULT_APP_CORS_MAX_AGE,
-  DEFAULT_APP_CORS_METHODS,
-  DEFAULT_APP_CORS_ORIGINS,
   DEFAULT_APP_GLOBAL_PREFIX,
   DEFAULT_APP_HOSTNAME,
   DEFAULT_APP_NAME,
@@ -28,6 +25,11 @@ import {
   DEFAULT_CACHE_REDIS_DB,
   DEFAULT_CACHE_REDIS_TTL,
   DEFAULT_CAPTCHA_REDIS_DB,
+  DEFAULT_CORS_ALLOWED_HEADERS,
+  DEFAULT_CORS_CREDENTIALS,
+  DEFAULT_CORS_MAX_AGE,
+  DEFAULT_CORS_METHODS,
+  DEFAULT_CORS_ORIGINS,
   DEFAULT_EMAIL_HOST,
   DEFAULT_EMAIL_PORT,
   DEFAULT_EMAIL_SECURE,
@@ -64,6 +66,13 @@ import {
   DEFAULT_REDIS_PASSWORD,
   DEFAULT_REDIS_PORT,
   DEFAULT_REDIS_USERNAME,
+  DEFAULT_SWAGGER_DESCRIPTION,
+  DEFAULT_SWAGGER_ENABLED,
+  DEFAULT_SWAGGER_IGNORE_GLOBAL_PREFIX,
+  DEFAULT_SWAGGER_PATH,
+  DEFAULT_SWAGGER_TAG,
+  DEFAULT_SWAGGER_TITLE,
+  DEFAULT_SWAGGER_VERSION,
   DEFAULT_THROTTLER_DEFAULT_LIMIT,
   DEFAULT_THROTTLER_DEFAULT_NAME,
   DEFAULT_THROTTLER_DEFAULT_TTL,
@@ -92,11 +101,25 @@ export const AppValidationSchema = BaseValidationSchema.append<IAppValidationSch
   APP_HOSTNAME: Joi.string().default(DEFAULT_APP_HOSTNAME),
   APP_GLOBAL_PREFIX: Joi.string().default(DEFAULT_APP_GLOBAL_PREFIX),
   APP_SALT: Joi.string().default(DEFAULT_APP_SALT),
-  APP_CORS_ORIGINS: Joi.string().default(DEFAULT_APP_CORS_ORIGINS),
-  APP_CORS_METHODS: Joi.string().default(DEFAULT_APP_CORS_METHODS),
-  APP_CORS_HEADERS: Joi.string().default(DEFAULT_APP_CORS_HEADERS),
-  APP_CORS_CREDENTIALS: Joi.boolean().default(DEFAULT_APP_CORS_CREDENTIALS),
-  APP_CORS_MAX_AGE: Joi.number().default(DEFAULT_APP_CORS_MAX_AGE),
+})
+
+/** cors配置验证 */
+export const CorsValidationSchema = BaseValidationSchema.append<ICorsValidationSchema>({
+  CORS_ORIGINS: Joi.string().default(DEFAULT_CORS_ORIGINS),
+  CORS_METHODS: Joi.string().default(DEFAULT_CORS_METHODS),
+  CORS_ALLOWED_HEADERS: Joi.string().default(DEFAULT_CORS_ALLOWED_HEADERS),
+  CORS_CREDENTIALS: Joi.boolean().default(DEFAULT_CORS_CREDENTIALS),
+  CORS_MAX_AGE: Joi.number().default(DEFAULT_CORS_MAX_AGE),
+})
+
+export const SwaggerValidationSchema = BaseValidationSchema.append<ISwaggerValidationSchema>({
+  SWAGGER_ENABLED: Joi.boolean().default(DEFAULT_SWAGGER_ENABLED),
+  SWAGGER_TAG: Joi.string().default(DEFAULT_SWAGGER_TAG),
+  SWAGGER_TITLE: Joi.string().default(DEFAULT_SWAGGER_TITLE),
+  SWAGGER_DESCRIPTION: Joi.string().default(DEFAULT_SWAGGER_DESCRIPTION),
+  SWAGGER_VERSION: Joi.string().default(DEFAULT_SWAGGER_VERSION),
+  SWAGGER_IGNORE_GLOBAL_PREFIX: Joi.boolean().default(DEFAULT_SWAGGER_IGNORE_GLOBAL_PREFIX),
+  SWAGGER_PATH: Joi.string().default(DEFAULT_SWAGGER_PATH),
 })
 
 /** cache配置验证 */
@@ -167,7 +190,7 @@ export const ThrottlerValidationSchema = BaseValidationSchema.append<IThrottlerV
 })
 
 /** typeorm配置验证 */
-export const TypeOrmValidationSchema = BaseValidationSchema.append<ITypeOrmValidationSchema>({
+export const OrmValidationSchema = BaseValidationSchema.append<IOrmValidationSchema>({
   ORM_TYPE: Joi.string().default(DEFAULT_ORM_TYPE),
   ORM_PORT: Joi.number().default(DEFAULT_ORM_PORT),
   ORM_HOST: Joi.string().default(DEFAULT_ORM_HOST),

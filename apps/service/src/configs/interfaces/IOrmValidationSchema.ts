@@ -1,5 +1,5 @@
 /** typeorm配置验证接口 */
-export interface ITypeOrmValidationSchema {
+export interface IOrmValidationSchema {
   ORM_TYPE: string
   ORM_PORT: number
   ORM_HOST: string

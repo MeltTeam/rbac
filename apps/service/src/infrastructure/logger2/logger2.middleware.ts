@@ -3,6 +3,7 @@ import dayjs from 'dayjs'
 import { Request, Response } from 'express'
 import { ClsMiddleware, ClsService } from 'nestjs-cls'
 import { getClientIp, uuid_v4 } from '@/common/utils'
+import { LOGGER_CLS } from './logger2.constant'
 
 /** 日志中间件 */
 @Injectable()
@@ -16,12 +17,12 @@ export class Logger2Middleware extends ClsMiddleware {
         const requestId = cls.getId()
         const now = dayjs().valueOf()
         // 请求信息注入请求上下文
-        cls.set('CLIENT_IP', getClientIp(request))
-        cls.set('METHOD', request.method)
-        cls.set('START_TIMESTAMP', now)
-        cls.set('ORIGIN_URL', request.originalUrl)
-        cls.set('REFERER', request.headers.referer || '直接访问')
-        cls.set('USER_AGENT', request.headers['user-agent'] || '未知设备')
+        cls.set(LOGGER_CLS.CLIENT_IP, getClientIp(request))
+        cls.set(LOGGER_CLS.METHOD, request.method)
+        cls.set(LOGGER_CLS.START_TIMESTAMP, now)
+        cls.set(LOGGER_CLS.ORIGIN_URL, request.originalUrl)
+        cls.set(LOGGER_CLS.REFERER, request.headers.referer || '直接访问')
+        cls.set(LOGGER_CLS.USER_AGENT, request.headers['user-agent'] || '未知设备')
         const headers = new Map([
           /** 请求唯一ID */
           ['X-Request-Id', requestId],

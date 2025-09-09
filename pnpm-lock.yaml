@@ -13,7 +13,7 @@ catalogs:
       specifier: ^10.2.3
       version: 10.2.3
     '@nestjs/testing':
-      specifier: ^10.4.19
+      specifier: ^10.4.20
       version: 10.4.20
     '@types/cookie-parser':
       specifier: ^1.4.9
@@ -30,6 +30,9 @@ catalogs:
     '@types/jest':
       specifier: ^29.5.14
       version: 29.5.14
+    '@types/multer':
+      specifier: ^2.0.0
+      version: 2.0.0
     '@types/nodemailer':
       specifier: ^6.4.17
       version: 6.4.18
@@ -101,13 +104,13 @@ catalogs:
       specifier: ^2.3.0
       version: 2.3.0
     '@nestjs/common':
-      specifier: ^10.4.19
+      specifier: ^10.4.20
       version: 10.4.20
     '@nestjs/config':
       specifier: ^4.0.2
       version: 4.0.2
     '@nestjs/core':
-      specifier: ^10.4.19
+      specifier: ^10.4.20
       version: 10.4.20
     '@nestjs/event-emitter':
       specifier: ^3.0.1
@@ -125,8 +128,11 @@ catalogs:
       specifier: ^11.0.5
       version: 11.0.5
     '@nestjs/platform-express':
-      specifier: ^10.4.19
+      specifier: ^10.4.20
       version: 10.4.20
+    '@nestjs/schedule':
+      specifier: ^6.0.0
+      version: 6.0.0
     '@nestjs/swagger':
       specifier: ^8.1.1
       version: 8.1.1
@@ -502,7 +508,7 @@ importers:
         specifier: catalog:api_prod
         version: 10.4.20(@nestjs/common@10.4.20(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@10.4.20)
       '@nestjs/schedule':
-        specifier: ^6.0.0
+        specifier: catalog:api_prod
         version: 6.0.0(@nestjs/common@10.4.20(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@10.4.20(@nestjs/common@10.4.20(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@10.4.20)(reflect-metadata@0.2.2)(rxjs@7.8.2))
       '@nestjs/swagger':
         specifier: catalog:api_prod
@@ -652,6 +658,9 @@ importers:
       '@types/lodash-es':
         specifier: catalog:cli
         version: 4.17.12
+      '@types/multer':
+        specifier: catalog:api_dev
+        version: 2.0.0
       '@types/node':
         specifier: catalog:cli
         version: 22.17.2
@@ -2862,6 +2871,9 @@ packages:
   '@types/ms@2.1.0':
     resolution: {integrity: sha512-GsCCIZDE/p3i96vtEqx+7dBUGXrc7zeSK3wwPHIaRThS+9OhWIXRqzs4d6k1SVU8g91DrNRWxWUGhp5KXQb2VA==}
 
+  '@types/multer@2.0.0':
+    resolution: {integrity: sha512-C3Z9v9Evij2yST3RSBktxP9STm6OdMc5uR1xF1SGr98uv8dUlAL2hqwrZ3GVB3uyMyiegnscEK6PGtYvNrjTjw==}
+
   '@types/node@22.17.2':
     resolution: {integrity: sha512-gL6z5N9Jm9mhY+U2KXZpteb+09zyffliRkZyZOHODGATyC5B1Jt/7TzuuiLkFsSUMLbS1OLmlj/E+/3KF4Q/4w==}
 
@@ -3776,6 +3788,10 @@ packages:
   chalk@4.1.2:
     resolution: {integrity: sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==}
     engines: {node: '>=10'}
+
+  chalk@5.5.0:
+    resolution: {integrity: sha512-1tm8DTaJhPBG3bIkVeZt1iZM9GfSX2lzOeDVZH9R9ffRHpmHvxZ/QhgQH/aDTkswQVt+YHdXAdS/In/30OjCbg==}
+    engines: {node: ^12.17.0 || ^14.13 || >=16.0.0}
 
   chalk@5.6.0:
     resolution: {integrity: sha512-46QrSQFyVSEyYAgQ22hQ+zDa60YHA4fBstHmtSApj1Y5vKtG27fWowW03jCk5KcbXEWPZUIR894aARCA/G1kfQ==}
@@ -11867,6 +11883,10 @@ snapshots:
 
   '@types/ms@2.1.0': {}
 
+  '@types/multer@2.0.0':
+    dependencies:
+      '@types/express': 5.0.3
+
   '@types/node@22.17.2':
     dependencies:
       undici-types: 6.21.0
@@ -13046,6 +13066,8 @@ snapshots:
     dependencies:
       ansi-styles: 4.3.0
       supports-color: 7.2.0
+
+  chalk@5.5.0: {}
 
   chalk@5.6.0: {}
 
@@ -16121,7 +16143,7 @@ snapshots:
 
   lint-staged@16.1.5:
     dependencies:
-      chalk: 5.6.0
+      chalk: 5.5.0
       commander: 14.0.0
       debug: 4.4.1
       lilconfig: 3.1.3

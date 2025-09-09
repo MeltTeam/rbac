@@ -15,6 +15,9 @@ export interface IBootstrap {
   /** 初始化全局设置 */
   initGlobalSettings: () => Promise<void>
 
+  /** 初始化接口文档 */
+  initSwagger: () => Promise<void>
+
   /** 监听 */
   listen: () => Promise<void>
 

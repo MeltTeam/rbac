@@ -80,8 +80,8 @@ export class LoggerProcessor extends WorkerHost {
           JSON.stringify({
             ...loggerInfo,
             type: '未知异常',
-            msg: exception.message,
-            stack: exception.stack,
+            msg: (exception as Error).message,
+            stack: (exception as Error).stack,
           }),
           context,
         )

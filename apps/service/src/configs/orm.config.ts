@@ -4,11 +4,12 @@ import type { DataSourceOptions } from 'typeorm'
 import { registerAs } from '@nestjs/config'
 import { DataSource } from 'typeorm'
 import { DEFAULT_ORM_EXTRA } from './constants'
-import { TypeOrmValidationSchema } from './validationSchema'
+import { OrmValidationSchema } from './validationSchema'
 
+export type IOrmConfig = TypeOrmModuleOptions
 /** 基础数据源配置 */
 export function baseDataSourceOptions(): DataSourceOptions {
-  const { error, value } = TypeOrmValidationSchema.validate(process.env, {
+  const { error, value } = OrmValidationSchema.validate(process.env, {
     allowUnknown: true,
     abortEarly: false,
   })
@@ -32,14 +33,14 @@ export function baseDataSourceOptions(): DataSourceOptions {
 }
 
 /** mysql配置key */
-export const TYPEORM_CONFIG_KEY = 'TYPEORM_CONFIG_KEY'
+export const ORM_CONFIG_KEY = 'ORM_CONFIG_KEY'
 /** mysql配置 */
-export const TypeOrmConfig = registerAs(TYPEORM_CONFIG_KEY, (): TypeOrmModuleOptions => {
-  const { error, value } = TypeOrmValidationSchema.validate(process.env, {
+export const OrmConfig = registerAs(ORM_CONFIG_KEY, (): IOrmConfig => {
+  const { error, value } = OrmValidationSchema.validate(process.env, {
     allowUnknown: true,
     abortEarly: false,
   })
-  if (error) throw new Error(`${TypeOrmConfig.name}:${error.message}`)
+  if (error) throw new Error(`${OrmConfig.name}:${error.message}`)
   return {
     /** 是否同步数据库（默认：false） */
     synchronize: value.ORM_SYNCHRONIZE,
@@ -52,7 +53,7 @@ export const TypeOrmConfig = registerAs(TYPEORM_CONFIG_KEY, (): TypeOrmModuleOpt
 })
 
 /** mysql配置类型 */
-export type TypeOrmConfigType = ConfigType<typeof TypeOrmConfig>
+export type OrmConfigType = ConfigType<typeof OrmConfig>
 /** 数据迁移数据源 */
 export const baseDataSource = new DataSource({
   ...baseDataSourceOptions(),

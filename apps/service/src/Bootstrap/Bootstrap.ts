@@ -1,14 +1,15 @@
 import type { NestExpressApplication } from '@nestjs/platform-express'
 import type { IncomingMessage, Server, ServerResponse } from 'node:http'
 import type { IBootstrap } from './IBootstrap'
-import type { IAppConfig, IJwtConfig } from '@/configs'
+import type { IAppConfig, ICorsConfig, IJwtConfig, ISwaggerConfig } from '@/configs'
 import { ValidationPipe } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { NestFactory } from '@nestjs/core'
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import cookieParser from 'cookie-parser'
 import helmet from 'helmet'
 import { APP_PID } from '@/common/constants'
-import { APP_CONFIG_KEY, JWT_CONFIG_KEY } from '@/configs'
+import { APP_CONFIG_KEY, CORS_CONFIG_KEY, JWT_CONFIG_KEY, SWAGGER_CONFIG_KEY } from '@/configs'
 import { LOGGER2_SERVICE_TOKEN } from '@/infrastructure/logger2/logger2.constant'
 import { WinstonLogger } from '@/infrastructure/logger2/logger2.util'
 
@@ -21,6 +22,10 @@ export class Bootstrap implements IBootstrap {
   protected logger: WinstonLogger
   /** 应用配置 */
   protected appConfig: IAppConfig
+  /** cors配置 */
+  protected corsConfig: ICorsConfig
+  /** swagger配置 */
+  protected swaggerConfig: ISwaggerConfig
   /** JWT配置 */
   protected jwtConfig: IJwtConfig
   /** 应用实例 */
@@ -50,6 +55,8 @@ export class Bootstrap implements IBootstrap {
     this.logger.info('Initializing config...', Bootstrap.name)
     const configService = this.app.get(ConfigService)
     this.appConfig = configService.get<IAppConfig>(APP_CONFIG_KEY)!
+    this.corsConfig = configService.get<ICorsConfig>(CORS_CONFIG_KEY)!
+    this.swaggerConfig = configService.get<ISwaggerConfig>(SWAGGER_CONFIG_KEY)!
     this.jwtConfig = configService.get<IJwtConfig>(JWT_CONFIG_KEY)!
     this.logger.info('Config initialized successfully', Bootstrap.name)
     // ...各种配置
@@ -58,7 +65,7 @@ export class Bootstrap implements IBootstrap {
   async initMiddlewares(): Promise<void> {
     await this.checkInitConfig()
     this.logger.info('Initializing middlewares...', Bootstrap.name)
-    const { cors } = this.appConfig!
+    const cors = this.corsConfig!
     // 跨域处理
     this.app.enableCors({
       // 允许跨域的源
@@ -71,7 +78,7 @@ export class Bootstrap implements IBootstrap {
       //  允许跨域的请求方法类型
       methods: cors.methods,
       // 允许跨域的请求头属性
-      allowedHeaders: cors.headers,
+      allowedHeaders: cors.allowedHeaders,
       // 允许跨域携带凭证
       credentials: cors.credentials,
       // OPTIONS请求预检结果缓存的时间
@@ -161,6 +168,33 @@ export class Bootstrap implements IBootstrap {
     this.logger.info('Global settings initialized successfully', Bootstrap.name)
   }
 
+  async initSwagger(): Promise<void> {
+    await this.checkInitConfig()
+    const { enabled, title, description, version, ignoreGlobalPrefix, path } = this.swaggerConfig!
+    if (!enabled) return
+    this.logger.info('Initializing swagger document...', Bootstrap.name)
+    const swaggerConfig = new DocumentBuilder()
+      .setTitle(title)
+      .setDescription(description)
+      .setVersion(version)
+      .addBearerAuth({
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        in: 'header',
+        name: 'Authorization',
+        description: '在请求头Authorization中携带JWT，格式: Bearer <JWT_TOKEN>',
+      })
+      .build()
+    const swaggerDocument = SwaggerModule.createDocument(this.app, swaggerConfig, {
+      ignoreGlobalPrefix,
+    })
+    SwaggerModule.setup(path, this.app, swaggerDocument, {
+      customSiteTitle: title,
+    })
+    this.logger.info('Swagger document initialized successfully', Bootstrap.name)
+  }
+
   async listen(): Promise<void> {
     await this.checkInitConfig()
     const { name, hostname, port, globalPrefix } = this.appConfig!
@@ -169,6 +203,9 @@ export class Bootstrap implements IBootstrap {
       this.logger.info(`${name} started on port:${port}`, Bootstrap.name)
       this.logger.info(`${name} started on pid:${APP_PID}`, Bootstrap.name)
       this.logger.info(`Server running at ${url}${globalPrefix ? `/${globalPrefix}` : ''}`, Bootstrap.name)
+      this.logger.info(`SwaggerDocument running at ${url}/${this.swaggerConfig?.path}`, Bootstrap.name)
+      this.logger.info(`SwaggerDocument-json running at ${url}/${this.swaggerConfig?.path}-json`, Bootstrap.name)
+      this.logger.info(`SwaggerDocument-yaml running at ${url}/${this.swaggerConfig?.path}-yaml`, Bootstrap.name)
     })
   }
 

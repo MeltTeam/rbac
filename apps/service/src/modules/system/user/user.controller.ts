@@ -1,5 +1,6 @@
 import type { IUserController } from './IUser'
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common'
+import { ApiTags } from '@nestjs/swagger'
 import { AddDTO } from './dto/add.dto'
 import { DelIdDTO } from './dto/del.dto'
 import { FindAllDTO } from './dto/findAll.dto'
@@ -8,10 +9,10 @@ import { PatchDTO, PatchIdDTO } from './dto/patch.dto'
 import { DEL_USER_OK, PATCH_USER_OK } from './user.constant'
 import { UserService } from './user.service'
 
+@ApiTags('用户模块')
 @Controller('user')
 export class UserController implements IUserController {
   constructor(private readonly userService: UserService) {}
-
   @Post()
   async add(@Body() addDTO: AddDTO) {
     return await this.userService.handlerAdd(addDTO)

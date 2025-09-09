@@ -101,6 +101,7 @@
     "@types/express": "catalog:api_dev",
     "@types/jest": "catalog:api_dev",
     "@types/lodash-es": "catalog:cli",
+    "@types/multer": "catalog:api_dev",
     "@types/node": "catalog:cli",
     "@types/nodemailer": "catalog:api_dev",
     "@types/passport-jwt": "catalog:api_dev",

@@ -1,7 +1,7 @@
 {
   "name": "@packages/types",
   "type": "module",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "private": true,
   "description": "公共类型",
   "main": "dist/index.cjs",

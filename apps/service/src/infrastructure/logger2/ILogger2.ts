@@ -1,5 +1,6 @@
 import type { LoggerService } from '@nestjs/common'
 import type { Response } from 'express'
+import type { LOGGER_TYPES } from './logger2.constant'
 /** 日志信息 */
 export interface ILoggerInfo {
   /** 请求唯一ID */
@@ -23,8 +24,6 @@ export interface ILoggerInfo {
   /** 执行时间 */
   executionTime: string
 }
-
-export type LoggerType = '正常请求' | '业务异常' | '内置HTTP异常' | '手动系统异常' | '非手动系统异常' | '未知异常'
 
 export interface ILogger2JobData {
   loggerInfo: ILoggerInfo
@@ -54,5 +53,5 @@ export interface ILoggerService extends LoggerService {
    * 获取日志类型
    * @param exception 异常对象
    */
-  getLoggerType: (exception?: unknown) => LoggerType
+  getLoggerType: (exception?: unknown) => (typeof LOGGER_TYPES)[keyof typeof LOGGER_TYPES]
 }

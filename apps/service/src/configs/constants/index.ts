@@ -4,11 +4,20 @@ export const DEFAULT_APP_PORT = 4001
 export const DEFAULT_APP_HOSTNAME = '0.0.0.0'
 export const DEFAULT_APP_GLOBAL_PREFIX = ''
 export const DEFAULT_APP_SALT = 'NEST_APP_SALT'
-export const DEFAULT_APP_CORS_ORIGINS = 'http://127.0.0.1:4002,http://localhost:4002'
-export const DEFAULT_APP_CORS_METHODS = 'GET,PATCH,POST,DELETE,HEAD'
-export const DEFAULT_APP_CORS_HEADERS = 'Content-Type,Authorization'
-export const DEFAULT_APP_CORS_CREDENTIALS = true
-export const DEFAULT_APP_CORS_MAX_AGE = 3600
+/** cors配置相关 */
+export const DEFAULT_CORS_ORIGINS = 'http://127.0.0.1:4002,http://localhost:4002'
+export const DEFAULT_CORS_METHODS = 'GET,PATCH,POST,DELETE,HEAD'
+export const DEFAULT_CORS_ALLOWED_HEADERS = 'Content-Type,Authorization'
+export const DEFAULT_CORS_CREDENTIALS = true
+export const DEFAULT_CORS_MAX_AGE = 3600
+/** swagger配置相关 */
+export const DEFAULT_SWAGGER_ENABLED = true
+export const DEFAULT_SWAGGER_TAG = DEFAULT_APP_NAME
+export const DEFAULT_SWAGGER_TITLE = DEFAULT_APP_NAME
+export const DEFAULT_SWAGGER_DESCRIPTION = `${DEFAULT_SWAGGER_TITLE} API description`
+export const DEFAULT_SWAGGER_VERSION = '1.0.0'
+export const DEFAULT_SWAGGER_IGNORE_GLOBAL_PREFIX = true
+export const DEFAULT_SWAGGER_PATH = 'api-docs'
 /** redis配置相关 */
 export const DEFAULT_REDIS_HOST = '127.0.0.1'
 export const DEFAULT_REDIS_PORT = 6379

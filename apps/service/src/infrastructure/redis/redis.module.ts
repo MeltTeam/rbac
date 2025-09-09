@@ -40,7 +40,7 @@ export class RedisModule {
     }
 
     return {
-      global: isGlobal !== false,
+      global: isGlobal,
       module: RedisModule,
       providers: [...serviceClass, redisClientProvider],
       exports: [...serviceClass, redisClientToken],
