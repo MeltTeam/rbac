@@ -21,6 +21,6 @@ export type TypeClassName =
  * @param currentValue 当前值
  * @param typeClassName 类型类名
  */
-export function isType(currentValue: any, typeClassName: TypeClassName) {
+export function isType(currentValue: unknown, typeClassName: TypeClassName) {
   return Object.is(Object.prototype.toString.call(currentValue), `[object ${typeClassName}]`)
 }

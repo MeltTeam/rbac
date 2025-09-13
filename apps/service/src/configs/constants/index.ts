@@ -1,3 +1,5 @@
+import type { LOGGER_MODE } from '../interfaces'
+
 /** app配置相关 */
 export const DEFAULT_APP_NAME = 'NestApp'
 export const DEFAULT_APP_PORT = 4001
@@ -5,18 +7,24 @@ export const DEFAULT_APP_HOSTNAME = '0.0.0.0'
 export const DEFAULT_APP_GLOBAL_PREFIX = ''
 export const DEFAULT_APP_SALT = 'NEST_APP_SALT'
 /** cors配置相关 */
+export const DEFAULT_CORS_ENABLED = true
 export const DEFAULT_CORS_ORIGINS = 'http://127.0.0.1:4002,http://localhost:4002'
 export const DEFAULT_CORS_METHODS = 'GET,PATCH,POST,DELETE,HEAD'
 export const DEFAULT_CORS_ALLOWED_HEADERS = 'Content-Type,Authorization'
 export const DEFAULT_CORS_CREDENTIALS = true
 export const DEFAULT_CORS_MAX_AGE = 3600
+/** helmet配置相关 */
+export const DEFAULT_HELMET_ENABLED = true
+export const DEFAULT_HELMET_CROSS_ORIGIN_OPENER_POLICY = 'same-origin-allow-popups'
+export const DEFAULT_HELMET_CROSS_ORIGIN_RESOURCE_POLICY = false
+export const DEFAULT_HELMET_CONTENT_SECURITY_POLICY = false
 /** swagger配置相关 */
 export const DEFAULT_SWAGGER_ENABLED = true
 export const DEFAULT_SWAGGER_TAG = DEFAULT_APP_NAME
 export const DEFAULT_SWAGGER_TITLE = DEFAULT_APP_NAME
 export const DEFAULT_SWAGGER_DESCRIPTION = `${DEFAULT_SWAGGER_TITLE} API description`
 export const DEFAULT_SWAGGER_VERSION = '1.0.0'
-export const DEFAULT_SWAGGER_IGNORE_GLOBAL_PREFIX = true
+export const DEFAULT_SWAGGER_IGNORE_GLOBAL_PREFIX = false
 export const DEFAULT_SWAGGER_PATH = 'api-docs'
 /** redis配置相关 */
 export const DEFAULT_REDIS_HOST = '127.0.0.1'
@@ -98,9 +106,11 @@ export const DEFAULT_EMAIL_PORT = 587
 export const DEFAULT_EMAIL_SECURE = false
 export const DEFAULT_EMAIL_TEMPLATE_DIR = 'templates'
 /** 日志配置相关 */
+export const DEFAULT_LOGGER_MODE: (typeof LOGGER_MODE)[number] = 'mongodb'
 export const DEFAULT_LOGGER_LEVEL = 'info'
-export const DEFAULT_LOGGER_DIRNAME = 'logs'
-export const DEFAULT_LOGGER_FILENAME = '%DATE%'
-export const DEFAULT_LOGGER_DATE_PATTERN = 'YYYY-MM-DD'
-export const DEFAULT_LOGGER_MAX_SIZE = '5M'
-export const DEFAULT_LOGGER_MAX_FILES = '204'
+export const DEFAULT_LOGGER_FILE_DIRNAME = 'logs'
+export const DEFAULT_LOGGER_FILE_FILENAME = '%DATE%'
+export const DEFAULT_LOGGER_FILE_DATE_PATTERN = 'YYYY-MM-DD'
+export const DEFAULT_LOGGER_FILE_ZIPPED_ARCHIVE = true
+export const DEFAULT_LOGGER_FILE_MAX_SIZE = '5M'
+export const DEFAULT_LOGGER_FILE_MAX_FILES = '204'

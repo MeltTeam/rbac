@@ -49,12 +49,12 @@ export async function initRedis(options: IInitRedisOptions): Promise<IInitRedisR
   const redisClient = new Redis(redisConfig)
   if (logger && loggerContext) {
     const redisInfo: string = `redis${redisConfig.db} `
-    redisClient.on('end', () => logger.info(`${redisInfo}连接已手动关闭`, loggerContext))
-    redisClient.on('connect', () => logger.info(`${redisInfo}连接成功`, loggerContext))
-    redisClient.on('error', (error) => logger.error(`${redisInfo}${error.message}`, loggerContext))
-    redisClient.on('connecting', () => logger.info(`${redisInfo}连接中...`, loggerContext))
-    redisClient.on('reconnecting', () => logger.info(`${redisInfo}重新连接中...`, loggerContext))
-    redisClient.on('close', () => logger.info(`${redisInfo}连接已关闭`, loggerContext))
+    redisClient.on('end', () => logger.log(`${redisInfo}连接已手动关闭`, loggerContext))
+    redisClient.on('connect', () => logger.log(`${redisInfo}连接成功`, loggerContext))
+    redisClient.on('error', (error) => logger.log(`${redisInfo}${error.message}`, loggerContext))
+    redisClient.on('connecting', () => logger.log(`${redisInfo}连接中...`, loggerContext))
+    redisClient.on('reconnecting', () => logger.log(`${redisInfo}重新连接中...`, loggerContext))
+    redisClient.on('close', () => logger.log(`${redisInfo}连接已关闭`, loggerContext))
   }
   return { redisClient, redisConfig }
 }

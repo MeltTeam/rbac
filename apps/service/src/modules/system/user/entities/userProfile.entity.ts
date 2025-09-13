@@ -7,10 +7,6 @@ import { UserEntity } from './user.entity'
 /** 用户档案表实体 */
 @Entity({ name: 'sys_user_profile', comment: '用户档案表' })
 export class UserProfileEntity extends CommonEntity implements IUserProfileEntity {
-  constructor() {
-    super()
-  }
-
   @Column({
     comment: '用户别名',
     name: 'nick_name',

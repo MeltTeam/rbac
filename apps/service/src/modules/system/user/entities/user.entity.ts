@@ -10,10 +10,6 @@ import { UserProfileEntity } from './userProfile.entity'
 /** 用户表实体 */
 @Entity({ name: 'sys_user', comment: '用户表' })
 export class UserEntity extends CommonEntity implements IUserEntity {
-  constructor() {
-    super()
-  }
-
   @Column({
     comment: '用户名',
     name: 'name',
@@ -81,12 +77,6 @@ export class UserEntity extends CommonEntity implements IUserEntity {
   })
   salt: string
 
-  @Expose()
-  @BeforeInsert()
-  generateSalt() {
-    if (!this.salt) this.salt = uuid_v4()
-  }
-
   @OneToOne(() => UserProfileEntity, (profile) => profile.user, {
     cascade: true,
     onDelete: 'CASCADE',
@@ -105,4 +95,10 @@ export class UserEntity extends CommonEntity implements IUserEntity {
 
   @OneToMany(() => PostEntity, (post) => post.user)
   posts: PostEntity[]
+
+  @Expose()
+  @BeforeInsert()
+  generateSalt() {
+    if (!this.salt) this.salt = uuid_v4()
+  }
 }

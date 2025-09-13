@@ -515,13 +515,13 @@ importers:
         version: 8.1.1(@nestjs/common@10.4.20(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@10.4.20(@nestjs/common@10.4.20(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@10.4.20)(reflect-metadata@0.2.2)(rxjs@7.8.2))(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)
       '@nestjs/terminus':
         specifier: catalog:api_prod
-        version: 10.3.0(gdxpgdw5gt5uthaodz4ak24phy)
+        version: 10.3.0(lfvxonxqimnv24hll42fv7h2sm)
       '@nestjs/throttler':
         specifier: catalog:api_prod
         version: 6.4.0(@nestjs/common@10.4.20(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@10.4.20(@nestjs/common@10.4.20(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@10.4.20)(reflect-metadata@0.2.2)(rxjs@7.8.2))(reflect-metadata@0.2.2)
       '@nestjs/typeorm':
         specifier: catalog:api_prod
-        version: 10.0.2(@nestjs/common@10.4.20(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@10.4.20(@nestjs/common@10.4.20(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@10.4.20)(reflect-metadata@0.2.2)(rxjs@7.8.2))(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@0.3.20(ioredis@5.7.0)(mysql2@3.14.3)(ts-node@10.9.2(@types/node@22.17.2)(typescript@5.8.3)))
+        version: 10.0.2(@nestjs/common@10.4.20(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@10.4.20(@nestjs/common@10.4.20(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@10.4.20)(reflect-metadata@0.2.2)(rxjs@7.8.2))(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@0.3.20(ioredis@5.7.0)(mongodb@6.5.0(socks@2.8.7))(mysql2@3.14.3)(ts-node@10.9.2(@types/node@22.17.2)(typescript@5.8.3)))
       '@packages/types':
         specifier: workspace:*
         version: link:../../packages/types
@@ -576,6 +576,9 @@ importers:
       lodash-es:
         specifier: catalog:cli
         version: 4.17.21
+      mongodb:
+        specifier: 6.5.0
+        version: 6.5.0(socks@2.8.7)
       mongoose:
         specifier: catalog:api_prod
         version: 8.18.0(socks@2.8.7)
@@ -611,7 +614,7 @@ importers:
         version: 1.4.0
       typeorm:
         specifier: catalog:api_prod
-        version: 0.3.20(ioredis@5.7.0)(mysql2@3.14.3)(ts-node@10.9.2(@types/node@22.17.2)(typescript@5.8.3))
+        version: 0.3.20(ioredis@5.7.0)(mongodb@6.5.0(socks@2.8.7))(mysql2@3.14.3)(ts-node@10.9.2(@types/node@22.17.2)(typescript@5.8.3))
       uuid:
         specifier: catalog:cli
         version: 11.1.0
@@ -3788,10 +3791,6 @@ packages:
   chalk@4.1.2:
     resolution: {integrity: sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==}
     engines: {node: '>=10'}
-
-  chalk@5.5.0:
-    resolution: {integrity: sha512-1tm8DTaJhPBG3bIkVeZt1iZM9GfSX2lzOeDVZH9R9ffRHpmHvxZ/QhgQH/aDTkswQVt+YHdXAdS/In/30OjCbg==}
-    engines: {node: ^12.17.0 || ^14.13 || >=16.0.0}
 
   chalk@5.6.0:
     resolution: {integrity: sha512-46QrSQFyVSEyYAgQ22hQ+zDa60YHA4fBstHmtSApj1Y5vKtG27fWowW03jCk5KcbXEWPZUIR894aARCA/G1kfQ==}
@@ -7017,16 +7016,16 @@ packages:
       socks:
         optional: true
 
-  mongodb@6.19.0:
-    resolution: {integrity: sha512-H3GtYujOJdeKIMLKBT9PwlDhGrQfplABNF1G904w6r5ZXKWyv77aB0X9B+rhmaAwjtllHzaEkvi9mkGVZxs2Bw==}
+  mongodb@6.5.0:
+    resolution: {integrity: sha512-Fozq68InT+JKABGLqctgtb8P56pRrJFkbhW0ux+x1mdHeyinor8oNzJqwLjV/t5X5nJGfTlluxfyMnOXNggIUA==}
     engines: {node: '>=16.20.1'}
     peerDependencies:
       '@aws-sdk/credential-providers': ^3.188.0
-      '@mongodb-js/zstd': ^1.1.0 || ^2.0.0
+      '@mongodb-js/zstd': ^1.1.0
       gcp-metadata: ^5.2.0
       kerberos: ^2.0.1
       mongodb-client-encryption: '>=6.0.0 <7'
-      snappy: ^7.3.2
+      snappy: ^7.2.2
       socks: ^2.7.1
     peerDependenciesMeta:
       '@aws-sdk/credential-providers':
@@ -11110,7 +11109,7 @@ snapshots:
       class-transformer: 0.5.1
       class-validator: 0.14.2
 
-  '@nestjs/terminus@10.3.0(gdxpgdw5gt5uthaodz4ak24phy)':
+  '@nestjs/terminus@10.3.0(lfvxonxqimnv24hll42fv7h2sm)':
     dependencies:
       '@nestjs/common': 10.4.20(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/core': 10.4.20(@nestjs/common@10.4.20(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@10.4.20)(reflect-metadata@0.2.2)(rxjs@7.8.2)
@@ -11121,9 +11120,9 @@ snapshots:
     optionalDependencies:
       '@nestjs/axios': 3.1.3(@nestjs/common@10.4.20(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(axios@1.11.0)(rxjs@7.8.2)
       '@nestjs/mongoose': 10.1.0(@nestjs/common@10.4.20(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@10.4.20(@nestjs/common@10.4.20(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@10.4.20)(reflect-metadata@0.2.2)(rxjs@7.8.2))(mongoose@8.18.0(socks@2.8.7))(rxjs@7.8.2)
-      '@nestjs/typeorm': 10.0.2(@nestjs/common@10.4.20(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@10.4.20(@nestjs/common@10.4.20(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@10.4.20)(reflect-metadata@0.2.2)(rxjs@7.8.2))(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@0.3.20(ioredis@5.7.0)(mysql2@3.14.3)(ts-node@10.9.2(@types/node@22.17.2)(typescript@5.8.3)))
+      '@nestjs/typeorm': 10.0.2(@nestjs/common@10.4.20(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@10.4.20(@nestjs/common@10.4.20(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@10.4.20)(reflect-metadata@0.2.2)(rxjs@7.8.2))(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@0.3.20(ioredis@5.7.0)(mongodb@6.5.0(socks@2.8.7))(mysql2@3.14.3)(ts-node@10.9.2(@types/node@22.17.2)(typescript@5.8.3)))
       mongoose: 8.18.0(socks@2.8.7)
-      typeorm: 0.3.20(ioredis@5.7.0)(mysql2@3.14.3)(ts-node@10.9.2(@types/node@22.17.2)(typescript@5.8.3))
+      typeorm: 0.3.20(ioredis@5.7.0)(mongodb@6.5.0(socks@2.8.7))(mysql2@3.14.3)(ts-node@10.9.2(@types/node@22.17.2)(typescript@5.8.3))
 
   '@nestjs/testing@10.4.20(@nestjs/common@10.4.20(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@10.4.20(@nestjs/common@10.4.20(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@10.4.20)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@10.4.20(@nestjs/common@10.4.20(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@10.4.20))':
     dependencies:
@@ -11139,13 +11138,13 @@ snapshots:
       '@nestjs/core': 10.4.20(@nestjs/common@10.4.20(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@10.4.20)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       reflect-metadata: 0.2.2
 
-  '@nestjs/typeorm@10.0.2(@nestjs/common@10.4.20(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@10.4.20(@nestjs/common@10.4.20(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@10.4.20)(reflect-metadata@0.2.2)(rxjs@7.8.2))(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@0.3.20(ioredis@5.7.0)(mysql2@3.14.3)(ts-node@10.9.2(@types/node@22.17.2)(typescript@5.8.3)))':
+  '@nestjs/typeorm@10.0.2(@nestjs/common@10.4.20(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@10.4.20(@nestjs/common@10.4.20(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@10.4.20)(reflect-metadata@0.2.2)(rxjs@7.8.2))(reflect-metadata@0.2.2)(rxjs@7.8.2)(typeorm@0.3.20(ioredis@5.7.0)(mongodb@6.5.0(socks@2.8.7))(mysql2@3.14.3)(ts-node@10.9.2(@types/node@22.17.2)(typescript@5.8.3)))':
     dependencies:
       '@nestjs/common': 10.4.20(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       '@nestjs/core': 10.4.20(@nestjs/common@10.4.20(class-transformer@0.5.1)(class-validator@0.14.2)(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@10.4.20)(reflect-metadata@0.2.2)(rxjs@7.8.2)
       reflect-metadata: 0.2.2
       rxjs: 7.8.2
-      typeorm: 0.3.20(ioredis@5.7.0)(mysql2@3.14.3)(ts-node@10.9.2(@types/node@22.17.2)(typescript@5.8.3))
+      typeorm: 0.3.20(ioredis@5.7.0)(mongodb@6.5.0(socks@2.8.7))(mysql2@3.14.3)(ts-node@10.9.2(@types/node@22.17.2)(typescript@5.8.3))
       uuid: 9.0.1
 
   '@noble/hashes@1.8.0': {}
@@ -13066,8 +13065,6 @@ snapshots:
     dependencies:
       ansi-styles: 4.3.0
       supports-color: 7.2.0
-
-  chalk@5.5.0: {}
 
   chalk@5.6.0: {}
 
@@ -16143,7 +16140,7 @@ snapshots:
 
   lint-staged@16.1.5:
     dependencies:
-      chalk: 5.5.0
+      chalk: 5.6.0
       commander: 14.0.0
       debug: 4.4.1
       lilconfig: 3.1.3
@@ -16833,7 +16830,7 @@ snapshots:
     dependencies:
       '@babel/runtime': 7.28.3
       chokidar: 3.6.0
-      glob: 10.3.12
+      glob: 10.4.5
       html-minifier: 4.0.0
       js-beautify: 1.15.4
       lodash: 4.17.21
@@ -17154,7 +17151,7 @@ snapshots:
     optionalDependencies:
       socks: 2.8.7
 
-  mongodb@6.19.0(socks@2.8.7):
+  mongodb@6.5.0(socks@2.8.7):
     dependencies:
       '@mongodb-js/saslprep': 1.3.0
       bson: 6.10.4
@@ -19079,7 +19076,7 @@ snapshots:
 
   typedarray@0.0.6: {}
 
-  typeorm@0.3.20(ioredis@5.7.0)(mysql2@3.14.3)(ts-node@10.9.2(@types/node@22.17.2)(typescript@5.8.3)):
+  typeorm@0.3.20(ioredis@5.7.0)(mongodb@6.5.0(socks@2.8.7))(mysql2@3.14.3)(ts-node@10.9.2(@types/node@22.17.2)(typescript@5.8.3)):
     dependencies:
       '@sqltools/formatter': 1.2.5
       app-root-path: 3.1.0
@@ -19098,6 +19095,7 @@ snapshots:
       yargs: 17.7.2
     optionalDependencies:
       ioredis: 5.7.0
+      mongodb: 6.5.0(socks@2.8.7)
       mysql2: 3.14.3
       ts-node: 10.9.2(@types/node@22.17.2)(typescript@5.8.3)
     transitivePeerDependencies:
@@ -19646,7 +19644,7 @@ snapshots:
 
   winston-mongodb@7.0.1(socks@2.8.7)(winston@3.17.0):
     dependencies:
-      mongodb: 6.19.0(socks@2.8.7)
+      mongodb: 6.5.0(socks@2.8.7)
       winston: 3.17.0
       winston-transport: 4.9.0
     transitivePeerDependencies:

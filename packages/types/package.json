@@ -6,7 +6,7 @@
   "description": "公共类型",
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",
-  "types": "dist/types/index.d.ts",
+  "types": "dist/index.d.ts",
   "scripts": {
     "ts:init": "tsc --init",
     "build": "rollup -c",

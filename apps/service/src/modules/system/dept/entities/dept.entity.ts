@@ -7,10 +7,6 @@ import { RoleEntity } from '@/modules/system/role/entities/role.entity'
 /** 部门表实体 */
 @Entity({ name: 'sys_dept', comment: '部门表' })
 export class DeptEntity extends CommonEntity implements IDeptEntity {
-  constructor() {
-    super()
-  }
-
   @Column({
     comment: '部门名',
     name: 'name',

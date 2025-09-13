@@ -10,10 +10,6 @@ export interface RedisCheckSettings {
 }
 @Injectable()
 export class RedisHealthIndicator extends HealthIndicator {
-  constructor() {
-    super()
-  }
-
   test() {
     throw new Error('test')
   }

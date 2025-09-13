@@ -7,10 +7,6 @@ import { UserEntity } from '@/modules/system/user/entities/user.entity'
 /** 岗位表实体 */
 @Entity({ name: 'sys_post', comment: '岗位表' })
 export class PostEntity extends CommonEntity implements IPostEntity {
-  constructor() {
-    super()
-  }
-
   @Column({
     comment: '岗位名',
     name: 'name',

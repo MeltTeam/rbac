@@ -1,16 +1,16 @@
+import type { ILoggerConfig } from '@/configs'
 import { Global, Module } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { ClsModule } from 'nestjs-cls'
+import { LOGGER_CONFIG_KEY } from '@/configs'
 import { Cache2Module } from '@/infrastructure/cache2/cache2.module'
 import { CaptchaModule } from '@/infrastructure/captcha/captcha.module'
 import { DatabaseModule } from '@/infrastructure/database/database.module'
 import { EmailModule } from '@/infrastructure/email/email.module'
 import { Jwt2Module } from '@/infrastructure/jwt2/jwt2.module'
-import { WINSTON_DEFAULT_CONFIG } from '@/infrastructure/logger2/logger2.constant'
 import { Logger2Module } from '@/infrastructure/logger2/logger2.module'
 import { QueuesModule } from '@/infrastructure/queues/queues.module'
 import { Throttler2Module } from '@/infrastructure/throttler2/throttler2.module'
-
 /** 基建模块 */
 @Global()
 @Module({
@@ -22,8 +22,9 @@ import { Throttler2Module } from '@/infrastructure/throttler2/throttler2.module'
     QueuesModule,
     Logger2Module.forRootAsync({
       isGlobal: true,
-      async useFactory() {
-        return WINSTON_DEFAULT_CONFIG
+      async useFactory(configService: ConfigService) {
+        const config = configService.get<ILoggerConfig>(LOGGER_CONFIG_KEY)!
+        return config
       },
       inject: [ConfigService],
     }),

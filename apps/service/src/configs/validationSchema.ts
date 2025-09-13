@@ -1,17 +1,3 @@
-import type {
-  IAppValidationSchema,
-  IBaseValidationSchema,
-  ICacheValidationSchema,
-  ICaptchaValidationSchema,
-  ICorsValidationSchema,
-  IEmailValidationSchema,
-  IJwtValidationSchema,
-  ILoggerValidationSchema,
-  IOrmValidationSchema,
-  IQueueValidationSchema,
-  ISwaggerValidationSchema,
-  IThrottlerValidationSchema,
-} from './interfaces'
 import Joi from 'joi'
 import {
   DEFAULT_APP_GLOBAL_PREFIX,
@@ -27,6 +13,7 @@ import {
   DEFAULT_CAPTCHA_REDIS_DB,
   DEFAULT_CORS_ALLOWED_HEADERS,
   DEFAULT_CORS_CREDENTIALS,
+  DEFAULT_CORS_ENABLED,
   DEFAULT_CORS_MAX_AGE,
   DEFAULT_CORS_METHODS,
   DEFAULT_CORS_ORIGINS,
@@ -34,18 +21,24 @@ import {
   DEFAULT_EMAIL_PORT,
   DEFAULT_EMAIL_SECURE,
   DEFAULT_EMAIL_TEMPLATE_DIR,
+  DEFAULT_HELMET_CONTENT_SECURITY_POLICY,
+  DEFAULT_HELMET_CROSS_ORIGIN_OPENER_POLICY,
+  DEFAULT_HELMET_CROSS_ORIGIN_RESOURCE_POLICY,
+  DEFAULT_HELMET_ENABLED,
   DEFAULT_JWT_ACCESS_TOKEN_COOKIE_EXPIRES_IN,
   DEFAULT_JWT_ACCESS_TOKEN_EXPIRES_IN,
   DEFAULT_JWT_EXPIRES_IN,
   DEFAULT_JWT_REDIS_DB,
   DEFAULT_JWT_REFRESH_TOKEN_COOKIE_EXPIRES_IN,
   DEFAULT_JWT_SECRET,
-  DEFAULT_LOGGER_DATE_PATTERN,
-  DEFAULT_LOGGER_DIRNAME,
-  DEFAULT_LOGGER_FILENAME,
+  DEFAULT_LOGGER_FILE_DATE_PATTERN,
+  DEFAULT_LOGGER_FILE_DIRNAME,
+  DEFAULT_LOGGER_FILE_FILENAME,
+  DEFAULT_LOGGER_FILE_MAX_FILES,
+  DEFAULT_LOGGER_FILE_MAX_SIZE,
+  DEFAULT_LOGGER_FILE_ZIPPED_ARCHIVE,
   DEFAULT_LOGGER_LEVEL,
-  DEFAULT_LOGGER_MAX_FILES,
-  DEFAULT_LOGGER_MAX_SIZE,
+  DEFAULT_LOGGER_MODE,
   DEFAULT_ORM_AUTO_LOAD_ENTITIES,
   DEFAULT_ORM_CHARSET,
   DEFAULT_ORM_CONNECTOR_PACKAGE,
@@ -84,7 +77,24 @@ import {
   DEFAULT_THROTTLER_STRICT_NAME,
   DEFAULT_THROTTLER_STRICT_TTL,
 } from './constants'
-import { LEVEL_TYPE } from './interfaces'
+import {
+  CROSS_ORIGIN_OPENER_POLICY_TYPE,
+  IAppValidationSchema,
+  IBaseValidationSchema,
+  ICacheValidationSchema,
+  ICaptchaValidationSchema,
+  ICorsValidationSchema,
+  IEmailValidationSchema,
+  IHelmetValidationSchema,
+  IJwtValidationSchema,
+  ILoggerValidationSchema,
+  IOrmValidationSchema,
+  IQueueValidationSchema,
+  ISwaggerValidationSchema,
+  IThrottlerValidationSchema,
+  LEVEL_TYPE,
+  LOGGER_MODE,
+} from './interfaces'
 
 /** 公共配置验证 */
 export const BaseValidationSchema = Joi.object<IBaseValidationSchema>({
@@ -105,6 +115,7 @@ export const AppValidationSchema = BaseValidationSchema.append<IAppValidationSch
 
 /** cors配置验证 */
 export const CorsValidationSchema = BaseValidationSchema.append<ICorsValidationSchema>({
+  CORS_ENABLED: Joi.boolean().default(DEFAULT_CORS_ENABLED),
   CORS_ORIGINS: Joi.string().default(DEFAULT_CORS_ORIGINS),
   CORS_METHODS: Joi.string().default(DEFAULT_CORS_METHODS),
   CORS_ALLOWED_HEADERS: Joi.string().default(DEFAULT_CORS_ALLOWED_HEADERS),
@@ -112,6 +123,17 @@ export const CorsValidationSchema = BaseValidationSchema.append<ICorsValidationS
   CORS_MAX_AGE: Joi.number().default(DEFAULT_CORS_MAX_AGE),
 })
 
+/** helmet配置验证 */
+export const HelmetValidationSchema = BaseValidationSchema.append<IHelmetValidationSchema>({
+  HELMET_ENABLED: Joi.boolean().default(DEFAULT_HELMET_ENABLED),
+  HELMET_CROSS_ORIGIN_OPENER_POLICY: Joi.string()
+    .valid(...CROSS_ORIGIN_OPENER_POLICY_TYPE)
+    .default(DEFAULT_HELMET_CROSS_ORIGIN_OPENER_POLICY),
+  HELMET_CROSS_ORIGIN_RESOURCE_POLICY: Joi.boolean().default(DEFAULT_HELMET_CROSS_ORIGIN_RESOURCE_POLICY),
+  HELMET_CONTENT_SECURITY_POLICY: Joi.boolean().default(DEFAULT_HELMET_CONTENT_SECURITY_POLICY),
+})
+
+/** swagger配置验证 */
 export const SwaggerValidationSchema = BaseValidationSchema.append<ISwaggerValidationSchema>({
   SWAGGER_ENABLED: Joi.boolean().default(DEFAULT_SWAGGER_ENABLED),
   SWAGGER_TAG: Joi.string().default(DEFAULT_SWAGGER_TAG),
@@ -220,12 +242,16 @@ export const EmailValidationSchema = BaseValidationSchema.append<IEmailValidatio
 
 /** logger配置验证 */
 export const LoggerValidationSchema = BaseValidationSchema.append<ILoggerValidationSchema>({
+  LOGGER_MODE: Joi.string()
+    .valid(...LOGGER_MODE)
+    .default(DEFAULT_LOGGER_MODE),
   LOGGER_LEVEL: Joi.string()
     .valid(...LEVEL_TYPE)
     .default(DEFAULT_LOGGER_LEVEL),
-  LOGGER_DIRNAME: Joi.string().default(DEFAULT_LOGGER_DIRNAME),
-  LOGGER_FILENAME: Joi.string().default(DEFAULT_LOGGER_FILENAME),
-  LOGGER_DATE_PATTERN: Joi.string().default(DEFAULT_LOGGER_DATE_PATTERN),
-  LOGGER_MAX_SIZE: Joi.string().default(DEFAULT_LOGGER_MAX_SIZE),
-  LOGGER_MAX_FILES: Joi.string().default(DEFAULT_LOGGER_MAX_FILES),
+  LOGGER_FILE_DIRNAME: Joi.string().default(DEFAULT_LOGGER_FILE_DIRNAME),
+  LOGGER_FILE_FILENAME: Joi.string().default(DEFAULT_LOGGER_FILE_FILENAME),
+  LOGGER_FILE_DATE_PATTERN: Joi.string().default(DEFAULT_LOGGER_FILE_DATE_PATTERN),
+  LOGGER_FILE_ZIPPED_ARCHIVE: Joi.boolean().default(DEFAULT_LOGGER_FILE_ZIPPED_ARCHIVE),
+  LOGGER_FILE_MAX_SIZE: Joi.string().default(DEFAULT_LOGGER_FILE_MAX_SIZE),
+  LOGGER_FILE_MAX_FILES: Joi.string().default(DEFAULT_LOGGER_FILE_MAX_FILES),
 })

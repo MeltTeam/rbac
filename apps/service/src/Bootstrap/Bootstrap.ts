@@ -1,7 +1,7 @@
 import type { NestExpressApplication } from '@nestjs/platform-express'
 import type { IncomingMessage, Server, ServerResponse } from 'node:http'
 import type { IBootstrap } from './IBootstrap'
-import type { IAppConfig, ICorsConfig, IJwtConfig, ISwaggerConfig } from '@/configs'
+import type { IAppConfig, ICorsConfig, IHelmetConfig, IJwtConfig, ISwaggerConfig } from '@/configs'
 import { ValidationPipe } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { NestFactory } from '@nestjs/core'
@@ -9,7 +9,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import cookieParser from 'cookie-parser'
 import helmet from 'helmet'
 import { APP_PID } from '@/common/constants'
-import { APP_CONFIG_KEY, CORS_CONFIG_KEY, JWT_CONFIG_KEY, SWAGGER_CONFIG_KEY } from '@/configs'
+import { APP_CONFIG_KEY, CORS_CONFIG_KEY, HELMET_CONFIG_KEY, JWT_CONFIG_KEY, SWAGGER_CONFIG_KEY } from '@/configs'
 import { LOGGER2_SERVICE_TOKEN } from '@/infrastructure/logger2/logger2.constant'
 import { WinstonLogger } from '@/infrastructure/logger2/logger2.util'
 
@@ -24,6 +24,8 @@ export class Bootstrap implements IBootstrap {
   protected appConfig: IAppConfig
   /** cors配置 */
   protected corsConfig: ICorsConfig
+  /** helmet配置 */
+  protected helmetConfig: IHelmetConfig
   /** swagger配置 */
   protected swaggerConfig: ISwaggerConfig
   /** JWT配置 */
@@ -52,39 +54,24 @@ export class Bootstrap implements IBootstrap {
   }
 
   async initConfig(): Promise<void> {
-    this.logger.info('Initializing config...', Bootstrap.name)
+    this.logger.log('Config 初始化中...', Bootstrap.name)
     const configService = this.app.get(ConfigService)
     this.appConfig = configService.get<IAppConfig>(APP_CONFIG_KEY)!
     this.corsConfig = configService.get<ICorsConfig>(CORS_CONFIG_KEY)!
+    this.helmetConfig = configService.get<IHelmetConfig>(HELMET_CONFIG_KEY)!
     this.swaggerConfig = configService.get<ISwaggerConfig>(SWAGGER_CONFIG_KEY)!
     this.jwtConfig = configService.get<IJwtConfig>(JWT_CONFIG_KEY)!
-    this.logger.info('Config initialized successfully', Bootstrap.name)
+    this.logger.log('Config 初始化成功', Bootstrap.name)
     // ...各种配置
   }
 
   async initMiddlewares(): Promise<void> {
     await this.checkInitConfig()
-    this.logger.info('Initializing middlewares...', Bootstrap.name)
-    const cors = this.corsConfig!
-    // 跨域处理
-    this.app.enableCors({
-      // 允许跨域的源
-      origin: (origin, callback) => {
-        const allowedOrigins = cors.origins.split(',')
-        const isLocalNetwork = /^http:\/\/192\.168\.0\.\d{1,3}(?::\d+)?$/.test(origin)
-        const isAllowed = allowedOrigins.includes(origin) || isLocalNetwork
-        callback(null, isAllowed)
-      },
-      //  允许跨域的请求方法类型
-      methods: cors.methods,
-      // 允许跨域的请求头属性
-      allowedHeaders: cors.allowedHeaders,
-      // 允许跨域携带凭证
-      credentials: cors.credentials,
-      // OPTIONS请求预检结果缓存的时间
-      maxAge: cors.maxAge,
-    })
+    this.logger.log('Middlewares 初始化中...', Bootstrap.name)
 
+    // 跨域处理
+    const corsConfig = this.corsConfig!
+    if (corsConfig.enabled) this.app.enableCors(corsConfig.config)
     // 开启cookie解析
     this.app.use(cookieParser())
     // csrf防御
@@ -117,26 +104,22 @@ export class Bootstrap implements IBootstrap {
     // this.app.use(doubleCsrfProtection)
     // web安全，常见漏洞
     // https://docs.nestjs.com/security/helmet
-    this.app.use(
-      helmet({
-        crossOriginOpenerPolicy: { policy: 'same-origin-allow-popups' },
-        crossOriginResourcePolicy: false,
-        contentSecurityPolicy: false,
-      }),
-    )
-    this.logger.info('Middlewares initialized successfully', Bootstrap.name)
+    const helmetConfig = this.helmetConfig!
+    if (helmetConfig.enabled) this.app.use(helmet(helmetConfig.config))
+
+    this.logger.log('Middlewares 初始化成功', Bootstrap.name)
   }
 
   async checkInitConfig() {
     if (!this.appConfig) {
       await this.app.close()
-      throw new Error('Config is not initialized')
+      throw new Error('Config 未初始化')
     }
   }
 
   async initPipes(): Promise<void> {
     await this.checkInitConfig()
-    this.logger.info('Initializing pipes...', Bootstrap.name)
+    this.logger.log('Pipes 初始化中...', Bootstrap.name)
     // 添加全局管道验证
     this.app.useGlobalPipes(
       new ValidationPipe({
@@ -148,12 +131,12 @@ export class Bootstrap implements IBootstrap {
         forbidNonWhitelisted: true,
       }),
     )
-    this.logger.info('Pipes initialized successfully', Bootstrap.name)
+    this.logger.log('Pipes 初始化成功', Bootstrap.name)
   }
 
   async initGlobalSettings(): Promise<void> {
     await this.checkInitConfig()
-    this.logger.info('Initializing global settings...', Bootstrap.name)
+    this.logger.log('GlobalSettings 初始化中...', Bootstrap.name)
     // 日志替换
     this.app.useLogger(this.app.get<WinstonLogger>(LOGGER2_SERVICE_TOKEN))
 
@@ -165,15 +148,16 @@ export class Bootstrap implements IBootstrap {
 
     // 设置全局前缀
     this.app.setGlobalPrefix(this.appConfig.globalPrefix)
-    this.logger.info('Global settings initialized successfully', Bootstrap.name)
+    this.logger.log('GlobalSettings 初始化成功', Bootstrap.name)
   }
 
   async initSwagger(): Promise<void> {
     await this.checkInitConfig()
-    const { enabled, title, description, version, ignoreGlobalPrefix, path } = this.swaggerConfig!
-    if (!enabled) return
-    this.logger.info('Initializing swagger document...', Bootstrap.name)
-    const swaggerConfig = new DocumentBuilder()
+    const swaggerConfig = this.swaggerConfig!
+    if (!swaggerConfig.enabled) return
+    this.logger.log('Swagger 初始化中...', Bootstrap.name)
+    const { title, description, version, ignoreGlobalPrefix, path } = swaggerConfig.config
+    const documentBuilder = new DocumentBuilder()
       .setTitle(title)
       .setDescription(description)
       .setVersion(version)
@@ -186,13 +170,13 @@ export class Bootstrap implements IBootstrap {
         description: '在请求头Authorization中携带JWT，格式: Bearer <JWT_TOKEN>',
       })
       .build()
-    const swaggerDocument = SwaggerModule.createDocument(this.app, swaggerConfig, {
+    const swaggerDocument = SwaggerModule.createDocument(this.app, documentBuilder, {
       ignoreGlobalPrefix,
     })
     SwaggerModule.setup(path, this.app, swaggerDocument, {
       customSiteTitle: title,
     })
-    this.logger.info('Swagger document initialized successfully', Bootstrap.name)
+    this.logger.log('Swagger 初始化成功', Bootstrap.name)
   }
 
   async listen(): Promise<void> {
@@ -200,12 +184,13 @@ export class Bootstrap implements IBootstrap {
     const { name, hostname, port, globalPrefix } = this.appConfig!
     await this.app.listen(port, hostname, async () => {
       const url = await this.app.getUrl()
-      this.logger.info(`${name} started on port:${port}`, Bootstrap.name)
-      this.logger.info(`${name} started on pid:${APP_PID}`, Bootstrap.name)
-      this.logger.info(`Server running at ${url}${globalPrefix ? `/${globalPrefix}` : ''}`, Bootstrap.name)
-      this.logger.info(`SwaggerDocument running at ${url}/${this.swaggerConfig?.path}`, Bootstrap.name)
-      this.logger.info(`SwaggerDocument-json running at ${url}/${this.swaggerConfig?.path}-json`, Bootstrap.name)
-      this.logger.info(`SwaggerDocument-yaml running at ${url}/${this.swaggerConfig?.path}-yaml`, Bootstrap.name)
+      this.logger.log(`${name} 开启 port:${port}`, Bootstrap.name)
+      this.logger.log(`${name} 开启 pid:${APP_PID}`, Bootstrap.name)
+      this.logger.log(`${name} 运行在 ${url}${globalPrefix ? `/${globalPrefix}` : ''}`, Bootstrap.name)
+      const swaggerConfig = this.swaggerConfig?.config
+      this.logger.log(`Swagger 运行在 ${url}/${swaggerConfig.path}`, Bootstrap.name)
+      this.logger.log(`Swagger-json 运行在 ${url}/${swaggerConfig.path}-json`, Bootstrap.name)
+      this.logger.log(`Swagger-yaml 运行在 ${url}/${swaggerConfig.path}-yaml`, Bootstrap.name)
     })
   }
 

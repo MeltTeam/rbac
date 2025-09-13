@@ -32,16 +32,16 @@ export default [
     input: 'src/index.ts',
     output: [
       {
-        file: 'dist/types/index.d.ts',
+        file: 'dist/index.d.ts',
         format: 'esm',
       },
     ],
     plugins: [
       dts({
-        outputDir: './dist/types',
+        outputDir: './dist',
         exclude: ['node_modules/**'],
       }),
-      del({ hook: 'buildEnd', targets: ['./dist/types'] }),
+      del({ hook: 'buildEnd', targets: ['./dist/index.d.ts'] }),
     ],
     external: ['@types/node'],
   },

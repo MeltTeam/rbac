@@ -7,10 +7,6 @@ import { RoleEntity } from '@/modules/system/role/entities/role.entity'
 /** 权限表实体 */
 @Entity({ name: 'sys_permission', comment: '权限表' })
 export class PermissionEntity extends CommonEntity implements IPermissionEntity {
-  constructor() {
-    super()
-  }
-
   @Column({
     comment: '权限名',
     name: 'name',

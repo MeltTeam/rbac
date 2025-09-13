@@ -3,6 +3,7 @@ import type { CACHE_CONFIG_KEY, CacheConfigType } from './cache.config'
 import type { CAPTCHA_CONFIG_KEY, CaptchaConfigType } from './captcha.config'
 import type { CORS_CONFIG_KEY, CorsConfigType } from './cors.config'
 import type { EMAIL_CONFIG_KEY, EmailConfigType } from './email.config'
+import type { HELMET_CONFIG_KEY, HelmetConfigType } from './helmet.config'
 import type { JWT_CONFIG_KEY, JwtConfigType } from './jwt.config'
 import type { LOGGER_CONFIG_KEY, LoggerConfigType } from './logger.config'
 import type { ORM_CONFIG_KEY, OrmConfigType } from './orm.config'
@@ -14,6 +15,7 @@ import { CacheConfig } from './cache.config'
 import { CaptchaConfig } from './captcha.config'
 import { CorsConfig } from './cors.config'
 import { EmailConfig } from './email.config'
+import { HelmetConfig } from './helmet.config'
 import { JwtConfig } from './jwt.config'
 import { LoggerConfig } from './logger.config'
 import { OrmConfig } from './orm.config'
@@ -27,6 +29,7 @@ export * from './captcha.config'
 export * from './constants'
 export * from './cors.config'
 export * from './email.config'
+export * from './helmet.config'
 export * from './jwt.config'
 export * from './logger.config'
 export * from './orm.config'
@@ -47,6 +50,7 @@ export interface AllConfigType {
   [LOGGER_CONFIG_KEY]: LoggerConfigType
   [CORS_CONFIG_KEY]: CorsConfigType
   [SWAGGER_CONFIG_KEY]: SwaggerConfigType
+  [HELMET_CONFIG_KEY]: HelmetConfigType
 }
 
 /** 所有配置 */
@@ -62,4 +66,5 @@ export const ALL_CONFIG = {
   LoggerConfig,
   CorsConfig,
   SwaggerConfig,
+  HelmetConfig,
 }

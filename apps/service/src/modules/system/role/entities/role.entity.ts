@@ -9,10 +9,6 @@ import { UserEntity } from '@/modules/system/user/entities/user.entity'
 /** 角色表实体 */
 @Entity({ name: 'sys_role', comment: '角色表' })
 export class RoleEntity extends CommonEntity implements IRoleEntity {
-  constructor() {
-    super()
-  }
-
   @Column({
     comment: '角色名',
     name: 'name',

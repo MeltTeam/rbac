@@ -32,7 +32,7 @@ import { BusinessModule } from '@/modules/business.module'
   ],
   providers: [
     // 节流器守卫
-    { provide: APP_GUARD, useClass: Throttler2Guard },
+    // { provide: APP_GUARD, useClass: Throttler2Guard },
     { provide: APP_FILTER, useClass: systemExceptionFilter },
     // http异常过滤器
     { provide: APP_FILTER, useClass: HttpExceptionFilter },
