@@ -2,9 +2,17 @@ import type { IAddUserDTO } from '@packages/types'
 import { IsOptional } from 'class-validator'
 import { REMARK, REMARK_MAX, REMARK_MIN } from '@/common/constants'
 import { InputPwd, InputSpace, InputStringLength, NotEmpty } from '@/common/decorators'
+import { ApiModel } from '@/common/decorators/swagger.decorator'
 import { PWD, PWD_MAX, PWD_MIN, USER_NAME, USER_NAME_MAX, USER_NAME_MIN } from '../user.constant'
 
-/** 添加用户接口参数校验 */
+@ApiModel(
+  {
+    name: { type: String, description: USER_NAME, example: 'admin' },
+    pwd: { type: String, description: PWD, example: '123456' },
+    remark: { type: String, description: REMARK, example: '张三创建', required: false },
+  },
+  { description: '添加用户接口参数校验' },
+)
 export class AddDTO implements IAddUserDTO {
   @NotEmpty(USER_NAME)
   @InputSpace(USER_NAME)

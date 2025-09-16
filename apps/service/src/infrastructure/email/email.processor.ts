@@ -39,7 +39,7 @@ export class EmailProcessor extends WorkerHost {
         return
       } catch (error) {
         lastError = error
-        this.logger2Service.debug(error.message, EmailProcessor.name)
+        this.logger2Service.error(`邮件发送失败:${error.message}`, EmailProcessor.name)
         await job.log(`邮件发送失败:${error.message}`)
       }
     }

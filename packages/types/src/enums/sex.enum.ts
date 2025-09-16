@@ -1,11 +1,11 @@
 /** 性别枚举 */
 export enum SexEnum {
-  /** 女 */
-  FEMALE = 10,
+  /** 未知 */
+  UNKNOWN = 10,
   /** 男 */
   MALE = 20,
-  /** 未知 */
-  UNKNOWN = 30,
+  /** 女 */
+  FEMALE = 30,
 }
 
 /** 性别枚举文本映射 */

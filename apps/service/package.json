@@ -73,7 +73,7 @@
     "ioredis": "catalog:api_prod",
     "joi": "catalog:api_prod",
     "lodash-es": "catalog:cli",
-    "mongodb": "6.5.0",
+    "mongodb": "catalog:",
     "mongoose": "catalog:api_prod",
     "mysql2": "catalog:api_prod",
     "nestjs-cls": "catalog:api_prod",

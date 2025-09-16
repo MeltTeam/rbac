@@ -99,7 +99,7 @@ export class UserService implements IUserService {
       take: limit,
       order: { createdAt: 'DESC' },
     })
-    const VO = new FindAllVO()
+    const VO = new FindAllVO<UserVO>()
     VO.data = data.map((data) => new UserVO(data))
     VO.limit = limit
     VO.page = page

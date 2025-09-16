@@ -161,14 +161,17 @@ export class Bootstrap implements IBootstrap {
       .setTitle(title)
       .setDescription(description)
       .setVersion(version)
-      .addBearerAuth({
-        type: 'http',
-        scheme: 'bearer',
-        bearerFormat: 'JWT',
-        in: 'header',
-        name: 'Authorization',
-        description: '在请求头Authorization中携带JWT，格式: Bearer <JWT_TOKEN>',
-      })
+      .addBearerAuth(
+        {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+          in: 'header',
+          name: 'Authorization',
+          description: '在请求头Authorization中携带JWT，格式: Bearer <JWT_TOKEN>',
+        },
+        'JWT',
+      )
       .build()
     const swaggerDocument = SwaggerModule.createDocument(this.app, documentBuilder, {
       ignoreGlobalPrefix,
