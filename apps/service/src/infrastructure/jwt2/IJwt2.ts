@@ -1,8 +1,7 @@
 import type { Response as ExpressResponse } from 'express'
-import type { UserInfo } from '@/modules/system/auth/vos'
+import type { TokenType } from './jwt2.constant'
+import type { UserInfo } from '@/modules/system/auth/vo'
 
-/** token类型 */
-export type TokenType = 'refreshToken' | 'accessToken'
 /** redis存储token的数据结构 */
 export interface IRedisToken {
   /** 长token */
@@ -11,10 +10,10 @@ export interface IRedisToken {
   accessToken: string
 }
 
-export interface IPayLoad {
-  id: string
-  username: string
-  tokenType: TokenType
+export interface IPayLoad extends UserInfo {
+  tokenType: (typeof TokenType)[keyof typeof TokenType]
+  iat?: number
+  exp?: number
 }
 
 export interface ISetRedisTokenOptions {
@@ -33,14 +32,17 @@ export interface IJwt2Service {
    * @param userInfo 用户信息
    * @param tokenType token类型
    */
-  generatePayload: (userInfo: UserInfo, tokenType: TokenType) => Promise<IPayLoad>
+  generatePayload: (userInfo: UserInfo, tokenType: (typeof TokenType)[keyof typeof TokenType]) => Promise<IPayLoad>
+
   /**
    * 生成Token
    * @param userInfo 用户信息
    * @param expiresIn 过期时间
+   * @param secret 加密盐
    * @param tokenType token类型
    */
-  generateToken: (userInfo: UserInfo, expiresIn: string, secret: string, tokenType: TokenType) => Promise<string>
+  generateToken: (userInfo: UserInfo, expiresIn: string, secret: string, tokenType: (typeof TokenType)[keyof typeof TokenType]) => Promise<string>
+
   /**
    * 设置cookie
    * @param res 响应对象
@@ -49,17 +51,20 @@ export interface IJwt2Service {
    * @param maxAge 过期时间
    */
   setCookieToken: (res: ExpressResponse, key: string, value: string, maxAge: number) => Promise<void>
+
   /**
    * 删除cookie
    * @param res 响应对象
    * @param key cookie存储token的key
    */
-  delCookieToken: (res: ExpressResponse, key: TokenType) => Promise<void>
+  delCookieToken: (res: ExpressResponse, key: (typeof TokenType)[keyof typeof TokenType]) => Promise<void>
+
   /**
    * 把token信息存进redis
    * @param setTokenOptions 配置
    */
   setRedisToken: (setRedisTokenOptions: ISetRedisTokenOptions) => Promise<void>
+
   /**
    * 删除redis中的token信息
    * @param userId 用户ID
@@ -67,9 +72,9 @@ export interface IJwt2Service {
   delRedisToken: (userId: string) => Promise<void>
 
   /**
-   * 验证刷新token
+   * 验证令牌
    * @param token 令牌
    * @param secret 加密盐
    */
-  // validateRefreshToken: (token: string, secret?: string | Buffer<ArrayBufferLike>) => Promise<UserInfo>
+  validateToken: (token: string, secret?: string | Buffer<ArrayBufferLike>) => Promise<IPayLoad>
 }

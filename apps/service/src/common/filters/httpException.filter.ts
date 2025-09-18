@@ -1,5 +1,6 @@
 import type { Request, Response } from 'express'
-import { ArgumentsHost, Catch, ExceptionFilter, HttpException } from '@nestjs/common'
+import { ArgumentsHost, Catch, ExceptionFilter, HttpException, UnauthorizedException } from '@nestjs/common'
+import { ThrottlerException } from '@nestjs/throttler'
 import { ResFormat } from '@/common/response'
 import { Logger2Service } from '@/infrastructure/logger2/logger2.service'
 
@@ -15,14 +16,25 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const request = ctx.getRequest<Request>()
     const response = ctx.getResponse<Response>()
     const status = exception.getStatus()
-    const data = exception.getResponse()
-    const VO = new ResFormat({
-      request,
-      response,
-      data,
-      exception,
-    })
-    await this.logger2Service.action(response, exception)
+    let data = exception.getResponse()
+    if (exception instanceof UnauthorizedException) data = '令牌已失效，请重新登录'
+    switch (true) {
+      // 高频的不记录日志
+      case exception instanceof ThrottlerException: {
+        data = '请求过于频繁，请稍后再试!!!'
+        break
+      }
+      case exception instanceof UnauthorizedException: {
+        data = '令牌已失效，请重新登录'
+        break
+      }
+      default: {
+        data = exception.getResponse()
+        await this.logger2Service.action(response, exception)
+      }
+    }
+    const VO = new ResFormat({ request, response, data, exception })
+
     response.status(status).json(VO)
   }
 }

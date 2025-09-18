@@ -12,12 +12,7 @@ export class Throttler2ExceptionFilter implements ExceptionFilter {
     const request = ctx.getRequest<Request>()
     const response = ctx.getResponse<Response>()
     const status = exception.getStatus()
-    const VO = new ResFormat({
-      request,
-      response,
-      data,
-      exception,
-    })
-    response.status(status).json(VO).end()
+    const VO = new ResFormat({ request, response, data, exception })
+    response.status(status).json(VO)
   }
 }

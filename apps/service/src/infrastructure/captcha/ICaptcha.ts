@@ -1,5 +1,5 @@
-import type { ISvgCaptchaVO } from '@packages/types'
 import type { ConfigObject as SvgCaptchaConfig } from 'svg-captcha'
+import type { SvgCaptchaVO } from './vo/svgCaptcha.vo'
 
 export type CaptchaName = 'svg' | 'email'
 
@@ -48,7 +48,7 @@ export interface ICaptchaService {
    * @param type 验证码类型
    * @param svgCaptchaConfig svg验证码配置
    */
-  generateSvgCaptcha: (type: CaptchaType, svgCaptchaConfig?: SvgCaptchaConfig) => Promise<ISvgCaptchaVO>
+  generateSvgCaptcha: (type: CaptchaType, svgCaptchaConfig?: SvgCaptchaConfig) => Promise<SvgCaptchaVO>
 
   /**
    * 生成邮箱验证码

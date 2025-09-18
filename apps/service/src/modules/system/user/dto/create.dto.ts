@@ -8,12 +8,12 @@ import { PWD, PWD_MAX, PWD_MIN, USER_NAME, USER_NAME_MAX, USER_NAME_MIN } from '
 @ApiModel(
   {
     name: { type: String, description: USER_NAME, example: 'admin' },
-    pwd: { type: String, description: PWD, example: '123456' },
+    pwd: { type: String, description: PWD, example: 'Aa123456' },
     remark: { type: String, description: REMARK, example: '张三创建', required: false },
   },
-  { description: '添加用户接口参数校验' },
+  { description: '创建用户接口参数校验' },
 )
-export class AddDTO implements IAddUserDTO {
+export class CreateDTO implements IAddUserDTO {
   @NotEmpty(USER_NAME)
   @InputSpace(USER_NAME)
   @InputStringLength(USER_NAME_MIN, USER_NAME_MAX, USER_NAME)

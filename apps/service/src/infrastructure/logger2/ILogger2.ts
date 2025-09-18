@@ -1,13 +1,17 @@
 import type { LoggerService } from '@nestjs/common'
 import type { Response } from 'express'
 import type { MongoClientOptions } from 'mongodb'
+import type { ClsStore } from 'nestjs-cls'
 import type DailyRotateFile from 'winston-daily-rotate-file'
 import type { LOGGER_TYPES } from './logger2.constant'
 import type { LEVEL_TYPE } from '@/configs/interfaces'
+import type { UserInfo } from '@/modules/system/auth/vo'
 /** 日志信息 */
 export interface ILoggerInfo {
   /** 请求唯一ID */
   requestId: string
+  /** 用户信息 */
+  userInfo: UserInfo
   /** 客户端IP */
   clientIp: string
   /** 请求方法 */
@@ -32,6 +36,23 @@ export interface ILoggerInfo {
   msg: string
   /** 堆栈信息 */
   stack: string
+}
+
+export interface ILoggerCls extends ClsStore {
+  /** 用户信息 */
+  USER_INFO: UserInfo
+  /** 客户端IP */
+  CLIENT_IP: string
+  /** 请求方法 */
+  METHOD: string
+  /** 开始时间戳 */
+  START_TIMESTAMP: number
+  /** 请求url */
+  ORIGIN_URL: string
+  /** 来源 */
+  REFERER: string
+  /** 客户端信息 */
+  USER_AGENT: string
 }
 
 /** 传给日志任务队列的数据格式 */

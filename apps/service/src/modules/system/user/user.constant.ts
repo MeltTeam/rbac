@@ -12,9 +12,9 @@ export const USER_NAME_MIN = 2
 export const USER_NAME_MAX = 64
 
 /** 删除用户成功 */
-export const DEL_USER_OK = '删除用户成功' as const
+export const DEL_BY_ID_VO = '删除成功' as const
 /** 修改用户成功 */
-export const PATCH_USER_OK = '修改用户成功' as const
+export const PATCH_VO = '修改成功' as const
 
 // 邮箱相关
 /** 邮箱 key */

@@ -7,7 +7,7 @@ import { USER_ID } from '../user.constant'
 @ApiModel({
   id: { type: String, description: USER_ID },
 })
-export class DelIdDTO implements IParamsIdDTO {
+export class DelByIdDTO implements IParamsIdDTO {
   @NotEmpty(USER_ID)
   @InputSpace(USER_ID)
   @InputStringLength(UUID_V4_LENGTH, UUID_V4_LENGTH, USER_ID)

@@ -5,10 +5,13 @@ export enum AuthBusiness {
   INCORRECT_PASSWORD = '4200',
   /** 用户不存在 */
   USER_NOT_FOUND = '4201',
+  /** 当前邮箱与验证邮箱不一致 */
+  EMAIL_MISMATCH = '4202',
 }
 
 /** 授权模块业务码文本映射 */
 export const AuthBusinessTextMap: Record<AuthBusiness, [string, number]> = {
-  [AuthBusiness.INCORRECT_PASSWORD]: ['密码错误', HttpStatus.UNAUTHORIZED],
+  [AuthBusiness.INCORRECT_PASSWORD]: ['密码错误', HttpStatus.FORBIDDEN],
   [AuthBusiness.USER_NOT_FOUND]: ['用户不存在', HttpStatus.NOT_FOUND],
+  [AuthBusiness.EMAIL_MISMATCH]: ['当前邮箱与验证邮箱不一致', HttpStatus.BAD_REQUEST],
 }

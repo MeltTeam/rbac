@@ -1,21 +1,23 @@
-import { Inject, Injectable } from '@nestjs/common'
+import type { ILoggerCls } from '@/infrastructure/logger2/ILogger2'
+import { Injectable } from '@nestjs/common'
 import { PassportStrategy } from '@nestjs/passport'
 import { ClsService } from 'nestjs-cls'
 import { Strategy } from 'passport-local'
+import { LOGGER_CLS } from '@/infrastructure/logger2/logger2.constant'
 import { AuthService } from '../auth.service'
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
-  @Inject()
-  clsService: ClsService
-
-  constructor(private readonly authService: AuthService) {
+  constructor(
+    private readonly authService: AuthService,
+    private readonly clsService: ClsService<ILoggerCls>,
+  ) {
     super({ usernameField: 'name', passwordField: 'pwd' })
   }
 
   async validate(name: string, pwd: string) {
-    const ip = this.clsService.get('CLIENT_IP')
-    const userInfo = await this.authService.validateUser({ name, pwd, ip })
+    const userInfo = await this.authService.validateUser(name, pwd)
+    this.clsService.set(LOGGER_CLS.USER_INFO, userInfo)
     return userInfo
   }
 }

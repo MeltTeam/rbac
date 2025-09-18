@@ -1,9 +1,10 @@
-import type { Response as ExpressResponse } from 'express'
+import type { Response } from 'express'
 import type Redis from 'ioredis'
-import type { IJwt2Service, IRedisToken, ISetRedisTokenOptions, TokenType } from './IJwt2'
-import type { UserInfo } from '@/modules/system/auth/vos'
+import type { IJwt2Service, IPayLoad, IRedisToken, ISetRedisTokenOptions } from './IJwt2'
+import type { TokenType } from './jwt2.constant'
+import type { UserInfo } from '@/modules/system/auth/vo'
 import { Cache, CACHE_MANAGER } from '@nestjs/cache-manager'
-import { Inject, Injectable } from '@nestjs/common'
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { LikeCache2Module } from '@/infrastructure/cache2/LikeCache2Module.abstract'
 import { JWT_REDIS_CLIENT_TOKEN } from './jwt2.constant'
@@ -15,45 +16,24 @@ export class Jwt2Service extends LikeCache2Module implements IJwt2Service {
     @Inject(JWT_REDIS_CLIENT_TOKEN) redis: Redis,
     private readonly jwtService: JwtService,
   ) {
-    super({
-      className: Jwt2Service.name,
-      redis,
-      memory,
-    })
+    super({ className: Jwt2Service.name, redis, memory })
   }
 
-  async generatePayload(userInfo: UserInfo, tokenType: TokenType) {
-    const payload = {
-      id: userInfo.id,
-      username: userInfo.name,
-      tokenType,
-    }
-    return payload
+  async generatePayload(userInfo: UserInfo, tokenType: (typeof TokenType)[keyof typeof TokenType]) {
+    return { ...userInfo, tokenType }
   }
 
-  async generateToken(userInfo: UserInfo, expiresIn: string, secret: string, tokenType: TokenType) {
+  async generateToken(userInfo: UserInfo, expiresIn: string, secret: string, tokenType: (typeof TokenType)[keyof typeof TokenType]) {
     const payload = await this.generatePayload(userInfo, tokenType)
-    return await this.jwtService.signAsync(payload, {
-      expiresIn,
-      secret,
-    })
+    return await this.jwtService.signAsync(payload, { expiresIn, secret })
   }
 
-  async setCookieToken(res: ExpressResponse, key: string, value: string, maxAge: number) {
-    res.cookie(key, value, {
-      httpOnly: true,
-      secure: false,
-      sameSite: 'lax',
-      maxAge,
-    })
+  async setCookieToken(res: Response, key: string, value: string, maxAge: number) {
+    res.cookie(key, value, { httpOnly: true, secure: false, sameSite: 'lax', maxAge })
   }
 
-  async delCookieToken(res: ExpressResponse, key: TokenType) {
-    res.clearCookie(key, {
-      httpOnly: true,
-      secure: false,
-      sameSite: 'lax',
-    })
+  async delCookieToken(res: Response, key: (typeof TokenType)[keyof typeof TokenType]) {
+    res.clearCookie(key, { httpOnly: true, secure: false, sameSite: 'lax', maxAge: 0 })
   }
 
   async setRedisToken(setRedisTokenOptions: ISetRedisTokenOptions) {
@@ -69,13 +49,13 @@ export class Jwt2Service extends LikeCache2Module implements IJwt2Service {
     return await this.del(userId)
   }
 
-  // async validateRefreshToken(token: string, secret?: string | Buffer<ArrayBufferLike>) {
-  //   const { tokenType, ...userInfo } = await this.jwtService.verifyAsync<IPayLoad>(token, {
-  //     secret,
-  //   })
-  //   if (tokenType !== 'refreshToken') throw new HttpException('令牌类型错误', HttpStatus.INTERNAL_SERVER_ERROR)
-  //   const redisToken = await this.get<IRedisToken>(userInfo.id)
-  //   if (redisToken?.refreshToken !== token) throw new HttpException('刷新令牌解析错误', HttpStatus.INTERNAL_SERVER_ERROR)
-  //   return userInfo
-  // }
+  async validateToken(token: string, secret?: string | Buffer<ArrayBufferLike>) {
+    try {
+      const payload = await this.jwtService.verifyAsync<IPayLoad>(token, { secret, ignoreExpiration: false })
+      return payload
+    } catch (error) {
+      console.warn('validateToken', error.message)
+      throw new UnauthorizedException(error.message)
+    }
+  }
 }

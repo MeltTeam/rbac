@@ -1,68 +1,72 @@
 import type { IUserController } from './IUser'
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common'
 import { ApiController, ApiMethod } from '@/common/decorators/swagger.decorator'
-import { AddDTO } from './dto/add.dto'
-import { DelIdDTO } from './dto/del.dto'
-import { FindAllDTO } from './dto/findAll.dto'
-import { FindOneIdDTO } from './dto/findOne.dto'
-import { PatchDTO, PatchIdDTO } from './dto/patch.dto'
-import { DEL_USER_OK, PATCH_USER_OK } from './user.constant'
+import { FindAllDTO } from '@/common/dto/findAll.dto'
+import { JwtGuard } from '@/common/guards/jwt.guard'
+import { CreateDTO, DelByIdDTO, FindOneByIdDTO, PatchByIdDTO, PatchDTO } from './dto'
+import { DEL_BY_ID_VO, PATCH_VO } from './user.constant'
 import { UserService } from './user.service'
-import { FindAllVO, UserVO } from './vo'
+import { FindAllUserVO, UserVO } from './vo'
 
-@ApiController({ ApiTagsOptions: ['用户模块'] })
 @Controller('user')
+@ApiController({ ApiTagsOptions: ['用户模块'] })
 export class UserController implements IUserController {
   constructor(private readonly userService: UserService) {}
+
+  @UseGuards(JwtGuard)
   @Post()
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '添加用户' }],
+    ApiOperationOptions: [{ summary: '创建用户' }],
     ApiResponseOptions: [{ type: UserVO }],
     ApiBearerAuthOptions: 'JWT',
   })
-  async add(@Body() addDTO: AddDTO) {
-    return await this.userService.handlerAdd(addDTO)
+  async create(@Body() createDTO: CreateDTO) {
+    return await this.userService.create(createDTO)
   }
 
+  @UseGuards(JwtGuard)
   @Delete(':id')
   @ApiMethod({
     ApiOperationOptions: [{ summary: '删除用户' }],
-    ApiResponseOptions: [{ type: String, example: DEL_USER_OK }],
+    ApiResponseOptions: [{ type: String, example: DEL_BY_ID_VO }],
     ApiBearerAuthOptions: 'JWT',
   })
-  async delById(@Param() delIdDTO: DelIdDTO) {
-    await this.userService.handlerDel(delIdDTO)
-    return DEL_USER_OK
+  async delById(@Param() delByIdDTO: DelByIdDTO) {
+    await this.userService.delById(delByIdDTO)
+    return DEL_BY_ID_VO
   }
 
+  @UseGuards(JwtGuard)
   @Get()
   @ApiMethod({
     ApiOperationOptions: [{ summary: '分页查询用户详情' }],
-    ApiResponseOptions: [{ type: FindAllVO }],
+    ApiResponseOptions: [{ type: FindAllUserVO }],
     ApiBearerAuthOptions: 'JWT',
   })
   async findAll(@Query() findAllDTO: FindAllDTO) {
-    return await this.userService.handlerFindAll(findAllDTO)
+    return await this.userService.findAll(findAllDTO)
   }
 
+  @UseGuards(JwtGuard)
   @Get('detail/:id')
   @ApiMethod({
     ApiOperationOptions: [{ summary: '查询用户详情' }],
     ApiResponseOptions: [{ type: UserVO }],
     ApiBearerAuthOptions: 'JWT',
   })
-  async findOneById(@Param() findOneIdDTO: FindOneIdDTO) {
-    return await this.userService.handlerFindOne({ id: findOneIdDTO.id })
+  async findOneById(@Param() findOneByIdDTO: FindOneByIdDTO) {
+    return await this.userService.findOneById(findOneByIdDTO)
   }
 
+  @UseGuards(JwtGuard)
   @Patch(':id')
   @ApiMethod({
     ApiOperationOptions: [{ summary: '修改用户' }],
-    ApiResponseOptions: [{ type: String, example: PATCH_USER_OK }],
+    ApiResponseOptions: [{ type: String, example: PATCH_VO }],
     ApiBearerAuthOptions: 'JWT',
   })
-  async patchById(@Param() patchIdDTO: PatchIdDTO, @Body() patchDTO: PatchDTO) {
-    await this.userService.handlerPatch(patchIdDTO, patchDTO)
-    return PATCH_USER_OK
+  async patch(@Param() patchByIdDTO: PatchByIdDTO, @Body() patchDTO: PatchDTO) {
+    await this.userService.patch(patchByIdDTO, patchDTO)
+    return PATCH_VO
   }
 }

@@ -9,9 +9,10 @@ import { HttpInterceptor } from '@/common/interceptors/http.interceptor'
 import { ALL_CONFIG } from '@/configs'
 import { InfrastructureModule } from '@/infrastructure/infrastructure.module'
 import { Logger2Middleware } from '@/infrastructure/logger2/logger2.middleware'
-import { Throttler2ExceptionFilter } from '@/infrastructure/throttler2/throttler2.filter'
+// import { Throttler2ExceptionFilter } from '@/infrastructure/throttler2/throttler2.filter'
 import { Throttler2Guard } from '@/infrastructure/throttler2/throttler2.guard'
 import { BusinessModule } from '@/modules/business.module'
+// import { UnauthorizedExceptionFilter } from './common/filters/unauthorized.filter'
 /** 根模块 */
 @Module({
   imports: [
@@ -32,12 +33,15 @@ import { BusinessModule } from '@/modules/business.module'
   ],
   providers: [
     // 节流器守卫
-    // { provide: APP_GUARD, useClass: Throttler2Guard },
+    { provide: APP_GUARD, useClass: Throttler2Guard },
+    // 系统异常过滤器
     { provide: APP_FILTER, useClass: systemExceptionFilter },
     // http异常过滤器
     { provide: APP_FILTER, useClass: HttpExceptionFilter },
-    // 节流器异常过滤器
-    { provide: APP_FILTER, useClass: Throttler2ExceptionFilter },
+    // // 未授权异常过滤器
+    // { provide: APP_FILTER, useClass: UnauthorizedExceptionFilter },
+    // // 节流器异常过滤器
+    // { provide: APP_FILTER, useClass: Throttler2ExceptionFilter },
     // http拦截器
     { provide: APP_INTERCEPTOR, useClass: HttpInterceptor },
   ],

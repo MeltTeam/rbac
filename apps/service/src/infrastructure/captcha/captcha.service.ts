@@ -22,8 +22,9 @@ import { APP_CONFIG_KEY } from '@/configs'
 import { LikeCache2Module } from '@/infrastructure/cache2/LikeCache2Module.abstract'
 import { EmailService } from '@/infrastructure/email/email.service'
 import { Logger2Service } from '@/infrastructure/logger2/logger2.service'
-import { CAPTCHA_REDIS_CLIENT_TOKEN, SEND_EMAIL_CAPTCHA_OK } from './captcha.constant'
+import { CAPTCHA_REDIS_CLIENT_TOKEN, SEND_EMAIL_CAPTCHA_VO } from './captcha.constant'
 import { CaptchaException } from './captcha.exception'
+import { SvgCaptchaVO } from './vo/svgCaptcha.vo'
 
 @Injectable()
 export class CaptchaService extends LikeCache2Module implements ICaptchaService {
@@ -71,10 +72,8 @@ export class CaptchaService extends LikeCache2Module implements ICaptchaService 
       },
     )
     const svgBse64 = `data:image/svg+xml;base64,${Buffer.from(data).toString('base64')}`
-    return {
-      token,
-      svg: svgBse64,
-    }
+    const VO = new SvgCaptchaVO({ token, svg: svgBse64 })
+    return VO
   }
 
   async generateEmailCaptcha(options: IGenerateEmailCaptchaOptions) {
@@ -82,63 +81,33 @@ export class CaptchaService extends LikeCache2Module implements ICaptchaService 
     const captchaName: CaptchaName = 'email'
     const throttleNum = 2
     const throttleTimer = 3 * 60 * 1000
-    await this.throttleLock({
-      type,
-      id: to,
-      timer: throttleTimer,
-      num: throttleNum,
-      name: captchaName,
-    })
+    await this.throttleLock({ type, id: to, timer: throttleTimer, num: throttleNum, name: captchaName })
 
     /** 生成验证码 */
     const code = getCode(CAPTCHA_LENGTH, 16)
-    const key = this.createCaptchaKey({
-      id: to,
-      name: captchaName,
-      type,
-    })
+    const key = this.createCaptchaKey({ id: to, name: captchaName, type })
     await this.set(key, code, 3 * 60 * 1000)
     this.logger2Service.debug(`${this.generateEmailCaptcha.name}:${key}:${code}`, CaptchaService.name)
     const { name: APP_NAME } = this.configService.get<AppConfigType>(APP_CONFIG_KEY)!
-    await this.emailService.sendEmail({
-      fromName: subject,
-      to,
-      subject,
-      template,
-      context: {
-        subject,
-        APP_NAME,
-        code,
-      },
-    })
-    return SEND_EMAIL_CAPTCHA_OK
+    await this.emailService.sendEmail({ fromName: subject, to, subject, template, context: { subject, APP_NAME, code } })
+    return SEND_EMAIL_CAPTCHA_VO
   }
 
   async delCaptcha(options: ICreateCaptchaKeyOptions) {
     const { id, name, type } = options
-    const key = this.createCaptchaKey({
-      id,
-      name,
-      type,
-    })
-    return await this.del(key)
+    const key = this.createCaptchaKey({ id, name, type })
+    await this.del(key)
   }
 
   async verifyCaptcha(code: string, options: ICreateCaptchaKeyOptions) {
     const { id, name, type } = options
-    const key = this.createCaptchaKey({
-      id,
-      name,
-      type,
-    })
-    console.warn(key)
+    const key = this.createCaptchaKey({ id, name, type })
     const redisCode = await this.get(key)
     /** 找不到 */
     if (!redisCode) throw new CaptchaException(CaptchaBusiness.CODE_EXPIRED)
     /** 对不上 */
     if (redisCode !== code) throw new CaptchaException(CaptchaBusiness.CODE_INVALID)
-
-    return await this.delCaptcha(options)
+    await this.delCaptcha(options)
   }
 
   async throttleLock(options: IThrottleLockOptions) {

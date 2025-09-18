@@ -1,6 +1,7 @@
+import type { Request, Response } from 'express'
+import type { ILoggerCls } from './ILogger2'
 import { Injectable } from '@nestjs/common'
 import dayjs from 'dayjs'
-import { Request, Response } from 'express'
 import { ClsMiddleware, ClsService } from 'nestjs-cls'
 import { getClientIp, uuid_v4 } from '@/common/utils'
 import { LOGGER_CLS } from './logger2.constant'
@@ -12,7 +13,7 @@ export class Logger2Middleware extends ClsMiddleware {
     super({
       generateId: true,
       idGenerator: (request) => ((request as Request).headers['X-Request-Id'] as string) ?? uuid_v4(),
-      setup(cls: ClsService, request: Request, response: Response) {
+      setup(cls: ClsService<ILoggerCls>, request: Request, response: Response) {
         console.warn('LoggerMiddleware')
         const requestId = cls.getId()
         const now = dayjs().valueOf()

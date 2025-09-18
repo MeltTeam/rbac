@@ -19,6 +19,10 @@ export const LOGGER_TYPES = {
 } as const
 /** 日志上下文 */
 export const LOGGER_CLS = {
+  /** 用户信息 */
+  USER_INFO: 'USER_INFO',
+  /** 响应对象 */
+  RESPONSE: 'RESPONSE',
   /** 客户端IP */
   CLIENT_IP: 'CLIENT_IP',
   /** 请求方法 */

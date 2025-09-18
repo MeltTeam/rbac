@@ -1,9 +1,10 @@
 import { ApiModel } from '@/common/decorators/swagger.decorator'
+import { FindAllVO } from '@/common/vo/findAll.vo'
 import { UserVO } from './index'
 
 @ApiModel(
   {
-    data: { type: () => UserVO, isArray: true },
+    data: { description: '用户详情列表', type: () => UserVO, isArray: true },
     total: { description: '总数', type: Number },
     page: { description: '第几页', type: Number },
     limit: { description: '一页几条数据', type: Number },
@@ -11,14 +12,4 @@ import { UserVO } from './index'
   },
   { description: '分页数据' },
 )
-export class FindAllVO<T = any> {
-  data: T[]
-  /** 总数 */
-  total: number
-  /** 第几页 */
-  page: number
-  /** 一页几条数据 */
-  limit: number
-  /** 总页数 */
-  totalPages: number
-}
+export class FindAllUserVO extends FindAllVO<UserVO> {}

@@ -5,12 +5,12 @@ import { REMARK, REMARK_MAX, REMARK_MIN } from '@/common/constants'
 import { InputEmail, InputSpace, InputStringLength } from '@/common/decorators'
 import { ApiModel } from '@/common/decorators/swagger.decorator'
 import { EMAIL, NICK_NAME, USER_AVATAR, USER_NAME, USER_NAME_MAX, USER_NAME_MIN } from '../user.constant'
-import { DelIdDTO } from './del.dto'
+import { DelByIdDTO } from './delById.dto'
 
 @ApiModel({
   id: { type: String, description: '用户ID' },
 })
-export class PatchIdDTO extends DelIdDTO {}
+export class PatchByIdDTO extends DelByIdDTO {}
 
 @ApiModel(
   {

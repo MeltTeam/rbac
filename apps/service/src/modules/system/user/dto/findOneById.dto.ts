@@ -1,8 +1,8 @@
 import { ApiModel } from '@/common/decorators/swagger.decorator'
 import { USER_ID } from '../user.constant'
-import { DelIdDTO } from './del.dto'
+import { DelByIdDTO } from './delById.dto'
 
 @ApiModel({
   id: { type: String, description: USER_ID },
 })
-export class FindOneIdDTO extends DelIdDTO {}
+export class FindOneByIdDTO extends DelByIdDTO {}

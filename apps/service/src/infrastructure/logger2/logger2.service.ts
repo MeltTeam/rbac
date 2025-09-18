@@ -2,13 +2,14 @@ import type { Queue } from 'bullmq'
 import type { Response } from 'express'
 import type Redis from 'ioredis'
 import type { MongoDBTransportInstance } from 'winston-mongodb'
-import type { IInitMongoDBOptions, ILogger2JobData, ILoggerInfo, ILoggerService } from './ILogger2'
+import type { IInitMongoDBOptions, ILogger2JobData, ILoggerCls, ILoggerInfo, ILoggerService } from './ILogger2'
 import type { WinstonLogger } from './logger2.util'
 import type { ILoggerConfig } from '@/configs'
 import { join } from 'node:path'
 import { InjectQueue } from '@nestjs/bullmq'
 import { HttpException, Inject, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
+import { HttpStatus } from '@packages/types'
 import dayjs from 'dayjs'
 import { MongoClient } from 'mongodb'
 import { ClsService } from 'nestjs-cls'
@@ -39,7 +40,7 @@ export class Logger2Service implements ILoggerService {
     @InjectQueue(LOGGER_QUEUE_TOKEN)
     private readonly loggerQueue: Queue,
     @Inject(QUEUE_REDIS_CLIENT_TOKEN) private readonly queueRedis: Redis,
-    private readonly clsService: ClsService,
+    private readonly clsService: ClsService<ILoggerCls>,
     private readonly configService: ConfigService,
   ) {
     this.loggerConfig = this.configService.get<ILoggerConfig>(LOGGER_CONFIG_KEY)!
@@ -216,17 +217,19 @@ export class Logger2Service implements ILoggerService {
   getLoggerInfo(response: Response): ILoggerInfo {
     const status = response.statusCode
     const requestId = this.clsService.getId()
-    const clientIp = this.clsService.get<string>(LOGGER_CLS.CLIENT_IP)
-    const method = this.clsService.get<string>(LOGGER_CLS.METHOD)
-    const startTimestamp = this.clsService.get<number>(LOGGER_CLS.START_TIMESTAMP)
+    const userInfo = this.clsService.get(LOGGER_CLS.USER_INFO)
+    const clientIp = this.clsService.get(LOGGER_CLS.CLIENT_IP)
+    const method = this.clsService.get(LOGGER_CLS.METHOD)
+    const startTimestamp = this.clsService.get(LOGGER_CLS.START_TIMESTAMP)
     const endTimestamp = dayjs().valueOf()
-    const originUrl = this.clsService.get<string>(LOGGER_CLS.ORIGIN_URL)
-    const referer = this.clsService.get<string>(LOGGER_CLS.REFERER)
-    const userAgent = this.clsService.get<string>(LOGGER_CLS.USER_AGENT)
+    const originUrl = this.clsService.get(LOGGER_CLS.ORIGIN_URL)
+    const referer = this.clsService.get(LOGGER_CLS.REFERER)
+    const userAgent = this.clsService.get(LOGGER_CLS.USER_AGENT)
     const executionTime = `${dayjs(endTimestamp).diff(dayjs(startTimestamp), 'millisecond', true)}ms`
 
     return {
       requestId,
+      userInfo: userInfo ?? {},
       clientIp,
       method,
       startTimestamp,
@@ -246,6 +249,7 @@ export class Logger2Service implements ILoggerService {
     const loggerInfo = this.getLoggerInfo(response)
     const context = `${loggerInfo.originUrl}` || Logger2Service.name
     let loggerType: keyof typeof LOGGER_TYPES
+    let status: number = response.statusCode
     let msg: string = ''
     let stack: string = ''
     switch (true) {
@@ -258,6 +262,7 @@ export class Logger2Service implements ILoggerService {
       case exception instanceof BusinessException: {
         loggerType = 'BUSINESS_ERROR'
         const res = exception.getResponse() as any
+        status = exception.getStatus()
         msg = Array.isArray(res.message) ? res.message[0] : res.message
         break
       }
@@ -265,12 +270,14 @@ export class Logger2Service implements ILoggerService {
       case exception instanceof HttpException: {
         loggerType = 'BUILTIN_HTTP_ERROR'
         const res = exception.getResponse() as any
+        status = exception.getStatus()
         msg = Array.isArray(res.message) ? res.message[0] : res.message
         break
       }
       // 手动系统异常
       case exception instanceof SystemException: {
         loggerType = 'MANUAL_SYSTEM_ERROR'
+        status = HttpStatus.INTERNAL_SERVER_ERROR
         msg = exception.message
         stack = exception?.stack ?? ''
         break
@@ -278,6 +285,7 @@ export class Logger2Service implements ILoggerService {
       // 非手动系统异常
       case exception instanceof Error: {
         loggerType = 'AUTO_SYSTEM_ERROR'
+        status = HttpStatus.INTERNAL_SERVER_ERROR
         msg = exception.message
         stack = exception?.stack ?? ''
         break
@@ -285,11 +293,13 @@ export class Logger2Service implements ILoggerService {
       // 未知异常
       default: {
         loggerType = 'UNKNOWN_ERROR'
+        status = HttpStatus.INTERNAL_SERVER_ERROR
         msg = (exception as Error).message
         stack = (exception as Error).stack ?? ''
       }
     }
     loggerInfo.type = LOGGER_TYPES[loggerType][0]
+    loggerInfo.status = status
     loggerInfo.msg = msg
     loggerInfo.stack = stack
     return {

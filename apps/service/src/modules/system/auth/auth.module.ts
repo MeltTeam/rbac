@@ -9,12 +9,13 @@ import { UserEntity } from '@/modules/system/user/entities/user.entity'
 import { UserProfileEntity } from '@/modules/system/user/entities/userProfile.entity'
 import { AuthController } from './auth.controller'
 import { AuthService } from './auth.service'
+import { JwtStrategy } from './strategys/jwt.strategy'
 import { LocalStrategy } from './strategys/local.strategy'
 
 /** 权限模块 */
 @Module({
   imports: [PassportModule, TypeOrmModule.forFeature([RoleEntity, UserEntity, UserProfileEntity, PermissionEntity, DeptEntity, PostEntity])],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy],
+  providers: [AuthService, LocalStrategy, JwtStrategy],
 })
 export class AuthModule {}

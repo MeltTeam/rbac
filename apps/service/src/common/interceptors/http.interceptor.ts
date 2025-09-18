@@ -13,17 +13,15 @@ export class HttpInterceptor implements NestInterceptor {
   constructor(private readonly logger2Service: Logger2Service) {}
 
   intercept<T>(context: ExecutionContext, next: CallHandler): Observable<Promise<IOKResponse<T>>> {
+    // 前置拦截器
     console.warn('HttpInterceptor1')
     const response = context.switchToHttp().getResponse<Response>()
     const request = context.switchToHttp().getRequest<Request>()
+    // 后置拦截器
     return next.handle().pipe(
       map(async (data): Promise<IOKResponse<T>> => {
         console.warn('HttpInterceptor2')
-        const formatData = new ResFormat<T>({
-          data,
-          request,
-          response,
-        })
+        const formatData = new ResFormat<T>({ data, request, response })
         await this.logger2Service.action(response)
         return formatData
       }),
