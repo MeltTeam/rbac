@@ -1,17 +1,24 @@
 import type { IUserController } from './IUser'
+import type { ILoggerCls } from '@/infrastructure/logger2/ILogger2'
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common'
+import { ClsService } from 'nestjs-cls'
+import { SYSTEM_DEFAULT_BY } from '@/common/constants'
 import { ApiController, ApiMethod } from '@/common/decorators/swagger.decorator'
-import { FindAllDTO } from '@/common/dto/findAll.dto'
+import { FindAllDTO, UpdateStatusDTO } from '@/common/dto'
 import { JwtGuard } from '@/common/guards/jwt.guard'
-import { CreateDTO, DelByIdDTO, FindOneByIdDTO, PatchByIdDTO, PatchDTO } from './dto'
-import { DEL_BY_ID_VO, PATCH_VO } from './user.constant'
+import { LOGGER_CLS } from '@/infrastructure/logger2/logger2.constant'
+import { CreateUserDTO, UpdateUserDTO, UserIdDTO } from './dto'
+import { DEL_BY_ID_VO, UPDATE_STATUS_VO, UPDATE_VO } from './user.constant'
 import { UserService } from './user.service'
 import { FindAllUserVO, UserVO } from './vo'
 
-@Controller('user')
-@ApiController({ ApiTagsOptions: ['用户模块'] })
+@Controller('system/user')
+@ApiController({ ApiTagsOptions: ['系统管理-用户模块'] })
 export class UserController implements IUserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly clsService: ClsService<ILoggerCls>,
+  ) {}
 
   @UseGuards(JwtGuard)
   @Post()
@@ -20,8 +27,9 @@ export class UserController implements IUserController {
     ApiResponseOptions: [{ type: UserVO }],
     ApiBearerAuthOptions: 'JWT',
   })
-  async create(@Body() createDTO: CreateDTO) {
-    return await this.userService.create(createDTO)
+  async create(@Body() createUserDTO: CreateUserDTO) {
+    const userInfo = this.clsService.get(LOGGER_CLS.USER_INFO)
+    return await this.userService.create(createUserDTO, userInfo.id ?? SYSTEM_DEFAULT_BY)
   }
 
   @UseGuards(JwtGuard)
@@ -31,8 +39,9 @@ export class UserController implements IUserController {
     ApiResponseOptions: [{ type: String, example: DEL_BY_ID_VO }],
     ApiBearerAuthOptions: 'JWT',
   })
-  async delById(@Param() delByIdDTO: DelByIdDTO) {
-    await this.userService.delById(delByIdDTO)
+  async delete(@Param() userIdDTO: UserIdDTO) {
+    const userInfo = this.clsService.get(LOGGER_CLS.USER_INFO)
+    await this.userService.delById(userIdDTO, userInfo.id ?? SYSTEM_DEFAULT_BY)
     return DEL_BY_ID_VO
   }
 
@@ -54,19 +63,33 @@ export class UserController implements IUserController {
     ApiResponseOptions: [{ type: UserVO }],
     ApiBearerAuthOptions: 'JWT',
   })
-  async findOneById(@Param() findOneByIdDTO: FindOneByIdDTO) {
-    return await this.userService.findOneById(findOneByIdDTO)
+  async findOne(@Param() userIdDTO: UserIdDTO) {
+    return await this.userService.findOneById(userIdDTO)
   }
 
   @UseGuards(JwtGuard)
   @Patch(':id')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '修改用户' }],
-    ApiResponseOptions: [{ type: String, example: PATCH_VO }],
+    ApiOperationOptions: [{ summary: '更新用户' }],
+    ApiResponseOptions: [{ type: String, example: UPDATE_VO }],
     ApiBearerAuthOptions: 'JWT',
   })
-  async patch(@Param() patchByIdDTO: PatchByIdDTO, @Body() patchDTO: PatchDTO) {
-    await this.userService.patch(patchByIdDTO, patchDTO)
-    return PATCH_VO
+  async update(@Param() userIdDTO: UserIdDTO, @Body() updateUserDTO: UpdateUserDTO) {
+    const userInfo = this.clsService.get(LOGGER_CLS.USER_INFO)
+    await this.userService.update(userIdDTO, updateUserDTO, userInfo.id ?? SYSTEM_DEFAULT_BY)
+    return UPDATE_VO
+  }
+
+  @UseGuards(JwtGuard)
+  @Patch('status/:id')
+  @ApiMethod({
+    ApiOperationOptions: [{ summary: '更新用户状态' }],
+    ApiResponseOptions: [{ type: String, example: UPDATE_STATUS_VO }],
+    ApiBearerAuthOptions: 'JWT',
+  })
+  async updateStatus(@Param() userIdDTO: UserIdDTO, @Body() updateStatusDTO: UpdateStatusDTO) {
+    const userInfo = this.clsService.get(LOGGER_CLS.USER_INFO)
+    await this.userService.updateStatusById(userIdDTO, updateStatusDTO, userInfo.id ?? SYSTEM_DEFAULT_BY)
+    return UPDATE_STATUS_VO
   }
 }

@@ -1,10 +1,9 @@
 import type { IUserProfileEntity } from '../IUser'
 import { SexEnum } from '@packages/types'
-import { Column, Entity, JoinColumn, OneToOne } from 'typeorm'
+import { Column, Entity, OneToOne } from 'typeorm'
 import { CommonEntity } from '@/common/entities/common.entity'
 import { UserEntity } from './user.entity'
 
-/** 用户档案表实体 */
 @Entity({ name: 'sys_user_profile', comment: '用户档案表' })
 export class UserProfileEntity extends CommonEntity implements IUserProfileEntity {
   @Column({
@@ -65,15 +64,6 @@ export class UserProfileEntity extends CommonEntity implements IUserProfileEntit
   })
   avatar: string
 
-  @OneToOne(() => UserEntity, (user) => user.profile, {
-    // cascade: true,
-    // onDelete: 'CASCADE',
-    // onUpdate: 'CASCADE',
-    createForeignKeyConstraints: false,
-  })
-  @JoinColumn({
-    name: 'user_id',
-    referencedColumnName: 'id',
-  })
+  @OneToOne(() => UserEntity, (user) => user.profile)
   user: UserEntity
 }

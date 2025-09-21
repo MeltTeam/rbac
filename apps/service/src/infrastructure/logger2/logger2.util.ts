@@ -94,6 +94,10 @@ export class WinstonLogger implements IWinstonLogger {
     this.logger.verbose(message, { context, time: this.getTime(), pid: APP_PID })
   }
 
+  fatal(message: string, context: string) {
+    this.logger.verbose(message, { context, time: this.getTime(), pid: APP_PID })
+  }
+
   debug(message: string, context: string) {
     this.logger.debug(message, { context, time: this.getTime(), pid: APP_PID })
   }

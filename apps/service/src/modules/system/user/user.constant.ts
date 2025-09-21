@@ -13,8 +13,10 @@ export const USER_NAME_MAX = 64
 
 /** 删除用户成功 */
 export const DEL_BY_ID_VO = '删除成功' as const
-/** 修改用户成功 */
-export const PATCH_VO = '修改成功' as const
+/** 更新用户成功 */
+export const UPDATE_VO = '更新成功' as const
+/** 更新状态成功 */
+export const UPDATE_STATUS_VO = '更新状态成功' as const
 
 // 邮箱相关
 /** 邮箱 key */

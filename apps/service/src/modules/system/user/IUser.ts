@@ -1,13 +1,14 @@
 import type { SexEnum } from '@packages/types'
-import type { PostEntity } from '../post/entities/post.entity'
 import type { RoleEntity } from '../role/entities/role.entity'
-import type { CreateDTO, DelByIdDTO, FindOneByIdDTO, FindOneByNameDTO, PatchByIdDTO, PatchDTO } from './dto'
+import type { CreateUserDTO, UpdateUserDTO, UserIdDTO, UserNameDTO } from './dto'
 import type { UserEntity } from './entities/user.entity'
 import type { UserProfileEntity } from './entities/userProfile.entity'
-import type { DEL_BY_ID_VO, PATCH_VO } from './user.constant'
+
+import type { DEL_BY_ID_VO, UPDATE_STATUS_VO, UPDATE_VO } from './user.constant'
 import type { FindAllUserVO, UserVO } from './vo'
-import type { FindAllDTO } from '@/common/dto/findAll.dto'
+import type { FindAllDTO, UpdateStatusDTO } from '@/common/dto'
 import type { ICommonEntity } from '@/common/entities/ICommonEntity'
+import type { PostEntity } from '@/modules/system/post/entities/post.entity'
 
 /** 用户表实体接口 */
 export interface IUserEntity extends ICommonEntity {
@@ -29,11 +30,11 @@ export interface IUserEntity extends ICommonEntity {
   generateSalt: () => void
 
   /** 用户1-1档案 */
-  profile?: UserProfileEntity
-  /** 用户N-1角色 */
-  role?: RoleEntity
-  /** 用户1-N岗位 */
-  posts?: PostEntity[]
+  profile: UserProfileEntity
+  /** 用户N-N角色 */
+  roles: RoleEntity[]
+  /** 用户N-1岗位 */
+  post: PostEntity | null
 }
 
 /** 用户档案表实体接口 */
@@ -55,7 +56,7 @@ export interface IUserProfileEntity extends ICommonEntity {
 }
 
 /** 用于兼容其他模块传来的参数 */
-export interface CreateOptions extends CreateDTO {
+export interface CreateUserOptions extends CreateUserDTO {
   /** 邮箱 */
   email?: string
   /** 备注 */
@@ -81,43 +82,53 @@ export interface IUserService {
 
   /**
    * 创建用户
-   * @param createOptions 创建参数
+   * @param createUserOptions 创建参数
    * @param by 操作者，默认sys
    */
-  create: (createOptions: CreateOptions, by: string) => Promise<UserVO>
+  create: (createUserOptions: CreateUserOptions, by?: string) => Promise<UserVO>
 
   /**
    * 根据id删除用户
-   * @param delByIdDTO 删除参数
+   * @param userIdDTO 用户ID
    * @param by 操作者，默认sys
    */
-  delById: (delByIdDTO: DelByIdDTO, by: string) => Promise<boolean>
+  delById: (userIdDTO: UserIdDTO, by?: string) => Promise<boolean>
 
   /**
    * 分页查询所有用户
    * @param findAllDTO 查询参数
+   * @param isVO 是否返回VO格式(默认:true)
    */
-  findAll: (findAllDTO: FindAllDTO) => Promise<FindAllUserVO>
+  findAll: ((findAllDTO: FindAllDTO, isVO: true) => Promise<FindAllUserVO>) &
+    ((findAllDTO: FindAllDTO, isVO: false) => Promise<[UserEntity[], number]>) &
+    ((findAllDTO: FindAllDTO) => Promise<FindAllUserVO>)
 
   /**
    * 根据id查询单个用户
-   * @param findOneByIdDTO 查询参数
+   * @param userIdDTO 用户ID
+   * @param isVO 是否返回VO格式(默认:true)
    */
-  findOneById: (findOneByIdDTO: FindOneByIdDTO) => Promise<UserVO>
+
+  findOneById: ((userIdDTO: UserIdDTO, isVO: true) => Promise<UserVO>) &
+    ((userIdDTO: UserIdDTO, isVO: false) => Promise<UserEntity>) &
+    ((userIdDTO: UserIdDTO) => Promise<UserVO>)
 
   /**
    * 根据name查询单个用户
-   * @param findOneByNameDTO 查询参数
+   * @param userNameDTO 用户名
+   * @param isVO 是否返回VO格式(默认:true)
    */
-  findOneByName: (findOneByNameDTO: FindOneByNameDTO) => Promise<UserVO>
+  findOneByName: ((userNameDTO: UserNameDTO, isVO: true) => Promise<UserVO>) &
+    ((userNameDTO: UserNameDTO, isVO: false) => Promise<UserEntity>) &
+    ((userNameDTO: UserNameDTO) => Promise<UserVO>)
 
   /**
-   * 修改用户
-   * @param patchByIdDTO 更新参数(ID)
-   * @param patchDTO 更新参数
+   * 根据id更新单个用户
+   * @param userIdDTO 用户ID
+   * @param updateUserDTO 更新参数
    * @param by 操作者，默认sys
    */
-  patch: (patchByIdDTO: PatchByIdDTO, patchDTO: PatchDTO, by?: string) => Promise<boolean>
+  update: (userIdDTO: UserIdDTO, updateUserDTO: UpdateUserDTO, by?: string) => Promise<boolean>
 
   /**
    * 更新登录记录
@@ -128,26 +139,35 @@ export interface IUserService {
   updateLoginInfo: (id: string, loginAt: Date, loginIp: string) => Promise<boolean>
 
   /**
-   * 重置密码
+   * 更新密码
    * @param id 用户ID
    * @param pwd 新密码明文
+   * @param by 操作者，默认sys
    */
-  updatePwd: (id: string, pwd: string) => Promise<boolean>
+  updatePwd: (id: string, pwd: string, by?: string) => Promise<boolean>
+
+  /**
+   * 更新状态
+   * @param userIdDTO 用户ID
+   * @param updateStatusDTO 更新状态参数
+   * @param by 操作者，默认sys
+   */
+  updateStatusById: (userIdDTO: UserIdDTO, updateStatusDTO: UpdateStatusDTO, by?: string) => Promise<boolean>
 }
 
 /** 用户模块控制器接口 */
 export interface IUserController {
   /**
-   * 创建接口
-   * @param createDTO 创建参数
+   * 创建用户接口
+   * @param createUserDTO 创建用户参数
    */
-  create: (createDTO: CreateDTO) => Promise<UserVO>
+  create: (createUserDTO: CreateUserDTO) => Promise<UserVO>
 
   /**
-   * 根据id删除接口
-   * @param delByIdDTO 删除参数
+   * 删除用户接口
+   * @param userIdDTO 用户ID
    */
-  delById: (delByIdDTO: DelByIdDTO) => Promise<typeof DEL_BY_ID_VO>
+  delete: (userIdDTO: UserIdDTO) => Promise<typeof DEL_BY_ID_VO>
 
   /**
    * 分页查询接口
@@ -156,15 +176,22 @@ export interface IUserController {
   findAll: (findAllDTO: FindAllDTO) => Promise<FindAllUserVO>
 
   /**
-   * 根据id查询单个信息接口
-   * @param findOneByIdDTO 查询参数(id)
+   * 查询单个用户详情接口
+   * @param userIdDTO 用户ID
    */
-  findOneById: (findOneByIdDTO: FindOneByIdDTO) => Promise<UserVO>
+  findOne: (userIdDTO: UserIdDTO) => Promise<UserVO>
 
   /**
-   * 修改接口
-   * @param patchByIdDTO 修改参数(id)
-   * @param patchDTO 修改参数
+   * 更新用户接口
+   * @param userIdDTO 用户ID
+   * @param updateUserDTO 更新用户参数
    */
-  patch: (patchByIdDTO: PatchByIdDTO, patchDTO: PatchDTO) => Promise<typeof PATCH_VO>
+  update: (userIdDTO: UserIdDTO, updateUserDTO: UpdateUserDTO) => Promise<typeof UPDATE_VO>
+
+  /**
+   * 更新状态接口
+   * @param userIdDTO 用户ID
+   * @param updateStatusDTO 更新状态参数
+   */
+  updateStatus: (userIdDTO: UserIdDTO, updateStatusDTO: UpdateStatusDTO) => Promise<typeof UPDATE_STATUS_VO>
 }

@@ -1,6 +1,8 @@
-import type { IUserVO } from '@packages/types'
 import type { UserEntity } from '../entities/user.entity'
+import { IUserVO, StatusEnum } from '@packages/types'
 import { ApiModel } from '@/common/decorators/swagger.decorator'
+import { PostVO } from '@/modules/system/post/vo'
+import { RoleVO } from '@/modules/system/role/vo'
 import { UserProfileVO } from './userProfile.vo'
 
 @ApiModel(
@@ -11,9 +13,9 @@ import { UserProfileVO } from './userProfile.vo'
     createdAt: { type: Date, description: '创建时间', example: 'xxx' },
     updatedAt: { type: Date, description: '更新时间', example: 'xxx' },
     remark: { type: String, description: '备注', example: 'xxx' },
-    status: { type: Number, description: '状态', example: 'xxx' },
-    name: { type: String, description: '用户名', example: 'xxx' },
-    loginIp: { type: String, description: '最后登录的IP', example: 'xxx' },
+    status: { enum: StatusEnum, description: '状态(未知:10 启用:20 禁用:30)', example: StatusEnum.ENABLE },
+    name: { type: String, description: '用户名', example: 'admin' },
+    loginIp: { type: String, description: '最后登录的IP', example: '172.0.0.1' },
     loginAt: { type: Date, description: '最后登录时间', example: 'xxx' },
     profile: { type: UserProfileVO, description: '用户档案' },
   },
@@ -26,15 +28,17 @@ export class UserVO implements IUserVO {
   createdAt: Date
   updatedAt: Date
   remark: string | null
-  status: number
+  status: StatusEnum
   name: string
   loginIp: string | null
   loginAt: Date | null
   profile: UserProfileVO
+  roles: RoleVO[]
+  post: PostVO | null
 
   constructor(user?: UserEntity) {
     if (user) {
-      const { id, createdBy, updatedBy, createdAt, updatedAt, remark, status, name, profile, loginIp, loginAt } = user
+      const { id, createdBy, updatedBy, createdAt, updatedAt, remark, status, name, profile, loginIp, loginAt, roles, post } = user
       this.id = id
       this.createdBy = createdBy
       this.updatedBy = updatedBy
@@ -46,6 +50,8 @@ export class UserVO implements IUserVO {
       this.loginIp = loginIp
       this.loginAt = loginAt
       this.profile = new UserProfileVO(profile)
+      this.roles = roles.map((role) => new RoleVO(role))
+      this.post = post ? new PostVO(post) : null
     }
   }
 }

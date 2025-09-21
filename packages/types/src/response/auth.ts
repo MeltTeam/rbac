@@ -4,15 +4,15 @@ export interface IUserInfo {
   id: string
   /** 用户名 */
   name: string
+  /** 邮箱 */
+  email: string | null
   /** 登录IP */
-  loginIp: string
+  loginIp: string | null
   /** 登录时间 */
-  loginAt: Date
+  loginAt: Date | null
 }
 /** 登录接口响应数据 */
 export interface ILoginVO {
-  /** 用户信息 */
-  userInfo: IUserInfo
   /** 短TOKEN */
   accessToken: string
   /** 长TOKEN */

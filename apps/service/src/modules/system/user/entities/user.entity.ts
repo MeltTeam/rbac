@@ -1,13 +1,12 @@
 import type { IUserEntity } from '../IUser'
 import { Expose } from 'class-transformer'
-import { BeforeInsert, Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm'
+import { BeforeInsert, Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToOne } from 'typeorm'
 import { CommonEntity } from '@/common/entities/common.entity'
 import { uuid_v4 } from '@/common/utils'
 import { PostEntity } from '@/modules/system/post/entities/post.entity'
 import { RoleEntity } from '@/modules/system/role/entities/role.entity'
 import { UserProfileEntity } from './userProfile.entity'
 
-/** 用户表实体 */
 @Entity({ name: 'sys_user', comment: '用户表' })
 export class UserEntity extends CommonEntity implements IUserEntity {
   @Column({
@@ -84,17 +83,35 @@ export class UserEntity extends CommonEntity implements IUserEntity {
     createForeignKeyConstraints: false,
     eager: true,
   })
-  profile: UserProfileEntity
-
-  @ManyToOne(() => RoleEntity, (role) => role.users)
   @JoinColumn({
-    name: 'role_id',
+    name: 'profile_id',
     referencedColumnName: 'id',
   })
-  role: RoleEntity
+  profile: UserProfileEntity
 
-  @OneToMany(() => PostEntity, (post) => post.user)
-  posts: PostEntity[]
+  @ManyToMany(() => RoleEntity, (role) => role.users, {
+    cascade: true,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+    createForeignKeyConstraints: false,
+    eager: true,
+  })
+  @JoinTable({
+    name: 'sys_user_role',
+    joinColumns: [{ name: 'user_id', referencedColumnName: 'id' }],
+    inverseJoinColumns: [{ name: 'role_id', referencedColumnName: 'id' }],
+  })
+  roles: RoleEntity[]
+
+  @ManyToOne(() => PostEntity, (post) => post.users, {
+    cascade: true,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+    createForeignKeyConstraints: false,
+    eager: true,
+  })
+  @JoinColumn({ name: 'post_id', referencedColumnName: 'id' })
+  post: PostEntity | null
 
   @Expose()
   @BeforeInsert()

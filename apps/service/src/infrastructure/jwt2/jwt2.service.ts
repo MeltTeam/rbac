@@ -2,7 +2,7 @@ import type { Response } from 'express'
 import type Redis from 'ioredis'
 import type { IJwt2Service, IPayLoad, IRedisToken, ISetRedisTokenOptions } from './IJwt2'
 import type { TokenType } from './jwt2.constant'
-import type { UserInfo } from '@/modules/system/auth/vo'
+import type { UserInfo } from '@/modules/auth/vo'
 import { Cache, CACHE_MANAGER } from '@nestjs/cache-manager'
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
@@ -49,9 +49,19 @@ export class Jwt2Service extends LikeCache2Module implements IJwt2Service {
     return await this.del(userId)
   }
 
+  async getRedisToken(userId: string) {
+    const redisToken = await this.get<IRedisToken>(userId)
+    if (!redisToken) {
+      console.warn('没有')
+      throw new UnauthorizedException()
+    }
+    return redisToken
+  }
+
   async validateToken(token: string, secret?: string | Buffer<ArrayBufferLike>) {
     try {
       const payload = await this.jwtService.verifyAsync<IPayLoad>(token, { secret, ignoreExpiration: false })
+      await this.getRedisToken(payload.id)
       return payload
     } catch (error) {
       console.warn('validateToken', error.message)

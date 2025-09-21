@@ -5,7 +5,7 @@ import type { ClsStore } from 'nestjs-cls'
 import type DailyRotateFile from 'winston-daily-rotate-file'
 import type { LOGGER_TYPES } from './logger2.constant'
 import type { LEVEL_TYPE } from '@/configs/interfaces'
-import type { UserInfo } from '@/modules/system/auth/vo'
+import type { UserInfo } from '@/modules/auth/vo'
 /** 日志信息 */
 export interface ILoggerInfo {
   /** 请求唯一ID */

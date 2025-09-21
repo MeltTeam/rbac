@@ -38,3 +38,6 @@ export interface IRefreshTokenDto {
   /** 刷新token */
   refreshToken?: string
 }
+
+/** 退出登录接口参数校验 */
+export interface ILogoutDTO extends IRefreshTokenDto {}

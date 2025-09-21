@@ -1,4 +1,4 @@
-import { IUserProfile, SexEnum } from '@packages/types'
+import { IUserProfileVO, SexEnum, StatusEnum } from '@packages/types'
 import { ApiModel } from '@/common/decorators/swagger.decorator'
 import { UserProfileEntity } from '../entities/userProfile.entity'
 
@@ -10,9 +10,9 @@ import { UserProfileEntity } from '../entities/userProfile.entity'
     createdAt: { type: Date, description: '创建时间', example: 'xxx' },
     updatedAt: { type: Date, description: '更新时间', example: 'xxx' },
     remark: { type: String, description: '备注', example: 'xxx' },
-    status: { type: Number, description: '状态', example: 'xxx' },
+    status: { enum: StatusEnum, description: '状态(未知:10 启用:20 禁用:30)', example: StatusEnum.ENABLE },
     nickName: { type: String, description: '用户昵称', example: '张三' },
-    sex: { enum: SexEnum, description: '性别：10 未知 男 20 女 30', example: 20 },
+    sex: { enum: SexEnum, description: '性别(未知:10 男:20 女:30)', example: SexEnum.MALE },
     birthday: { type: Date, description: '生日', example: '2000-01-01' },
     email: { type: String, description: '邮箱', example: 'zhangsan@example.com' },
     phone: { type: String, description: '手机号', example: '13800138000' },
@@ -20,14 +20,14 @@ import { UserProfileEntity } from '../entities/userProfile.entity'
   },
   { description: '用户档案' },
 )
-export class UserProfileVO implements IUserProfile {
+export class UserProfileVO implements IUserProfileVO {
   id: string
   createdBy: string
   updatedBy: string
   createdAt: Date
   updatedAt: Date
   remark: string | null
-  status: number
+  status: StatusEnum
   nickName: string
   sex: SexEnum
   birthday: Date | null

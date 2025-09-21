@@ -1,4 +1,4 @@
-import type { IAddUserDTO } from '@packages/types'
+import type { ICreateUserDTO } from '@packages/types'
 import { IsOptional } from 'class-validator'
 import { REMARK, REMARK_MAX, REMARK_MIN } from '@/common/constants'
 import { InputPwd, InputSpace, InputStringLength, NotEmpty } from '@/common/decorators'
@@ -13,7 +13,7 @@ import { PWD, PWD_MAX, PWD_MIN, USER_NAME, USER_NAME_MAX, USER_NAME_MIN } from '
   },
   { description: '创建用户接口参数校验' },
 )
-export class CreateDTO implements IAddUserDTO {
+export class CreateUserDTO implements ICreateUserDTO {
   @NotEmpty(USER_NAME)
   @InputSpace(USER_NAME)
   @InputStringLength(USER_NAME_MIN, USER_NAME_MAX, USER_NAME)

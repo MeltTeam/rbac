@@ -1,10 +1,9 @@
 import type { IPostEntity } from '../IPost'
-import { SortOrderEnum } from '@packages/types'
-import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm'
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm'
 import { CommonEntity } from '@/common/entities/common.entity'
+import { DeptEntity } from '@/modules/system/dept/entities/dept.entity'
 import { UserEntity } from '@/modules/system/user/entities/user.entity'
 
-/** 岗位表实体 */
 @Entity({ name: 'sys_post', comment: '岗位表' })
 export class PostEntity extends CommonEntity implements IPostEntity {
   @Column({
@@ -25,20 +24,29 @@ export class PostEntity extends CommonEntity implements IPostEntity {
   })
   code: string
 
-  @Index('IDX_POST_SORT_ORDER', ['sort_order'])
-  @Column({
-    comment: '显示顺序',
-    name: 'sort_order',
-    type: 'tinyint',
-    unsigned: true,
-    default: SortOrderEnum.HIGH_PRIORITY,
-  })
-  sortOrder: SortOrderEnum
+  // @Index('IDX_POST_SORT_ORDER', ['sort_order'])
+  // @Column({
+  //   comment: '显示顺序',
+  //   name: 'sort_order',
+  //   type: 'tinyint',
+  //   unsigned: true,
+  //   default: SortOrderEnum.HIGH_PRIORITY,
+  // })
+  // sortOrder: SortOrderEnum
 
-  @ManyToOne(() => UserEntity, (user) => user.posts)
+  @OneToMany(() => UserEntity, (user) => user.post)
+  users: UserEntity[]
+
+  @ManyToOne(() => DeptEntity, (dept) => dept.posts, {
+    cascade: true,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+    createForeignKeyConstraints: false,
+    eager: true,
+  })
   @JoinColumn({
-    name: 'user_id',
+    name: 'dept_id',
     referencedColumnName: 'id',
   })
-  user: UserEntity
+  dept: DeptEntity | null
 }

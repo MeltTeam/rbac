@@ -27,7 +27,3 @@ export const CAPTCHA_LENGTH = 6
 export const CAPTCHA_TOKEN = '验证码凭证'
 /** 验证码凭证长度 */
 export const CAPTCHA_TOKEN_LENGTH = UUID_V4_LENGTH
-
-// token相关
-/** 刷新令牌 key */
-export const REFRESH_TOKEN = '刷新令牌'

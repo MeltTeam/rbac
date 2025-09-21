@@ -26,4 +26,5 @@ export interface ICommonEntity {
   /** 更新前初始化 */
   updateInit: () => void
   /** 软删除前初始化 */
+  softRemoveInit: () => void
 }

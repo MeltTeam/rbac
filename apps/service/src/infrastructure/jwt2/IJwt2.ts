@@ -1,6 +1,6 @@
 import type { Response as ExpressResponse } from 'express'
 import type { TokenType } from './jwt2.constant'
-import type { UserInfo } from '@/modules/system/auth/vo'
+import type { UserInfo } from '@/modules/auth/vo'
 
 /** redis存储token的数据结构 */
 export interface IRedisToken {
