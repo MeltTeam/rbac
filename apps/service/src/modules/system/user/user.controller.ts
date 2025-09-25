@@ -2,13 +2,12 @@ import type { IUserController } from './IUser'
 import type { ILoggerCls } from '@/infrastructure/logger2/ILogger2'
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common'
 import { ClsService } from 'nestjs-cls'
-import { SYSTEM_DEFAULT_BY } from '@/common/constants'
+import { DEL_BY_ID_VO, SYSTEM_DEFAULT_BY, UPDATE_STATUS_VO, UPDATE_VO } from '@/common/constants'
 import { ApiController, ApiMethod } from '@/common/decorators/swagger.decorator'
 import { FindAllDTO, UpdateStatusDTO } from '@/common/dto'
 import { JwtGuard } from '@/common/guards/jwt.guard'
 import { LOGGER_CLS } from '@/infrastructure/logger2/logger2.constant'
 import { CreateUserDTO, UpdateUserDTO, UserIdDTO } from './dto'
-import { DEL_BY_ID_VO, UPDATE_STATUS_VO, UPDATE_VO } from './user.constant'
 import { UserService } from './user.service'
 import { FindAllUserVO, UserVO } from './vo'
 
@@ -57,7 +56,7 @@ export class UserController implements IUserController {
   }
 
   @UseGuards(JwtGuard)
-  @Get('detail/:id')
+  @Get(':id')
   @ApiMethod({
     ApiOperationOptions: [{ summary: '查询用户详情' }],
     ApiResponseOptions: [{ type: UserVO }],

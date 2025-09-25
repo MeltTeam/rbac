@@ -88,6 +88,7 @@ export class AuthService implements IAuthService {
       serviceConfig: { secret },
     } = this.configService.get<JwtConfigType>(JWT_CONFIG_KEY)!
     const payload = await this.jwt2Service.validateToken(_refreshToken, secret)
+    if (!payload) throw new UnauthorizedException()
     if (payload.tokenType !== TokenType.REFRESH_TOKEN) throw new UnauthorizedException()
     return await this.delAllToken(payload.id, response)
   }
@@ -102,9 +103,11 @@ export class AuthService implements IAuthService {
       serviceConfig: { secret },
     } = this.configService.get<JwtConfigType>(JWT_CONFIG_KEY)!
     const payload = await this.jwt2Service.validateToken(_refreshToken, secret)
+    if (!payload) throw new UnauthorizedException()
     const { tokenType, iat, exp, ...userInfo } = payload
     if (tokenType !== TokenType.REFRESH_TOKEN) throw new UnauthorizedException()
 
+    // 重新发布令牌
     const [accessToken, refreshToken] = await Promise.all([
       this.jwt2Service.generateToken(userInfo, accessTokenExpiresIn, secret as string, TokenType.ACCESS_TOKEN),
       this.jwt2Service.generateToken(userInfo, refreshTokenExpiresIn, secret as string, TokenType.REFRESH_TOKEN),

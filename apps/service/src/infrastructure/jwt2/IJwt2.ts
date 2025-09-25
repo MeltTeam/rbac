@@ -76,5 +76,5 @@ export interface IJwt2Service {
    * @param token 令牌
    * @param secret 加密盐
    */
-  validateToken: (token: string, secret?: string | Buffer<ArrayBufferLike>) => Promise<IPayLoad>
+  validateToken: (token: string, secret?: string | Buffer<ArrayBufferLike>) => Promise<IPayLoad | null>
 }

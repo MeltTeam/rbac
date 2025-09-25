@@ -1,4 +1,6 @@
 import type { StatusEnum } from '../../enums'
+import type { IFindAllVO } from '../common'
+
 /** 部门详情 */
 export interface IDeptVO {
   /** 业务ID */
@@ -26,5 +28,8 @@ export interface IDeptVO {
   /** 部门电话 */
   phone: string | null
   /** 部门编码 */
-  code: string
+  deptCode: string
 }
+
+/** 分页查询部门详情列表 */
+export interface IFindAllDeptVO extends IFindAllVO<IDeptVO> {}

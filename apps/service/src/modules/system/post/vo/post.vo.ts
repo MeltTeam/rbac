@@ -11,11 +11,11 @@ export class PostVO implements IPostVO {
   remark: string | null
   status: StatusEnum
   name: string
-  code: string
+  postCode: string
   dept: DeptVO | null
   constructor(post?: PostEntity) {
     if (post) {
-      const { id, createdBy, updatedBy, createdAt, updatedAt, remark, status, name, code, dept } = post
+      const { id, createdBy, updatedBy, createdAt, updatedAt, remark, status, name, postCode, dept } = post
       this.id = id
       this.createdBy = createdBy
       this.updatedBy = updatedBy
@@ -24,7 +24,7 @@ export class PostVO implements IPostVO {
       this.remark = remark
       this.status = status
       this.name = name
-      this.code = code
+      this.postCode = postCode
       this.dept = dept ? new DeptVO(dept) : null
     }
   }

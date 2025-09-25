@@ -6,6 +6,6 @@ import { USER_ID } from '../user.constant'
   {
     id: { type: String, description: USER_ID },
   },
-  { description: '用户ID' },
+  { description: USER_ID },
 )
 export class UserIdDTO extends IdDTO {}

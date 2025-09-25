@@ -1,10 +1,11 @@
 import type { IPostEntity } from '../IPost'
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm'
+import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany } from 'typeorm'
 import { CommonEntity } from '@/common/entities/common.entity'
 import { DeptEntity } from '@/modules/system/dept/entities/dept.entity'
 import { UserEntity } from '@/modules/system/user/entities/user.entity'
 
 @Entity({ name: 'sys_post', comment: '岗位表' })
+@Index(['name', 'postCode'], { unique: true })
 export class PostEntity extends CommonEntity implements IPostEntity {
   @Column({
     comment: '岗位名',
@@ -17,22 +18,12 @@ export class PostEntity extends CommonEntity implements IPostEntity {
 
   @Column({
     comment: '岗位编码',
-    name: 'code',
+    name: 'post_code',
     type: 'varchar',
     length: 100,
     unique: true,
   })
-  code: string
-
-  // @Index('IDX_POST_SORT_ORDER', ['sort_order'])
-  // @Column({
-  //   comment: '显示顺序',
-  //   name: 'sort_order',
-  //   type: 'tinyint',
-  //   unsigned: true,
-  //   default: SortOrderEnum.HIGH_PRIORITY,
-  // })
-  // sortOrder: SortOrderEnum
+  postCode: string
 
   @OneToMany(() => UserEntity, (user) => user.post)
   users: UserEntity[]

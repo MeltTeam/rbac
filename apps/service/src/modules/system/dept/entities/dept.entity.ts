@@ -1,11 +1,12 @@
 import type { IDeptEntity } from '../IDept'
-import { Column, Entity, ManyToMany, OneToMany } from 'typeorm'
+import { Column, Entity, Index, ManyToMany, OneToMany } from 'typeorm'
 import { CommonEntity } from '@/common/entities/common.entity'
 import { PostEntity } from '@/modules/system/post/entities/post.entity'
 import { RoleEntity } from '@/modules/system/role/entities/role.entity'
 import { DeptTreeEntity } from './deptTree.entity'
 
 @Entity({ name: 'sys_dept', comment: '部门表' })
+@Index(['name', 'deptCode', 'email', 'phone'], { unique: true })
 export class DeptEntity extends CommonEntity implements IDeptEntity {
   @Column({
     comment: '父部门ID',
@@ -25,6 +26,15 @@ export class DeptEntity extends CommonEntity implements IDeptEntity {
     unique: true,
   })
   name: string
+
+  @Column({
+    comment: '部门编码',
+    name: 'dept_code',
+    type: 'varchar',
+    length: 100,
+    unique: true,
+  })
+  deptCode: string
 
   @Column({
     comment: '部门负责人ID',
@@ -56,15 +66,6 @@ export class DeptEntity extends CommonEntity implements IDeptEntity {
     default: null,
   })
   phone: string | null
-
-  @Column({
-    comment: '部门编码',
-    name: 'code',
-    type: 'varchar',
-    length: 100,
-    unique: true,
-  })
-  code: string
 
   @OneToMany(() => PostEntity, (post) => post.dept)
   posts: PostEntity[]

@@ -29,6 +29,7 @@ export const JwtConfig = registerAs(JWT_CONFIG_KEY, (): IJwtConfig => {
   if (error) throw new Error(`${JwtConfig.name}:${error.message}`)
   return {
     serviceConfig: {
+      global: true,
       secret: value.JWT_SECRET,
       signOptions: {
         expiresIn: value.JWT_EXPIRES_IN,

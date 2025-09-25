@@ -18,6 +18,8 @@ import { UserProfileVO } from './userProfile.vo'
     loginIp: { type: String, description: '最后登录的IP', example: '172.0.0.1' },
     loginAt: { type: Date, description: '最后登录时间', example: 'xxx' },
     profile: { type: UserProfileVO, description: '用户档案' },
+    roles: { type: RoleVO, description: '拥有角色列表', isArray: true },
+    post: { type: PostVO, description: '拥有岗位' },
   },
   { description: '用户详情' },
 )
@@ -50,7 +52,7 @@ export class UserVO implements IUserVO {
       this.loginIp = loginIp
       this.loginAt = loginAt
       this.profile = new UserProfileVO(profile)
-      this.roles = roles.map((role) => new RoleVO(role))
+      this.roles = roles ? roles.map((role) => new RoleVO(role)) : []
       this.post = post ? new PostVO(post) : null
     }
   }

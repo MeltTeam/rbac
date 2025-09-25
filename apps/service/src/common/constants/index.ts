@@ -27,3 +27,10 @@ export const CAPTCHA_LENGTH = 6
 export const CAPTCHA_TOKEN = '验证码凭证'
 /** 验证码凭证长度 */
 export const CAPTCHA_TOKEN_LENGTH = UUID_V4_LENGTH
+
+/** 更新状态成功 */
+export const UPDATE_STATUS_VO = '更新状态成功' as const
+/** 删除成功 */
+export const DEL_BY_ID_VO = '删除成功' as const
+/** 更新成功 */
+export const UPDATE_VO = '更新成功' as const

@@ -51,10 +51,7 @@ export class Jwt2Service extends LikeCache2Module implements IJwt2Service {
 
   async getRedisToken(userId: string) {
     const redisToken = await this.get<IRedisToken>(userId)
-    if (!redisToken) {
-      console.warn('没有')
-      throw new UnauthorizedException()
-    }
+    if (!redisToken) throw new UnauthorizedException()
     return redisToken
   }
 
@@ -65,7 +62,7 @@ export class Jwt2Service extends LikeCache2Module implements IJwt2Service {
       return payload
     } catch (error) {
       console.warn('validateToken', error.message)
-      throw new UnauthorizedException(error.message)
+      return null
     }
   }
 }

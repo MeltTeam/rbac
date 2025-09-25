@@ -9,12 +9,11 @@ export class PermissionVO implements IPermissionVo {
   updatedAt: Date
   remark: string | null
   status: StatusEnum
-  parentId: string | null
   name: string
-  code: string
+  permissionCode: string
   constructor(permission?: PermissionEntity) {
     if (permission) {
-      const { id, createdBy, updatedBy, createdAt, updatedAt, remark, status, parentId, name, code } = permission
+      const { id, createdBy, updatedBy, createdAt, updatedAt, remark, status, name, permissionCode } = permission
       this.id = id
       this.createdBy = createdBy
       this.updatedBy = updatedBy
@@ -22,9 +21,8 @@ export class PermissionVO implements IPermissionVo {
       this.updatedAt = updatedAt
       this.remark = remark
       this.status = status
-      this.parentId = parentId
       this.name = name
-      this.code = code
+      this.permissionCode = permissionCode
     }
   }
 }

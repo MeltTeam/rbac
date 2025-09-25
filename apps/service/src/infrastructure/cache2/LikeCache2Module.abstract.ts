@@ -33,10 +33,9 @@ export abstract class LikeCache2Module implements ILikeCache2Module {
   async set(key: string, value: unknown, ttl: number = DEFAULT_CACHE_TTL): Promise<void> {
     try {
       const _key = `${this.className}:${key}`
-      const _value = JSON.stringify(value)
-      await this.memory.set(_key, _value, ttl)
+      await this.memory.set(_key, value, ttl)
       if (redisIsOk(this.redis)) {
-        await this.redis.set(_key, _value, 'PX', ttl)
+        await this.redis.set(_key, JSON.stringify(value), 'PX', ttl)
       }
     } catch (error) {
       throw new SystemException({ error })
@@ -46,16 +45,16 @@ export abstract class LikeCache2Module implements ILikeCache2Module {
   async get<T = any>(key: string): Promise<T | null> {
     try {
       const _key = `${this.className}:${key}`
-      const memoryValue = (await this.memory.get<string>(_key)) ?? null
-      if (memoryValue) return JSON.parse(memoryValue)
+      const memoryValue = await this.memory.get<T>(_key)
+      if (memoryValue) return memoryValue ?? null
 
       if (redisIsOk(this.redis)) {
         const ttl = await this.redis.pttl(_key)
         const redisValue = await this.redis.get(_key)
         if (redisValue) {
           const _redisValue = JSON.parse(redisValue)
-          this.memory.set(_key, _redisValue, ttl * 0.8)
-          return _redisValue
+          await this.memory.set(_key, _redisValue, ttl * 0.8)
+          return _redisValue as T
         }
       }
       return null

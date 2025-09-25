@@ -9,11 +9,12 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { CommonBusiness, UserBusiness } from '@packages/types'
 import { MD5 } from 'crypto-js'
 import { isUndefined } from 'lodash-es'
-import { EntityManager, Repository } from 'typeorm'
+import { EntityManager, Not, Repository } from 'typeorm'
 import { SYSTEM_DEFAULT_BY } from '@/common/constants'
 import { CommonBusinessException } from '@/common/exceptions'
 import { sha256, uuid_v4, wordArray } from '@/common/utils'
 import { APP_CONFIG_KEY } from '@/configs'
+import { Jwt2Service } from '@/infrastructure/jwt2/jwt2.service'
 import { UserEntity } from './entities/user.entity'
 import { UserProfileEntity } from './entities/userProfile.entity'
 import { UserException } from './user.exception'
@@ -29,6 +30,7 @@ export class UserService implements IUserService {
     private readonly configService: ConfigService,
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
+    private readonly jwt2Service: Jwt2Service,
   ) {
     // 获取表字段名
     this.columnsUser = entityManager.getRepository(UserEntity).metadata.columns.map((c) => c.propertyName)
@@ -51,13 +53,12 @@ export class UserService implements IUserService {
     return this.entityManager.transaction(async (entityManager: EntityManager) => {
       const { name, pwd: password, email } = createUserOptions
 
-      const hasUsername = await entityManager.findOne(UserEntity, { where: { name } })
-      if (hasUsername) throw new UserException(UserBusiness.NAME_ALREADY_EXISTS)
-
-      if (email) {
-        const hasEmail = await entityManager.findOne(UserProfileEntity, { where: { email }, select: ['id'] })
-        if (hasEmail) throw new UserException(UserBusiness.EMAIL_ALREADY_EXISTS)
-      }
+      const [hasUserName, hasEmail] = await Promise.all([
+        entityManager.findOne(UserEntity, { where: { name }, lock: { mode: 'pessimistic_write' } }),
+        email ? entityManager.findOne(UserProfileEntity, { where: { email }, lock: { mode: 'pessimistic_write' } }) : null,
+      ])
+      if (hasUserName) throw new UserException(UserBusiness.NAME_ALREADY_EXISTS)
+      if (hasEmail) throw new UserException(UserBusiness.EMAIL_ALREADY_EXISTS)
 
       // 新用户
       const salt = uuid_v4()
@@ -77,6 +78,7 @@ export class UserService implements IUserService {
       newUser.profile = newProfile
 
       const user = await entityManager.save(UserEntity, newUser)
+      console.warn(user)
       const VO = new UserVO(user)
       return VO
     })
@@ -99,7 +101,8 @@ export class UserService implements IUserService {
       if (!user) throw new UserException(UserBusiness.NOT_FOUND)
       await Promise.all([
         entityManager.update(UserEntity, { id }, { deletedAt: now, deletedBy: by }),
-        entityManager.update(UserProfileEntity, { id }, { deletedAt: now, deletedBy: by }),
+        entityManager.update(UserProfileEntity, { id: user.profile.id }, { deletedAt: now, deletedBy: by }),
+        this.jwt2Service.delRedisToken(id),
       ])
       return true
     })
@@ -167,16 +170,7 @@ export class UserService implements IUserService {
       }
       if (!hasData) throw new CommonBusinessException(CommonBusiness.PROMPT_FOR_MODIFICATION)
 
-      //  一次性加锁并拿到 profileId
-      const user = await entityManager
-        .createQueryBuilder(UserEntity, 'u')
-        .innerJoinAndSelect('u.profile', 'p')
-        .where('u.id = :id')
-        .andWhere('u.deleted_at IS NULL')
-        .setParameters({ id })
-        .useTransaction(true) // 显式走当前事务连接
-        .setLock('pessimistic_write') // SELECT … FOR UPDATE
-        .getOne()
+      const user = await entityManager.findOne(UserEntity, { where: { id }, lock: { mode: 'pessimistic_write' } })
 
       if (!user) throw new UserException(UserBusiness.NOT_FOUND)
 
@@ -185,29 +179,23 @@ export class UserService implements IUserService {
       const profileId = user.profile.id
       const [nameExist, emailExist, phoneExist] = await Promise.all([
         updateUser.name
-          ? entityManager
-              .createQueryBuilder(UserEntity, 'u')
-              .where('u.name = :name')
-              .andWhere('u.id != :id')
-              .setParameters({ name: updateUser.name, id })
-              .getExists()
-          : false,
+          ? entityManager.exists(UserEntity, {
+              where: { name: updateUser.name as string, id: Not(id) },
+              lock: { mode: 'pessimistic_write' },
+            })
+          : null,
         updateUserProfile.email
-          ? entityManager
-              .createQueryBuilder(UserProfileEntity, 'p')
-              .where('p.email = :email')
-              .andWhere('p.id != :pid')
-              .setParameters({ email: updateUserProfile.email, pid: profileId })
-              .getExists()
-          : false,
+          ? entityManager.exists(UserProfileEntity, {
+              where: { email: updateUserProfile.email as string, id: Not(profileId) },
+              lock: { mode: 'pessimistic_write' },
+            })
+          : null,
         updateUserProfile.phone
-          ? entityManager
-              .createQueryBuilder(UserProfileEntity, 'p')
-              .where('p.phone = :phone')
-              .andWhere('p.id != :pid')
-              .setParameters({ phone: updateUserProfile.phone, pid: profileId })
-              .getExists()
-          : false,
+          ? entityManager.exists(UserProfileEntity, {
+              where: { phone: updateUserProfile.phone as string, id: Not(profileId) },
+              lock: { mode: 'pessimistic_write' },
+            })
+          : null,
       ])
       if (nameExist) throw new UserException(UserBusiness.NAME_ALREADY_EXISTS)
       if (emailExist) throw new UserException(UserBusiness.EMAIL_ALREADY_EXISTS)
@@ -250,15 +238,7 @@ export class UserService implements IUserService {
       const { id } = userIdDTO
       const { status } = updateStatusDTO
 
-      const user = await entityManager
-        .createQueryBuilder(UserEntity, 'u')
-        .innerJoinAndSelect('u.profile', 'p')
-        .where('u.id = :id')
-        .andWhere('u.deletedAt IS NULL')
-        .setParameters({ id })
-        .useTransaction(true)
-        .setLock('pessimistic_write')
-        .getOne()
+      const user = await entityManager.findOne(UserEntity, { where: { id }, lock: { mode: 'pessimistic_write' } })
 
       if (!user) throw new UserException(UserBusiness.NOT_FOUND)
 

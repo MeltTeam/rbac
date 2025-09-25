@@ -1,3 +1,3 @@
 export * from './auth'
 export * from './common'
-export * from './system/user'
+export * from './system'

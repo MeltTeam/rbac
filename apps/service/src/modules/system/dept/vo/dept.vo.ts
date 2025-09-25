@@ -14,10 +14,10 @@ export class DeptVO implements IDeptVO {
   leaderId: string
   email: string | null
   phone: string | null
-  code: string
+  deptCode: string
   constructor(dept?: DeptEntity) {
     if (dept) {
-      const { id, createdBy, updatedBy, createdAt, updatedAt, remark, status, parentId, name, leaderId, email, phone, code } = dept
+      const { id, createdBy, updatedBy, createdAt, updatedAt, remark, status, parentId, name, leaderId, email, phone, deptCode } = dept
       this.id = id
       this.createdBy = createdBy
       this.updatedBy = updatedBy
@@ -30,7 +30,7 @@ export class DeptVO implements IDeptVO {
       this.leaderId = leaderId
       this.email = email
       this.phone = phone
-      this.code = code
+      this.deptCode = deptCode
     }
   }
 }

@@ -1,4 +1,5 @@
 import type { StatusEnum } from '../../enums'
+import type { IFindAllVO } from '../common'
 import type { IDeptVO } from './dept'
 import type { IPermissionVo } from './permission'
 
@@ -23,9 +24,12 @@ export interface IRoleVO {
   /** 角色名 */
   name: string
   /** 角色编码 */
-  code: string
+  roleCode: string
   /** 拥有权限列表 */
   permissions: IPermissionVo[]
   /** 拥有部门列表 */
   depts: IDeptVO[]
 }
+
+/** 分页查询角色详情列表 */
+export interface IFindAllRoleVO extends IFindAllVO<IRoleVO> {}

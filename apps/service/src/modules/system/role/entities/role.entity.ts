@@ -1,5 +1,5 @@
 import type { IRoleEntity } from '../IRole'
-import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm'
+import { Column, Entity, Index, JoinTable, ManyToMany, OneToMany } from 'typeorm'
 import { CommonEntity } from '@/common/entities/common.entity'
 import { DeptEntity } from '@/modules/system/dept/entities/dept.entity'
 import { PermissionEntity } from '@/modules/system/permission/entities/permission.entity'
@@ -7,6 +7,7 @@ import { UserEntity } from '@/modules/system/user/entities/user.entity'
 import { RoleTreeEntity } from './roleTree.entity'
 
 @Entity({ name: 'sys_role', comment: '角色表' })
+@Index(['name', 'roleCode'], { unique: true })
 export class RoleEntity extends CommonEntity implements IRoleEntity {
   @Column({
     comment: '父角色ID',
@@ -29,12 +30,12 @@ export class RoleEntity extends CommonEntity implements IRoleEntity {
 
   @Column({
     comment: '角色编码',
-    name: 'code',
+    name: 'role_code',
     type: 'varchar',
     length: 100,
     unique: true,
   })
-  code: string
+  roleCode: string
 
   @ManyToMany(() => UserEntity, (user) => user.roles)
   users: UserEntity[]
