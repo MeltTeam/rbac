@@ -6,7 +6,7 @@ import { MenuEntity } from './menu.entity'
 @Index(['ancestorId', 'descendantId'], { unique: true })
 export class MenuTreeEntity implements IMenuTreeEntity {
   @PrimaryColumn({
-    comment: '祖先角色ID',
+    comment: '祖先菜单ID',
     name: 'ancestor_id',
     type: 'varchar',
     length: 36,
@@ -15,7 +15,7 @@ export class MenuTreeEntity implements IMenuTreeEntity {
   ancestorId: string
 
   @PrimaryColumn({
-    comment: '后代角色ID',
+    comment: '后代菜单ID',
     name: 'descendant_id',
     type: 'varchar',
     length: 36,
