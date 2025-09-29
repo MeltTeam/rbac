@@ -9,9 +9,9 @@ export interface IMenuEntity {
   parentId: string | null
   /** 菜单名 */
   name: string
-  /** 菜单编码 */
+  /** 菜单编码(MENU:{路由名称},BUTTON:{路由名称}:{操作类型},COMPONENT:{路由名称}:{组件标识},DIRECTORY:{路由名称},LINK:{路由名称}:{访问路径},INNER_LINK:{路由名称}:{访问路径}) */
   menuCode: string
-  /** 菜单路径 */
+  /** 访问路径 */
   path: string
   /** 路由参数 */
   query: string | null

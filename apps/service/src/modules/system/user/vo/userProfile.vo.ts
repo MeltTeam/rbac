@@ -1,5 +1,5 @@
 import { IUserProfileVO, SexEnum, StatusEnum } from '@packages/types'
-import { ApiModel } from '@/common/decorators/swagger.decorator'
+import { ApiModel } from '@/common/decorators'
 import { UserProfileEntity } from '../entities/userProfile.entity'
 
 @ApiModel(

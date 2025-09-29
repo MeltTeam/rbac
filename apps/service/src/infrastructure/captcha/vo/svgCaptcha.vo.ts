@@ -1,5 +1,5 @@
 import type { ISvgCaptchaVO } from '@packages/types'
-import { ApiModel } from '@/common/decorators/swagger.decorator'
+import { ApiModel } from '@/common/decorators'
 
 @ApiModel(
   {

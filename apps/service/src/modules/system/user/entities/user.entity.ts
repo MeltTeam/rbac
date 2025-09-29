@@ -5,24 +5,25 @@ import { CommonEntity } from '@/common/entities/common.entity'
 import { uuid_v4 } from '@/common/utils'
 import { PostEntity } from '@/modules/system/post/entities/post.entity'
 import { RoleEntity } from '@/modules/system/role/entities/role.entity'
+import { PWD, PWD_MAX, SYS_USER_ROLE, USER_NAME, USER_NAME_MAX } from '../user.constant'
 import { UserProfileEntity } from './userProfile.entity'
 
 @Entity({ name: 'sys_user', comment: '用户表' })
 export class UserEntity extends CommonEntity implements IUserEntity {
   @Column({
-    comment: '用户名',
+    comment: USER_NAME,
     name: 'name',
     type: 'varchar',
-    length: 64,
+    length: USER_NAME_MAX,
     charset: 'utf8mb4',
   })
   name: string
 
   @Column({
-    comment: '密码',
+    comment: PWD,
     name: 'pwd',
     type: 'varchar',
-    length: 100,
+    length: PWD_MAX,
   })
   pwd: string
 
@@ -97,7 +98,7 @@ export class UserEntity extends CommonEntity implements IUserEntity {
     eager: true,
   })
   @JoinTable({
-    name: 'sys_user_role',
+    name: SYS_USER_ROLE,
     joinColumns: [{ name: 'user_id', referencedColumnName: 'id' }],
     inverseJoinColumns: [{ name: 'role_id', referencedColumnName: 'id' }],
   })

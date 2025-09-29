@@ -1,5 +1,5 @@
 import type { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity'
-import type { UpdateUserDTO, UserIdDTO, UserNameDTO } from './dto'
+import type { AssignRolesByCodesDTO, AssignRolesByIdsDTO, UpdateUserDTO, UserIdDTO, UserNameDTO } from './dto'
 import type { CreateUserOptions, IUserService } from './IUser'
 import type { FindAllDTO, UpdateStatusDTO } from '@/common/dto'
 import type { AppConfigType } from '@/configs'
@@ -9,14 +9,17 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { CommonBusiness, UserBusiness } from '@packages/types'
 import { MD5 } from 'crypto-js'
 import { isUndefined } from 'lodash-es'
-import { EntityManager, Not, Repository } from 'typeorm'
+import { EntityManager, In, Not, Repository } from 'typeorm'
 import { SYSTEM_DEFAULT_BY } from '@/common/constants'
 import { CommonBusinessException } from '@/common/exceptions'
 import { sha256, uuid_v4, wordArray } from '@/common/utils'
 import { APP_CONFIG_KEY } from '@/configs'
 import { Jwt2Service } from '@/infrastructure/jwt2/jwt2.service'
+import { RoleEntity } from '@/modules/system/role/entities/role.entity'
+import { DEFAULT_ROLES } from '@/modules/system/role/role.constant'
 import { UserEntity } from './entities/user.entity'
 import { UserProfileEntity } from './entities/userProfile.entity'
+import { SYS_USER_ROLE } from './user.constant'
 import { UserException } from './user.exception'
 import { FindAllUserVO, UserVO } from './vo'
 
@@ -75,7 +78,12 @@ export class UserService implements IUserService {
         updatedBy: by,
         updatedAt: now,
       })
+      // 默认角色
+      const role = await entityManager.findOne(RoleEntity, { where: { roleCode: DEFAULT_ROLES.USER.roleCode } })
+      if (!role) throw new UserException(UserBusiness.ROLE_NOT_FOUND)
+
       newUser.profile = newProfile
+      newUser.roles = [role]
 
       const user = await entityManager.save(UserEntity, newUser)
       console.warn(user)
@@ -89,16 +97,15 @@ export class UserService implements IUserService {
       const { id } = userIdDTO
       const now = new Date()
 
-      const user = await entityManager
-        .createQueryBuilder(UserEntity, 'u')
-        .select(['u.id', 'u.profile_id'])
-        .where('u.id = :id')
-        .andWhere('u.deleted_at IS NULL')
-        .setParameters({ id })
-        .useTransaction(true)
-        .setLock('pessimistic_write')
-        .getOne()
+      const user = await entityManager.findOne(UserEntity, { where: { id }, lock: { mode: 'pessimistic_write' } })
+
       if (!user) throw new UserException(UserBusiness.NOT_FOUND)
+
+      const { superAdminName, adminName, userName } = this.configService.get<AppConfigType>(APP_CONFIG_KEY)!
+
+      if (user.name === superAdminName || user.name === adminName || user.name === userName)
+        throw new UserException(UserBusiness.CANNOT_DELETE_BUILT_IN_USER)
+
       await Promise.all([
         entityManager.update(UserEntity, { id }, { deletedAt: now, deletedBy: by }),
         entityManager.update(UserProfileEntity, { id: user.profile.id }, { deletedAt: now, deletedBy: by }),
@@ -247,6 +254,54 @@ export class UserService implements IUserService {
         entityManager.update(UserEntity, { id }, { status, updatedBy: by, updatedAt: now }),
         entityManager.update(UserProfileEntity, { id: user.profile.id }, { status, updatedBy: by, updatedAt: now }),
       ])
+      return true
+    })
+  }
+
+  async assignRolesByIds(assignRolesByIdsDTO: AssignRolesByIdsDTO, by: string = SYSTEM_DEFAULT_BY) {
+    return this.entityManager.transaction(async (entityManager: EntityManager) => {
+      const { id, roleIds } = assignRolesByIdsDTO
+
+      const user = await entityManager.findOne(UserEntity, { where: { id }, lock: { mode: 'pessimistic_write' } })
+
+      if (!user) throw new UserException(UserBusiness.NOT_FOUND)
+
+      const roles = await entityManager.findBy(RoleEntity, { id: In(roleIds) })
+
+      if (roles.length !== roleIds.length) throw new UserException(UserBusiness.ROLE_NOT_FOUND)
+
+      // 清空用户和角色的关系
+      await entityManager.createQueryBuilder().delete().from(SYS_USER_ROLE).where('user_id = :userId', { userId: id }).execute()
+
+      const now = new Date()
+      user.roles = roles
+      user.updatedAt = now
+      user.updatedBy = by
+      await entityManager.save(UserEntity, user)
+      return true
+    })
+  }
+
+  async assignRolesByCodes(assignRolesByCodesDTO: AssignRolesByCodesDTO, by: string = SYSTEM_DEFAULT_BY) {
+    return this.entityManager.transaction(async (entityManager: EntityManager) => {
+      const { id, roleCodes } = assignRolesByCodesDTO
+
+      const user = await entityManager.findOne(UserEntity, { where: { id }, lock: { mode: 'pessimistic_write' } })
+
+      if (!user) throw new UserException(UserBusiness.NOT_FOUND)
+
+      const roles = await entityManager.findBy(RoleEntity, { roleCode: In(roleCodes) })
+
+      if (roles.length !== roleCodes.length) throw new UserException(UserBusiness.ROLE_NOT_FOUND)
+
+      // 清空用户和角色的关系
+      await entityManager.createQueryBuilder().delete().from(SYS_USER_ROLE).where('user_id = :userId', { userId: id }).execute()
+
+      const now = new Date()
+      user.roles = roles
+      user.updatedAt = now
+      user.updatedBy = by
+      await entityManager.save(UserEntity, user)
       return true
     })
   }

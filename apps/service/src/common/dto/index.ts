@@ -2,7 +2,7 @@ import type { IIdDTO } from '@packages/types'
 import { IUpdateStatusDTO, StatusEnum } from '@packages/types'
 import { Type } from 'class-transformer'
 import { IsEnum, IsNumber, IsOptional, Max, Min } from 'class-validator'
-import { ApiModel } from '@/common/decorators/swagger.decorator'
+import { ApiModel } from '@/common/decorators'
 import { InputSpace, InputStringLength, NotEmpty } from '@/common/decorators/validator.decorator'
 import { UUID_V4_LENGTH } from '../constants'
 

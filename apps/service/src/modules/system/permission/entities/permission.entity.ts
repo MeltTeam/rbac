@@ -1,18 +1,20 @@
 import type { IPermissionEntity } from '@/modules/system/permission/IPermission'
+import { ActionTypeEnum } from '@packages/types'
 import { Column, Entity, Index, JoinTable, ManyToMany } from 'typeorm'
 import { CommonEntity } from '@/common/entities/common.entity'
 import { MenuEntity } from '@/modules/system/menu/entities/menu.entity'
 import { ResourceEntity } from '@/modules/system/resource/entities/resource.entity'
 import { RoleEntity } from '@/modules/system/role/entities/role.entity'
+import { PERMISSION_CODE_MAX, PERMISSION_DOMAIN_MAX, PERMISSION_NAME_MAX, SYS_PERMISSION_MENU, SYS_PERMISSION_RESOURCE } from '../permission.constant'
 
 @Entity({ name: 'sys_permission', comment: '权限表' })
-@Index(['name', 'permissionCode', 'domain'], { unique: true })
+@Index(['name', 'permissionCode'], { unique: true })
 export class PermissionEntity extends CommonEntity implements IPermissionEntity {
   @Column({
     comment: '权限名',
     name: 'name',
     type: 'varchar',
-    length: 64,
+    length: PERMISSION_NAME_MAX,
     unique: true,
   })
   name: string
@@ -21,7 +23,7 @@ export class PermissionEntity extends CommonEntity implements IPermissionEntity 
     comment: '权限编码(领域:操作类型)',
     name: 'permission_code',
     type: 'varchar',
-    length: 41,
+    length: PERMISSION_CODE_MAX,
     unique: true,
   })
   permissionCode: string
@@ -30,18 +32,18 @@ export class PermissionEntity extends CommonEntity implements IPermissionEntity 
     comment: '领域',
     name: 'domain',
     type: 'varchar',
-    length: 20,
-    unique: true,
+    length: PERMISSION_DOMAIN_MAX,
   })
   domain: string
 
   @Column({
     comment: '操作类型',
-    name: 'action',
-    type: 'varchar',
-    length: 20,
+    name: 'action_type',
+    type: 'tinyint',
+    unsigned: true,
+    default: ActionTypeEnum.MANAGE,
   })
-  action: string
+  actionType: ActionTypeEnum
 
   @ManyToMany(() => RoleEntity, (role) => role.permissions)
   roles: RoleEntity[]
@@ -54,7 +56,7 @@ export class PermissionEntity extends CommonEntity implements IPermissionEntity 
     eager: true,
   })
   @JoinTable({
-    name: 'sys_permission_menu',
+    name: SYS_PERMISSION_MENU,
     joinColumns: [{ name: 'permission_id', referencedColumnName: 'id' }],
     inverseJoinColumns: [{ name: 'menu_id', referencedColumnName: 'id' }],
   })
@@ -68,7 +70,7 @@ export class PermissionEntity extends CommonEntity implements IPermissionEntity 
     eager: true,
   })
   @JoinTable({
-    name: 'sys_permission_resource',
+    name: SYS_PERMISSION_RESOURCE,
     joinColumns: [{ name: 'permission_id', referencedColumnName: 'id' }],
     inverseJoinColumns: [{ name: 'resource_id', referencedColumnName: 'id' }],
   })

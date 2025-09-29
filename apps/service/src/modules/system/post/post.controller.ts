@@ -1,6 +1,6 @@
 import type { IPostController } from './IPost'
 import { Controller, Post, UseGuards } from '@nestjs/common'
-import { ApiController, ApiMethod } from '@/common/decorators/swagger.decorator'
+import { ApiController, ApiMethod } from '@/common/decorators'
 import { JwtGuard } from '@/common/guards/jwt.guard'
 import { PostService } from './post.service'
 import { PostVO } from './vo'

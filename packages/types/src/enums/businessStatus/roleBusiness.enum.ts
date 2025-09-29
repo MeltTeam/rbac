@@ -7,6 +7,11 @@ export enum RoleBusiness {
   NAME_ALREADY_EXISTS = '4301',
   /** 角色编码已存在 */
   CODE_ALREADY_EXISTS = '4302',
+
+  /** 不能删除内置角色 */
+  CANNOT_DELETE_BUILT_IN_ROLE = '4303',
+  /** 权限未找到 */
+  PERMISSION_NOT_FOUND = '4304',
 }
 
 /** 角色模块业务码文本映射 */
@@ -14,4 +19,6 @@ export const RoleBusinessTextMap: Record<RoleBusiness, [string, number]> = {
   [RoleBusiness.NOT_FOUND]: ['角色未找到', HttpStatus.NOT_FOUND],
   [RoleBusiness.NAME_ALREADY_EXISTS]: ['角色名已存在', HttpStatus.CONFLICT],
   [RoleBusiness.CODE_ALREADY_EXISTS]: ['角色编码已存在', HttpStatus.CONFLICT],
+  [RoleBusiness.CANNOT_DELETE_BUILT_IN_ROLE]: ['不能删除内置角色', HttpStatus.FORBIDDEN],
+  [RoleBusiness.PERMISSION_NOT_FOUND]: ['权限未找到', HttpStatus.NOT_FOUND],
 }

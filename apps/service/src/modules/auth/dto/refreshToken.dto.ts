@@ -1,7 +1,7 @@
 import type { IRefreshTokenDto } from '@packages/types'
 import { IsOptional } from 'class-validator'
 import { InputJWT, InputSpace, NotEmpty } from '@/common/decorators'
-import { ApiModel } from '@/common/decorators/swagger.decorator'
+import { ApiModel } from '@/common/decorators'
 import { REFRESH_TOKEN } from '../auth.constant'
 
 @ApiModel(

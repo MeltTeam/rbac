@@ -6,6 +6,9 @@ export const DEFAULT_APP_PORT = 4001
 export const DEFAULT_APP_HOSTNAME = '0.0.0.0'
 export const DEFAULT_APP_GLOBAL_PREFIX = ''
 export const DEFAULT_APP_SALT = 'NEST_APP_SALT'
+export const DEFAULT_APP_SUPER_ADMIN_NAME = 'superAdmin'
+export const DEFAULT_APP_ADMIN_NAME = 'admin'
+export const DEFAULT_APP_USER_NAME = 'user'
 /** cors配置相关 */
 export const DEFAULT_CORS_ENABLED = true
 export const DEFAULT_CORS_ORIGINS = 'http://127.0.0.1:4002,http://localhost:4002'

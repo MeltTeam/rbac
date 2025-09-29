@@ -1,6 +1,6 @@
 import type { UserEntity } from '../entities/user.entity'
 import { IUserVO, StatusEnum } from '@packages/types'
-import { ApiModel } from '@/common/decorators/swagger.decorator'
+import { ApiModel } from '@/common/decorators'
 import { PostVO } from '@/modules/system/post/vo'
 import { RoleVO } from '@/modules/system/role/vo'
 import { UserProfileVO } from './userProfile.vo'

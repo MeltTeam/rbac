@@ -1,6 +1,6 @@
 import type { IDeptController } from './IDept'
 import { Controller, Post, UseGuards } from '@nestjs/common'
-import { ApiController, ApiMethod } from '@/common/decorators/swagger.decorator'
+import { ApiController, ApiMethod } from '@/common/decorators'
 import { JwtGuard } from '@/common/guards/jwt.guard'
 import { DeptService } from './dept.service'
 import { DeptVO } from './vo'

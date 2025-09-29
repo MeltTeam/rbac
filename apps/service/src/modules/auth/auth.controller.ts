@@ -1,11 +1,18 @@
 import type { Request, Response } from 'express'
 import type { IAuthController } from './IAuth'
+import type { ILoggerCls } from '@/infrastructure/logger2/ILogger2'
 import { Body, Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common'
-import { ApiController, ApiMethod } from '@/common/decorators/swagger.decorator'
+import { ClsService } from 'nestjs-cls'
+import { SYSTEM_DEFAULT_BY } from '@/common/constants'
+import { ApiController, ApiMethod } from '@/common/decorators'
+import { JwtGuard } from '@/common/guards/jwt.guard'
 import { LocalGuard } from '@/common/guards/local.guard'
 import { SEND_EMAIL_CAPTCHA_VO } from '@/infrastructure/captcha/captcha.constant'
 import { CaptchaService } from '@/infrastructure/captcha/captcha.service'
 import { SvgCaptchaVO } from '@/infrastructure/captcha/vo/svgCaptcha.vo'
+import { LOGGER_CLS } from '@/infrastructure/logger2/logger2.constant'
+import { UserService } from '@/modules/system/user/user.service'
+import { UserVO } from '@/modules/system/user/vo'
 import { LOGOUT_VO, REGISTER_VO, RESET_PWD_VO } from './auth.constant'
 import { AuthService } from './auth.service'
 import { EmailCaptchaDTO, LoginByEmailDTO, LoginBySvgDTO, LogoutDTO, RefreshTokenDTO, RegisterByEmailDTO, ResetPwdByEmailDTO } from './dto'
@@ -17,6 +24,8 @@ export class AuthController implements IAuthController {
   constructor(
     private readonly captchaService: CaptchaService,
     private readonly authService: AuthService,
+    private readonly userService: UserService,
+    private readonly clsService: ClsService<ILoggerCls>,
   ) {}
 
   @Get('login/svg/captcha')
@@ -50,7 +59,7 @@ export class AuthController implements IAuthController {
   @UseGuards(LocalGuard)
   @Post('login/svg')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '图片验证码登录' }],
+    ApiOperationOptions: [{ summary: '图片验证码(登录)' }],
     ApiResponseOptions: [{ type: LoginVO }],
   })
   async loginBySvg(@Res({ passthrough: true }) response: Response, @Body() loginBySvgDTO: LoginBySvgDTO) {
@@ -73,7 +82,7 @@ export class AuthController implements IAuthController {
 
   @Post('register/email')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '注册用户' }],
+    ApiOperationOptions: [{ summary: '邮箱注册' }],
     ApiResponseOptions: [{ type: String, example: REGISTER_VO }],
   })
   async registerByEmail(@Body() registerByEmailDTO: RegisterByEmailDTO) {
@@ -122,5 +131,17 @@ export class AuthController implements IAuthController {
   })
   async refresh(@Req() request: Request, @Res({ passthrough: true }) response: Response, @Body() refreshTokenDTO: RefreshTokenDTO) {
     return await this.authService.refresh(request, response, refreshTokenDTO)
+  }
+
+  @UseGuards(JwtGuard)
+  @Get('info')
+  @ApiMethod({
+    ApiOperationOptions: [{ summary: '获取当前登录用户信息' }],
+    ApiResponseOptions: [{ type: UserVO }],
+    ApiBearerAuthOptions: 'JWT',
+  })
+  async getUserInfo() {
+    const userInfo = this.clsService.get(LOGGER_CLS.USER_INFO)
+    return await this.userService.findOneById({ id: userInfo.id ?? SYSTEM_DEFAULT_BY })
   }
 }

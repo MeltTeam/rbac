@@ -1,3 +1,4 @@
+export * from './actionType.enum'
 export * from './businessStatus'
 export * from './check.enum'
 export * from './dataScope.enum'

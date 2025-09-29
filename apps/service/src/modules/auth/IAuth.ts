@@ -1,4 +1,5 @@
 import type { Request, Response } from 'express'
+import type { UserVO } from '../system/user/vo'
 import type { LOGOUT_VO, REGISTER_VO, RESET_PWD_VO } from './auth.constant'
 import type { LoginBySvgDTO, LogoutDTO, RefreshTokenDTO, ResetPwdByEmailDTO } from './dto'
 import type { EmailCaptchaDTO } from './dto/emailCaptcha.dto'
@@ -17,71 +18,6 @@ export interface IValidateUserOptions {
   name: string
   /** 用户密码 */
   pwd: string
-}
-export interface IAuthController {
-  /** svg验证码接口(登录) */
-  loginBySvgCaptcha: () => Promise<SvgCaptchaVO>
-
-  /**
-   * 邮箱验证码接口(登录)
-   * @param emailCaptchaDTO 邮箱验证码接口参数校验
-   */
-  loginByEmailCaptcha: (emailCaptchaDTO: EmailCaptchaDTO) => Promise<typeof SEND_EMAIL_CAPTCHA_VO>
-
-  /**
-   * 邮箱登录接口
-   * @param response 响应对象
-   * @param loginByEmailDTO 邮箱登录接口参数校验
-   */
-  loginByEmail: (response: Response, loginByEmailDTO: LoginByEmailDTO) => Promise<LoginVO>
-
-  /**
-   * 图片验证码登录接口
-   * @param response 响应对象
-   * @param loginBySvgDTO 图片验证码登录接口参数校验
-   */
-  loginBySvg: (response: Response, loginBySvgDTO: LoginBySvgDTO) => Promise<LoginVO>
-
-  /**
-   * 邮箱验证码接口(注册)
-   * @param emailCaptchaDTO 邮箱验证码接口参数校验
-   */
-  registerByEmailCaptcha: (emailCaptchaDTO: EmailCaptchaDTO) => Promise<typeof SEND_EMAIL_CAPTCHA_VO>
-
-  /**
-   * 邮箱注册接口
-   * @param registerByEmailDTO 邮箱注册接口参数校验
-   */
-  registerByEmail: (registerByEmailDTO: RegisterByEmailDTO) => Promise<typeof REGISTER_VO>
-
-  /**
-   * 邮箱验证码接口(重置密码)
-   * @param emailCaptchaDTO 邮箱验证码接口参数校验
-   */
-  resetPwdByEmailCaptcha: (emailCaptchaDTO: EmailCaptchaDTO) => Promise<typeof SEND_EMAIL_CAPTCHA_VO>
-
-  /**
-   * 邮箱重置密码接口
-   * @param response 响应对象
-   * @param resetPwdByEmailDTO 邮箱重置密码接口参数校验
-   */
-  resetPwdByEmail: (response: Response, resetPwdByEmailDTO: ResetPwdByEmailDTO) => Promise<typeof RESET_PWD_VO>
-
-  /**
-   * 退出登录接口
-   * @param request 请求对象
-   * @param response 响应对象
-   * @param logoutDTO 退出登录接口参数校验
-   */
-  logout: (request: Request, response: Response, logoutDTO: LogoutDTO) => Promise<typeof LOGOUT_VO>
-
-  /**
-   * 刷新令牌接口
-   * @param request 请求对象
-   * @param response  响应对象
-   * @param refreshTokenDTO 刷新令牌接口参数校验
-   */
-  refresh: (request: Request, response: Response, refreshTokenDTO: RefreshTokenDTO) => Promise<LoginVO>
 }
 
 export interface IAuthService {
@@ -147,4 +83,73 @@ export interface IAuthService {
    * @param pwd 密码
    */
   validateUser: (name: string, pwd: string) => Promise<UserInfo>
+}
+
+export interface IAuthController {
+  /** svg验证码接口(登录) */
+  loginBySvgCaptcha: () => Promise<SvgCaptchaVO>
+
+  /**
+   * 邮箱验证码接口(登录)
+   * @param emailCaptchaDTO 邮箱验证码接口参数校验
+   */
+  loginByEmailCaptcha: (emailCaptchaDTO: EmailCaptchaDTO) => Promise<typeof SEND_EMAIL_CAPTCHA_VO>
+
+  /**
+   * 邮箱登录接口
+   * @param response 响应对象
+   * @param loginByEmailDTO 邮箱登录接口参数校验
+   */
+  loginByEmail: (response: Response, loginByEmailDTO: LoginByEmailDTO) => Promise<LoginVO>
+
+  /**
+   * 图片验证码登录接口
+   * @param response 响应对象
+   * @param loginBySvgDTO 图片验证码登录接口参数校验
+   */
+  loginBySvg: (response: Response, loginBySvgDTO: LoginBySvgDTO) => Promise<LoginVO>
+
+  /**
+   * 邮箱验证码接口(注册)
+   * @param emailCaptchaDTO 邮箱验证码接口参数校验
+   */
+  registerByEmailCaptcha: (emailCaptchaDTO: EmailCaptchaDTO) => Promise<typeof SEND_EMAIL_CAPTCHA_VO>
+
+  /**
+   * 邮箱注册接口
+   * @param registerByEmailDTO 邮箱注册接口参数校验
+   */
+  registerByEmail: (registerByEmailDTO: RegisterByEmailDTO) => Promise<typeof REGISTER_VO>
+
+  /**
+   * 邮箱验证码接口(重置密码)
+   * @param emailCaptchaDTO 邮箱验证码接口参数校验
+   */
+  resetPwdByEmailCaptcha: (emailCaptchaDTO: EmailCaptchaDTO) => Promise<typeof SEND_EMAIL_CAPTCHA_VO>
+
+  /**
+   * 邮箱重置密码接口
+   * @param response 响应对象
+   * @param resetPwdByEmailDTO 邮箱重置密码接口参数校验
+   */
+  resetPwdByEmail: (response: Response, resetPwdByEmailDTO: ResetPwdByEmailDTO) => Promise<typeof RESET_PWD_VO>
+
+  /**
+   * 退出登录接口
+   * @param request 请求对象
+   * @param response 响应对象
+   * @param logoutDTO 退出登录接口参数校验
+   */
+  logout: (request: Request, response: Response, logoutDTO: LogoutDTO) => Promise<typeof LOGOUT_VO>
+
+  /**
+   * 刷新令牌接口
+   * @param request 请求对象
+   * @param response  响应对象
+   * @param refreshTokenDTO 刷新令牌接口参数校验
+   */
+  refresh: (request: Request, response: Response, refreshTokenDTO: RefreshTokenDTO) => Promise<LoginVO>
+
+  /** 获取当前登录用户信息接口 */
+  getUserInfo: () => Promise<UserVO>
 }

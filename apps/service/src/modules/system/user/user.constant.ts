@@ -24,3 +24,6 @@ export const PWD = '密码'
 export const PWD_MIN = 8
 /** 密码最大长度 */
 export const PWD_MAX = 64
+
+/** 用户角色中间表名 */
+export const SYS_USER_ROLE = 'sys_user_role'

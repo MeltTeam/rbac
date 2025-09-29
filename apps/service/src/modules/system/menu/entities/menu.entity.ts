@@ -28,7 +28,7 @@ export class MenuEntity extends CommonEntity implements IMenuEntity {
   name: string
 
   @Column({
-    comment: '菜单编码(MENU:路由名称,BUTTON:路由名称,COMPONENT:路由名称,DIRECTORY:路由名称,LINK:路由名称,INNER_LINK:路由名称)',
+    comment: '菜单编码',
     name: 'menu_code',
     type: 'varchar',
     length: 100,
@@ -37,7 +37,7 @@ export class MenuEntity extends CommonEntity implements IMenuEntity {
   menuCode: string
 
   @Column({
-    comment: '菜单路径',
+    comment: '访问路径',
     name: 'path',
     type: 'varchar',
     length: 1024,

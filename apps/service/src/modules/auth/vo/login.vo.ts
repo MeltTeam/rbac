@@ -1,5 +1,5 @@
 import type { IUserInfo } from '@packages/types'
-import { ApiModel } from '@/common/decorators/swagger.decorator'
+import { ApiModel } from '@/common/decorators'
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '../auth.constant'
 
 @ApiModel(

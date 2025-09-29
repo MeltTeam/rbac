@@ -1,5 +1,5 @@
 import type { IFindAllUserVO } from '@packages/types'
-import { ApiModel } from '@/common/decorators/swagger.decorator'
+import { ApiModel } from '@/common/decorators'
 import { FindAllVO } from '@/common/vo/index.vo'
 import { UserVO } from './index'
 

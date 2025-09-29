@@ -1,13 +1,16 @@
-import type { CreateRoleDTO, RoleCodeDTO, RoleIdDTO, RoleNameDTO } from './dto'
+import type { AssignPermissionsByCodesDTO, AssignPermissionsByIdsDTO, CreateRoleDTO, RoleCodeDTO, RoleIdDTO, RoleNameDTO } from './dto'
 import type { IRoleService } from './IRole'
 import type { FindAllDTO, UpdateStatusDTO } from '@/common/dto'
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { RoleBusiness } from '@packages/types'
-import { EntityManager, Repository } from 'typeorm'
+import { EntityManager, In, Repository } from 'typeorm'
 import { SYSTEM_DEFAULT_BY } from '@/common/constants'
+import { PermissionEntity } from '../permission/entities/permission.entity'
+import { SYS_USER_ROLE } from '../user/user.constant'
 import { RoleEntity } from './entities/role.entity'
 import { RoleTreeEntity } from './entities/roleTree.entity'
+import { DEFAULT_ROLES, SYS_ROLE_DEPT, SYS_ROLE_PERMISSION } from './role.constant'
 import { RoleException } from './role.exception'
 import { FindAllRoleVO, RoleVO } from './vo'
 
@@ -78,6 +81,33 @@ export class RoleService implements IRoleService {
     })
   }
 
+  async delById(roleIdDTO: RoleIdDTO, by: string = SYSTEM_DEFAULT_BY) {
+    return this.entityManager.transaction(async (entityManager: EntityManager) => {
+      const { id } = roleIdDTO
+      const now = new Date()
+      const role = await entityManager.findOne(RoleEntity, { where: { id }, lock: { mode: 'pessimistic_write' } })
+      if (!role) throw new RoleException(RoleBusiness.NOT_FOUND)
+
+      if (
+        role.roleCode === DEFAULT_ROLES.SUPER_ADMIN.roleCode ||
+        role.roleCode === DEFAULT_ROLES.ADMIN.roleCode ||
+        role.roleCode === DEFAULT_ROLES.USER.roleCode
+      ) {
+        throw new RoleException(RoleBusiness.CANNOT_DELETE_BUILT_IN_ROLE)
+      }
+
+      await Promise.all([
+        entityManager.update(RoleEntity, { id }, { deletedAt: now, deletedBy: by }),
+        // 删除相关的关系记录
+        entityManager.createQueryBuilder().delete().from(SYS_USER_ROLE).where('role_id = :roleId', { roleId: id }).execute(),
+        entityManager.createQueryBuilder().delete().from(SYS_ROLE_PERMISSION).where('role_id = :roleId', { roleId: id }).execute(),
+        entityManager.createQueryBuilder().delete().from(SYS_ROLE_DEPT).where('role_id = :roleId', { roleId: id }).execute(),
+      ])
+
+      return true
+    })
+  }
+
   findAll(findAllDTO: FindAllDTO, isVO: true): Promise<FindAllRoleVO>
   findAll(findAllDTO: FindAllDTO, isVO: false): Promise<[RoleEntity[], number]>
   findAll(findAllDTO: FindAllDTO): Promise<FindAllRoleVO>
@@ -141,20 +171,61 @@ export class RoleService implements IRoleService {
       const { id } = roleIdDTO
       const { status } = updateStatusDTO
 
-      const role = await entityManager
-        .createQueryBuilder(RoleEntity, 'r')
-        .where('r.id = :id')
-        .andWhere('r.deletedAt IS NULL')
-        .setParameters({ id })
-        .useTransaction(true)
-        .setLock('pessimistic_write')
-        .getOne()
+      const role = await entityManager.findOne(RoleEntity, { where: { id }, lock: { mode: 'pessimistic_write' } })
 
       if (!role) throw new RoleException(RoleBusiness.NOT_FOUND)
 
       const now = new Date()
       await entityManager.update(RoleEntity, { id }, { status, updatedBy: by, updatedAt: now })
 
+      return true
+    })
+  }
+
+  async assignPermissionsByIds(assignPermissionsByIdsDTO: AssignPermissionsByIdsDTO, by: string = SYSTEM_DEFAULT_BY) {
+    return this.entityManager.transaction(async (entityManager: EntityManager) => {
+      const { id, permissionIds } = assignPermissionsByIdsDTO
+
+      const role = await entityManager.findOne(RoleEntity, { where: { id }, lock: { mode: 'pessimistic_write' } })
+
+      if (!role) throw new RoleException(RoleBusiness.NOT_FOUND)
+
+      const permissions = await entityManager.findBy(PermissionEntity, { id: In(permissionIds) })
+
+      if (permissions.length !== permissionIds.length) throw new RoleException(RoleBusiness.PERMISSION_NOT_FOUND)
+
+      // 清空角色和权限的关系
+      await entityManager.createQueryBuilder().delete().from(SYS_ROLE_PERMISSION).where('role_id = :roleId', { roleId: id }).execute()
+
+      const now = new Date()
+      role.permissions = permissions
+      role.updatedAt = now
+      role.updatedBy = by
+      await entityManager.save(RoleEntity, role)
+      return true
+    })
+  }
+
+  async assignPermissionsByCodes(assignPermissionsByCodesDTO: AssignPermissionsByCodesDTO, by: string = SYSTEM_DEFAULT_BY) {
+    return this.entityManager.transaction(async (entityManager: EntityManager) => {
+      const { id, permissionCodes } = assignPermissionsByCodesDTO
+
+      const role = await entityManager.findOne(RoleEntity, { where: { id }, lock: { mode: 'pessimistic_write' } })
+
+      if (!role) throw new RoleException(RoleBusiness.NOT_FOUND)
+
+      const permissions = await entityManager.findBy(PermissionEntity, { permissionCode: In(permissionCodes) })
+
+      if (permissions.length !== permissionCodes.length) throw new RoleException(RoleBusiness.PERMISSION_NOT_FOUND)
+
+      // 清空角色和权限的关系
+      await entityManager.createQueryBuilder().delete().from(SYS_ROLE_PERMISSION).where('user_id = :userId', { userId: id }).execute()
+
+      const now = new Date()
+      role.permissions = permissions
+      role.updatedAt = now
+      role.updatedBy = by
+      await entityManager.save(RoleEntity, role)
       return true
     })
   }

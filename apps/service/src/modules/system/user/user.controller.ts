@@ -3,11 +3,11 @@ import type { ILoggerCls } from '@/infrastructure/logger2/ILogger2'
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common'
 import { ClsService } from 'nestjs-cls'
 import { DEL_BY_ID_VO, SYSTEM_DEFAULT_BY, UPDATE_STATUS_VO, UPDATE_VO } from '@/common/constants'
-import { ApiController, ApiMethod } from '@/common/decorators/swagger.decorator'
+import { ApiController, ApiMethod } from '@/common/decorators'
 import { FindAllDTO, UpdateStatusDTO } from '@/common/dto'
 import { JwtGuard } from '@/common/guards/jwt.guard'
 import { LOGGER_CLS } from '@/infrastructure/logger2/logger2.constant'
-import { CreateUserDTO, UpdateUserDTO, UserIdDTO } from './dto'
+import { AssignRolesByIdsDTO, CreateUserDTO, UpdateUserDTO, UserIdDTO } from './dto'
 import { UserService } from './user.service'
 import { FindAllUserVO, UserVO } from './vo'
 
@@ -90,5 +90,18 @@ export class UserController implements IUserController {
     const userInfo = this.clsService.get(LOGGER_CLS.USER_INFO)
     await this.userService.updateStatusById(userIdDTO, updateStatusDTO, userInfo.id ?? SYSTEM_DEFAULT_BY)
     return UPDATE_STATUS_VO
+  }
+
+  @UseGuards(JwtGuard)
+  @Post(':id/roles')
+  @ApiMethod({
+    ApiOperationOptions: [{ summary: '分配角色' }],
+    ApiResponseOptions: [{ type: String, example: UPDATE_VO }],
+    ApiBearerAuthOptions: 'JWT',
+  })
+  async assignRoles(@Body() assignRolesByIdsDTO: AssignRolesByIdsDTO) {
+    const userInfo = this.clsService.get(LOGGER_CLS.USER_INFO)
+    await this.userService.assignRolesByIds(assignRolesByIdsDTO, userInfo.id ?? SYSTEM_DEFAULT_BY)
+    return UPDATE_VO
   }
 }

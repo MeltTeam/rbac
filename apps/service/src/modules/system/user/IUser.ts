@@ -1,6 +1,6 @@
 import type { SexEnum } from '@packages/types'
 import type { RoleEntity } from '../role/entities/role.entity'
-import type { CreateUserDTO, UpdateUserDTO, UserIdDTO, UserNameDTO } from './dto'
+import type { AssignRolesByCodesDTO, AssignRolesByIdsDTO, CreateUserDTO, UpdateUserDTO, UserIdDTO, UserNameDTO } from './dto'
 import type { UserEntity } from './entities/user.entity'
 import type { UserProfileEntity } from './entities/userProfile.entity'
 import type { FindAllUserVO, UserVO } from './vo'
@@ -82,14 +82,14 @@ export interface IUserService {
   /**
    * 创建用户
    * @param createUserOptions 创建参数
-   * @param by 操作者，默认sys
+   * @param by 操作者，默认system
    */
   create: (createUserOptions: CreateUserOptions, by?: string) => Promise<UserVO>
 
   /**
-   * 根据id删除用户
+   * 根据用户ID删除用户
    * @param userIdDTO 用户ID
-   * @param by 操作者，默认sys
+   * @param by 操作者，默认system
    */
   delById: (userIdDTO: UserIdDTO, by?: string) => Promise<boolean>
 
@@ -103,7 +103,7 @@ export interface IUserService {
     ((findAllDTO: FindAllDTO) => Promise<FindAllUserVO>)
 
   /**
-   * 根据id查询单个用户
+   * 根据用户ID查询单个用户
    * @param userIdDTO 用户ID
    * @param isVO 是否返回VO格式(默认:true)
    */
@@ -113,7 +113,7 @@ export interface IUserService {
     ((userIdDTO: UserIdDTO) => Promise<UserVO>)
 
   /**
-   * 根据name查询单个用户
+   * 根据用户名查询单个用户
    * @param userNameDTO 用户名
    * @param isVO 是否返回VO格式(默认:true)
    */
@@ -122,10 +122,10 @@ export interface IUserService {
     ((userNameDTO: UserNameDTO) => Promise<UserVO>)
 
   /**
-   * 根据id更新单个用户
+   * 根据用户ID更新单个用户
    * @param userIdDTO 用户ID
    * @param updateUserDTO 更新参数
-   * @param by 操作者，默认sys
+   * @param by 操作者，默认system
    */
   update: (userIdDTO: UserIdDTO, updateUserDTO: UpdateUserDTO, by?: string) => Promise<boolean>
 
@@ -141,7 +141,7 @@ export interface IUserService {
    * 更新密码
    * @param id 用户ID
    * @param pwd 新密码明文
-   * @param by 操作者，默认sys
+   * @param by 操作者，默认system
    */
   updatePwd: (id: string, pwd: string, by?: string) => Promise<boolean>
 
@@ -149,9 +149,23 @@ export interface IUserService {
    * 更新状态
    * @param userIdDTO 用户ID
    * @param updateStatusDTO 更新状态参数
-   * @param by 操作者，默认sys
+   * @param by 操作者，默认system
    */
   updateStatusById: (userIdDTO: UserIdDTO, updateStatusDTO: UpdateStatusDTO, by?: string) => Promise<boolean>
+
+  /**
+   * 根据角色ID分配角色
+   * @param assignRolesByIdsDTO 分配角色参数
+   * @param by 操作者，默认system
+   */
+  assignRolesByIds: (assignRolesByIdsDTO: AssignRolesByIdsDTO, by?: string) => Promise<boolean>
+
+  /**
+   * 根据角色编码分配角色
+   * @param assignRolesByCodesDTO 分配角色参数
+   * @param by 操作者，默认system
+   */
+  assignRolesByCodes: (assignRolesByCodesDTO: AssignRolesByCodesDTO, by?: string) => Promise<boolean>
 }
 
 /** 用户模块控制器接口 */
@@ -193,4 +207,10 @@ export interface IUserController {
    * @param updateStatusDTO 更新状态参数
    */
   updateStatus: (userIdDTO: UserIdDTO, updateStatusDTO: UpdateStatusDTO) => Promise<typeof UPDATE_STATUS_VO>
+
+  /**
+   * 分配角色接口
+   * @param assignRolesByIdsDTO 分配角色参数
+   */
+  assignRoles: (assignRolesByIdsDTO: AssignRolesByIdsDTO) => Promise<typeof UPDATE_VO>
 }

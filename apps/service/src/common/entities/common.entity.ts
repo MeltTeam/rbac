@@ -11,7 +11,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm'
-import { SYSTEM_DEFAULT_BY, SYSTEM_DEFAULT_REMARK } from '@/common/constants'
+import { REMARK, REMARK_MAX, SYSTEM_DEFAULT_BY, SYSTEM_DEFAULT_REMARK } from '@/common/constants'
 import { uuid_v4 } from '@/common/utils'
 
 /** 实体公共字段 */
@@ -94,10 +94,10 @@ export abstract class CommonEntity implements ICommonEntity {
   deletedAt: Date | null
 
   @Column({
-    comment: '备注说明',
+    comment: REMARK,
     name: 'remark',
     type: 'varchar',
-    length: 500,
+    length: REMARK_MAX,
     nullable: true,
     default: null,
   })

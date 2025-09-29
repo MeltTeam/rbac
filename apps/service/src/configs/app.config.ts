@@ -17,6 +17,12 @@ export interface IAppConfig {
   globalPrefix: string
   /** app盐 */
   salt: string
+  /** 内置超级管理员名(用于判断不能删除内置用户) */
+  superAdminName: string
+  /** 内置管理员名(用于判断不能删除内置用户) */
+  adminName: string
+  /** 内置普通用户名(用于判断不能删除内置用户) */
+  userName: string
   // csrf防御
   // csrf: {
   //   /** 密钥 */
@@ -37,6 +43,9 @@ export const AppConfig = registerAs(APP_CONFIG_KEY, (): IAppConfig => {
     hostname: value.APP_HOSTNAME,
     globalPrefix: value.APP_GLOBAL_PREFIX,
     salt: value.APP_SALT,
+    superAdminName: value.APP_SUPER_ADMIN_NAME,
+    adminName: value.APP_ADMIN_NAME,
+    userName: value.APP_USER_NAME,
   }
 })
 /** app配置类型 */

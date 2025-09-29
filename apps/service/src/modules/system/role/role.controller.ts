@@ -2,12 +2,12 @@ import type { IRoleController } from './IRole'
 import type { ILoggerCls } from '@/infrastructure/logger2/ILogger2'
 import { Body, Controller, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common'
 import { ClsService } from 'nestjs-cls'
-import { SYSTEM_DEFAULT_BY, UPDATE_STATUS_VO } from '@/common/constants'
-import { ApiController, ApiMethod } from '@/common/decorators/swagger.decorator'
+import { SYSTEM_DEFAULT_BY, UPDATE_STATUS_VO, UPDATE_VO } from '@/common/constants'
+import { ApiController, ApiMethod } from '@/common/decorators'
 import { FindAllDTO, UpdateStatusDTO } from '@/common/dto'
 import { JwtGuard } from '@/common/guards/jwt.guard'
 import { LOGGER_CLS } from '@/infrastructure/logger2/logger2.constant'
-import { CreateRoleDTO, RoleIdDTO } from './dto'
+import { AssignPermissionsByIdsDTO, CreateRoleDTO, RoleIdDTO } from './dto'
 import { RoleService } from './role.service'
 import { FindAllRoleVO, RoleVO } from './vo'
 
@@ -64,5 +64,18 @@ export class RoleController implements IRoleController {
     const userInfo = this.clsService.get(LOGGER_CLS.USER_INFO)
     await this.roleService.updateStatusById(roleIdDTO, updateStatusDTO, userInfo.id ?? SYSTEM_DEFAULT_BY)
     return UPDATE_STATUS_VO
+  }
+
+  @UseGuards(JwtGuard)
+  @Post(':id/permissions')
+  @ApiMethod({
+    ApiOperationOptions: [{ summary: '分配权限' }],
+    ApiResponseOptions: [{ type: String, example: UPDATE_VO }],
+    ApiBearerAuthOptions: 'JWT',
+  })
+  async assignPermissions(@Body() assignPermissionsByIdsDTO: AssignPermissionsByIdsDTO) {
+    const userInfo = this.clsService.get(LOGGER_CLS.USER_INFO)
+    await this.roleService.assignPermissionsByIds(assignPermissionsByIdsDTO, userInfo.id ?? SYSTEM_DEFAULT_BY)
+    return UPDATE_VO
   }
 }

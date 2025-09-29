@@ -1,10 +1,13 @@
 import Joi from 'joi'
 import {
+  DEFAULT_APP_ADMIN_NAME,
   DEFAULT_APP_GLOBAL_PREFIX,
   DEFAULT_APP_HOSTNAME,
   DEFAULT_APP_NAME,
   DEFAULT_APP_PORT,
   DEFAULT_APP_SALT,
+  DEFAULT_APP_SUPER_ADMIN_NAME,
+  DEFAULT_APP_USER_NAME,
   DEFAULT_CACHE_MEMORY_MAX,
   DEFAULT_CACHE_MEMORY_NAME,
   DEFAULT_CACHE_MEMORY_TTL,
@@ -112,6 +115,9 @@ export const AppValidationSchema = BaseValidationSchema.append<IAppValidationSch
   APP_HOSTNAME: Joi.string().default(DEFAULT_APP_HOSTNAME),
   APP_GLOBAL_PREFIX: Joi.string().default(DEFAULT_APP_GLOBAL_PREFIX),
   APP_SALT: Joi.string().default(DEFAULT_APP_SALT),
+  APP_SUPER_ADMIN_NAME: Joi.string().default(DEFAULT_APP_SUPER_ADMIN_NAME),
+  APP_ADMIN_NAME: Joi.string().default(DEFAULT_APP_ADMIN_NAME),
+  APP_USER_NAME: Joi.string().default(DEFAULT_APP_USER_NAME),
 })
 
 /** cors配置验证 */

@@ -1,6 +1,6 @@
 import type { RoleEntity } from '../entities/role.entity'
 import { IRoleVO, StatusEnum } from '@packages/types'
-import { ApiModel } from '@/common/decorators/swagger.decorator'
+import { ApiModel } from '@/common/decorators'
 import { DeptVO } from '@/modules/system/dept/vo'
 import { PermissionVO } from '@/modules/system/permission/vo'
 

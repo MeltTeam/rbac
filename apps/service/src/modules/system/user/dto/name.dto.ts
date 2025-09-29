@@ -1,11 +1,10 @@
 import type { INameDTO } from '@packages/types'
-import { InputSpace, InputStringLength, NotEmpty } from '@/common/decorators'
-import { ApiModel } from '@/common/decorators/swagger.decorator'
+import { ApiModel, InputSpace, InputStringLength, NotEmpty } from '@/common/decorators'
 import { USER_NAME, USER_NAME_MAX, USER_NAME_MIN } from '../user.constant'
 
 @ApiModel(
   {
-    name: { type: String, description: USER_NAME },
+    name: { type: String, description: USER_NAME, minLength: USER_NAME_MIN, maxLength: USER_NAME_MAX, example: 'admin' },
   },
   { description: USER_NAME },
 )

@@ -1,7 +1,7 @@
 import type { IResetPwdByEmailDTO } from '@packages/types'
 import { CAPTCHA } from '@/common/constants'
 import { InputCompare, InputPwd, InputSpace, InputStringLength, NotEmpty } from '@/common/decorators'
-import { ApiModel } from '@/common/decorators/swagger.decorator'
+import { ApiModel } from '@/common/decorators'
 import { CONFIRM_PWD, EMAIL, PWD, PWD_MAX, PWD_MIN, USER_NAME } from '@/modules/system/user/user.constant'
 import { LoginByEmailDTO } from './loginByEmail.dto'
 

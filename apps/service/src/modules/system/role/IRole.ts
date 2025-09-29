@@ -1,8 +1,8 @@
-import type { CreateRoleDTO, RoleCodeDTO, RoleIdDTO, RoleNameDTO } from './dto'
+import type { AssignPermissionsByCodesDTO, AssignPermissionsByIdsDTO, CreateRoleDTO, RoleCodeDTO, RoleIdDTO, RoleNameDTO } from './dto'
 import type { RoleEntity } from './entities/role.entity'
 import type { RoleTreeEntity } from './entities/roleTree.entity'
 import type { FindAllRoleVO, RoleVO } from './vo'
-import type { UPDATE_STATUS_VO } from '@/common/constants'
+import type { UPDATE_STATUS_VO, UPDATE_VO } from '@/common/constants'
 import type { FindAllDTO, UpdateStatusDTO } from '@/common/dto'
 import type { ICommonEntity } from '@/common/entities/ICommonEntity'
 import type { DeptEntity } from '@/modules/system/dept/entities/dept.entity'
@@ -48,12 +48,19 @@ export interface IRoleService {
   /**
    * 创建角色
    * @param createRoleDTO 创建参数
-   * @param by 操作者，默认sys
+   * @param by 操作者，默认system
    */
   create: (createRoleDTO: CreateRoleDTO, by?: string) => Promise<RoleVO>
 
   /**
-   * 分页查询所有权限
+   * 根据角色ID删除角色
+   * @param roleIdDTO 角色ID
+   * @param by 操作者，默认system
+   */
+  delById: (roleIdDTO: RoleIdDTO, by?: string) => Promise<boolean>
+
+  /**
+   * 分页查询所有角色
    * @param findAllDTO 查询参数
    * @param isVO 是否返回VO格式(默认:true)
    */
@@ -62,7 +69,7 @@ export interface IRoleService {
     ((findAllDTO: FindAllDTO) => Promise<FindAllRoleVO>)
 
   /**
-   * 根据id查询单个角色
+   * 根据角色ID查询单个角色
    * @param roleIdDTO 角色ID
    * @param isVO 是否返回VO格式(默认:true)
    */
@@ -71,7 +78,7 @@ export interface IRoleService {
     ((roleIdDTO: RoleIdDTO) => Promise<RoleVO>)
 
   /**
-   * 根据name查询单个角色
+   * 根据角色名查询单个角色
    * @param roleNameDTO 角色名
    * @param isVO 是否返回VO格式(默认:true)
    */
@@ -80,7 +87,7 @@ export interface IRoleService {
     ((roleNameDTO: RoleNameDTO) => Promise<RoleVO>)
 
   /**
-   * 根据code查询单个角色
+   * 根据角色编码查询单个角色
    * @param roleCodeDTO 角色编码
    * @param isVO 是否返回VO格式(默认:true)
    */
@@ -92,9 +99,23 @@ export interface IRoleService {
    * 更新状态
    * @param roleIdDTO 角色ID
    * @param updateStatusDTO 更新状态参数
-   * @param by 操作者，默认sys
+   * @param by 操作者，默认system
    */
   updateStatusById: (roleIdDTO: RoleIdDTO, updateStatusDTO: UpdateStatusDTO, by?: string) => Promise<boolean>
+
+  /**
+   * 根据权限ID分配权限
+   * @param assignPermissionsByIdsDTO 分配权限参数
+   * @param by 操作者，默认system
+   */
+  assignPermissionsByIds: (assignPermissionsByIdsDTO: AssignPermissionsByIdsDTO, by?: string) => Promise<boolean>
+
+  /**
+   * 根据权限编码分配权限
+   * @param assignPermissionsByCodesDTO 分配权限参数
+   * @param by 操作者，默认system
+   */
+  assignPermissionsByCodes: (assignPermissionsByCodesDTO: AssignPermissionsByCodesDTO, by?: string) => Promise<boolean>
 }
 
 /** 角色模块控制器接口 */
@@ -123,4 +144,10 @@ export interface IRoleController {
    * @param updateStatusDTO 更新状态参数
    */
   updateStatus: (roleIdDTO: RoleIdDTO, updateStatusDTO: UpdateStatusDTO) => Promise<typeof UPDATE_STATUS_VO>
+
+  /**
+   * 分配权限接口
+   * @param assignPermissionsByIdsDTO 分配权限参数
+   */
+  assignPermissions: (assignPermissionsByIdsDTO: AssignPermissionsByIdsDTO) => Promise<typeof UPDATE_VO>
 }

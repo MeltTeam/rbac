@@ -1,5 +1,5 @@
 import type { ILogoutDTO } from '@packages/types'
-import { ApiModel } from '@/common/decorators/swagger.decorator'
+import { ApiModel } from '@/common/decorators'
 import { REFRESH_TOKEN } from '../auth.constant'
 import { RefreshTokenDTO } from './refreshToken.dto'
 

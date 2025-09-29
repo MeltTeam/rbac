@@ -1,6 +1,6 @@
 import type { IEmailCaptchaDTO } from '@packages/types'
 import { InputEmail, InputSpace, NotEmpty } from '@/common/decorators'
-import { ApiModel } from '@/common/decorators/swagger.decorator'
+import { ApiModel } from '@/common/decorators'
 import { EMAIL } from '@/modules/system/user/user.constant'
 
 @ApiModel(
