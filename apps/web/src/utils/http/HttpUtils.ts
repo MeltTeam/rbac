@@ -1,4 +1,3 @@
-import type { IOKResponse } from '@packages/types'
 import type { AxiosInstance, AxiosResponse } from 'axios'
 import type {
   ICustomAxiosError,
@@ -150,33 +149,36 @@ export class HttpUtils<C = any> implements IHttpUtils<C> {
     }
   }
 
-  public async request<DTO = any, VO = never[]>(config: ICustomAxiosRequestConfig<C, DTO>) {
-    const res = await this.axiosInstance!.request<VO, AxiosResponse<IOKResponse<VO>>, DTO>(config)
+  public async request<DTO = any, VO = never[]>(url: string, config: ICustomAxiosRequestConfig<C, DTO>) {
+    const res = await this.axiosInstance!.request<VO, AxiosResponse<VO>, DTO>({
+      ...config,
+      url,
+    })
     return res.data
   }
 
   public async get<DTO = any, VO = never[]>(url: string, params?: DTO, config?: ICustomAxiosRequestConfig<C, DTO>) {
-    const res = await this.request<DTO, VO>({ url, method: 'get', params, ...config })
+    const res = await this.request<DTO, VO>(url, { method: 'get', params, ...config })
     return res
   }
 
   public async post<DTO = any, VO = never[]>(url: string, data?: DTO, config?: ICustomAxiosRequestConfig<C, DTO>) {
-    const res = await this.request<DTO, VO>({ url, method: 'post', data, ...config })
+    const res = await this.request<DTO, VO>(url, { method: 'post', data, ...config })
     return res
   }
 
   public async delete<DTO = any, VO = never[]>(url: string, data?: DTO, config?: ICustomAxiosRequestConfig<C, DTO>) {
-    const res = await this.request<DTO, VO>({ url, method: 'delete', data, ...config })
+    const res = await this.request<DTO, VO>(url, { method: 'delete', data, ...config })
     return res
   }
 
   public async put<DTO = any, VO = never[]>(url: string, data?: DTO, config?: ICustomAxiosRequestConfig<C, DTO>) {
-    const res = await this.request<DTO, VO>({ url, method: 'put', data, ...config })
+    const res = await this.request<DTO, VO>(url, { method: 'put', data, ...config })
     return res
   }
 
   public async patch<DTO = any, VO = never[]>(url: string, data?: DTO, config?: ICustomAxiosRequestConfig<C, DTO>) {
-    const res = await this.request<DTO, VO>({ url, method: 'patch', data, ...config })
+    const res = await this.request<DTO, VO>(url, { method: 'patch', data, ...config })
     return res
   }
 }

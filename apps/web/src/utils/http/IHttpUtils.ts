@@ -1,4 +1,3 @@
-import type { IOKResponse } from '@packages/types'
 import type { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse, CreateAxiosDefaults, InternalAxiosRequestConfig } from 'axios'
 import type { IHttpUtilsPlugin, IHttpUtilsPluginCTX, THttpUtilsPluginHook, TPluginHookData } from './IPlugin'
 
@@ -69,15 +68,15 @@ export interface IHttpUtils<C = any> {
   /** 生成请求ID */
   generateRequestId: (config: ICustomAxiosRequestConfig<C>) => string
   /** 基础请求 */
-  request: <VO = any, DTO = any>(config: ICustomAxiosRequestConfig<C, DTO>) => Promise<IOKResponse<VO>>
+  request: <VO = any, DTO = any>(url: string, config: ICustomAxiosRequestConfig<C, DTO>) => Promise<VO>
   /** get请求 */
-  get: <VO = any, DTO = any>(url: string, params?: DTO, config?: ICustomAxiosRequestConfig<C, DTO>) => Promise<IOKResponse<VO>>
+  get: <VO = any, DTO = any>(url: string, params?: DTO, config?: ICustomAxiosRequestConfig<C, DTO>) => Promise<VO>
   /** post请求 */
-  post: <VO = any, DTO = any>(url: string, data?: DTO, config?: ICustomAxiosRequestConfig<C, DTO>) => Promise<IOKResponse<VO>>
+  post: <VO = any, DTO = any>(url: string, data?: DTO, config?: ICustomAxiosRequestConfig<C, DTO>) => Promise<VO>
   /** delete请求 */
-  delete: <VO = any, DTO = any>(url: string, data?: DTO, config?: ICustomAxiosRequestConfig<C, DTO>) => Promise<IOKResponse<VO>>
+  delete: <VO = any, DTO = any>(url: string, data?: DTO, config?: ICustomAxiosRequestConfig<C, DTO>) => Promise<VO>
   /** put请求 */
-  put: <VO = any, DTO = any>(url: string, data?: DTO, config?: ICustomAxiosRequestConfig<C, DTO>) => Promise<IOKResponse<VO>>
+  put: <VO = any, DTO = any>(url: string, data?: DTO, config?: ICustomAxiosRequestConfig<C, DTO>) => Promise<VO>
   /** patch请求 */
-  patch: <VO = any, DTO = any>(url: string, data?: DTO, config?: ICustomAxiosRequestConfig<C, DTO>) => Promise<IOKResponse<VO>>
+  patch: <VO = any, DTO = any>(url: string, data?: DTO, config?: ICustomAxiosRequestConfig<C, DTO>) => Promise<VO>
 }

@@ -1,16 +1,15 @@
-import type { IEmailLoginDTO } from '@packages/types'
 import type { FormInstance, FormRules } from 'element-plus'
+import type { EmailLoginDTO } from '@/apis'
 import type { IFormItems } from '@/components'
 import { Icon } from '@iconify/vue'
-import { authApi } from '@/api'
 import { CAPTCHA_LENGTH, PWD_MAX, PWD_MIN } from '@/constants'
 import { t } from '@/i18n'
 import { goTo } from '@/router'
 import { useAuth } from '@/store/modules/auth'
 
 export function useEmailLogin() {
-  const { login } = useAuth()
-  const formData = reactive<IEmailLoginDTO>({
+  const { login, emailCode } = useAuth()
+  const formData = reactive<EmailLoginDTO>({
     email: '',
     pwd: '',
     captcha: '',
@@ -21,21 +20,21 @@ export function useEmailLogin() {
     formInstance.value = _formInstance ?? null
   }
   const emailValidateState = computed(() => {
-    const email = formInstance.value?.fields.find((field) => field.prop === 'email')
+    const email = formInstance.value?.fields.find((field: any) => field.prop === 'email')
     return !email || email.validateState !== 'success'
   })
   const pwdValidateState = computed(() => {
-    const pwd = formInstance.value?.fields.find((field) => field.prop === 'pwd')
+    const pwd = formInstance.value?.fields.find((field: any) => field.prop === 'pwd')
     return !pwd || pwd.validateState !== 'success'
   })
   const formValidateState = computed<boolean>(() => {
     const length = formInstance.value?.fields.length
-    return formInstance.value?.fields.filter((item) => item.validateState === 'success').length !== length
+    return formInstance.value?.fields.filter((field: any) => field.validateState === 'success').length !== length
   })
   async function getCaptchaHandler() {
     try {
       formData.captcha = ''
-      const { code, msg } = await authApi.emailCaptcha('login', { email: formData.email })
+      const { code, msg } = await emailCode('login', { email: formData.email })
       if (code !== '0') {
         ElMessage({ message: msg, type: 'error', duration: 1000 })
         return
@@ -63,7 +62,7 @@ export function useEmailLogin() {
       }
     })
   }
-  const formRules = computed<FormRules<IEmailLoginDTO>>(() => ({
+  const formRules = computed<FormRules<EmailLoginDTO>>(() => ({
     email: [
       { required: true, message: t('common.form.email'), trigger: ['blur', 'change'] },
       {

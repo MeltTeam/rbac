@@ -1,9 +1,8 @@
-import type { ISvgLoginDTO } from '@packages/types'
 import type { FormInstance, FormRules } from 'element-plus'
 import type { IOtherLoginItem } from '../components/OtherLogin/IOtherLogin'
+import type { SvgLoginDTO } from '@/apis'
 import type { IFormItems } from '@/components'
 import { Icon } from '@iconify/vue'
-import { authApi } from '@/api'
 import { CAPTCHA_LENGTH, PWD_MAX, PWD_MIN, USER_NAME_MAX, USER_NAME_MIN } from '@/constants'
 import { t } from '@/i18n'
 import { goTo } from '@/router'
@@ -11,8 +10,8 @@ import { useAuth } from '@/store/modules/auth'
 import { CaptchaImg, OtherLogin } from '../components'
 
 export function useSvgLogin() {
-  const { login, setAccess, setRefresh } = useAuth()
-  const formData = reactive<ISvgLoginDTO>({
+  const { login, setAccess, setRefresh, svgCode } = useAuth()
+  const formData = reactive<SvgLoginDTO>({
     name: '',
     pwd: '',
     captcha: '',
@@ -21,7 +20,7 @@ export function useSvgLogin() {
   const getFormTitle = () => t('views.Login.SvgLogin.title')
   const formInstance = ref<FormInstance | null>(null)
   const captchaImgUrl = ref<null | string>(null)
-  const formRules = computed<FormRules<ISvgLoginDTO>>(() => ({
+  const formRules = computed<FormRules<SvgLoginDTO>>(() => ({
     name: [
       { required: true, message: t('common.form.username'), trigger: ['blur', 'change'] },
       {
@@ -49,16 +48,16 @@ export function useSvgLogin() {
     formInstance.value = _formInstance ?? null
   }
   const nameValidateState = computed<boolean>(() => {
-    const name = formInstance.value?.fields.find((field) => field.prop === 'name')
+    const name = formInstance.value?.fields.find((field: any) => field.prop === 'name')
     return !name || name.validateState !== 'success'
   })
   const pwdValidateState = computed<boolean>(() => {
-    const pwd = formInstance.value?.fields.find((field) => field.prop === 'pwd')
+    const pwd = formInstance.value?.fields.find((field: any) => field.prop === 'pwd')
     return !pwd || pwd.validateState !== 'success'
   })
   const formValidateState = computed<boolean>(() => {
     const length = formInstance.value?.fields.length
-    return formInstance.value?.fields.filter((item) => item.validateState === 'success').length !== length
+    return formInstance.value?.fields.filter((field: any) => field.validateState === 'success').length !== length
   })
   const baseUrl = import.meta.env.VITE_API_BASE_URL ?? 'http://127.0.0.1:4001/api'
   const otherLoginList = computed<IOtherLoginItem[]>(() => [
@@ -91,7 +90,7 @@ export function useSvgLogin() {
   async function getCaptchaHandler() {
     try {
       formData.captcha = ''
-      const a = await authApi.svgCaptcha('login')
+      const a = await svgCode('login')
       console.warn(a)
       if (String(a.code).length === 3) return ElMessage({ message: a.msg, type: 'error', duration: 1000 })
       if (String(a.code).length > 3) return ElMessage({ message: a.msg, type: 'warning', duration: 1000 })

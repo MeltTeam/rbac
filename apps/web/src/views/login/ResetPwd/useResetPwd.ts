@@ -1,14 +1,15 @@
-import type { IEmailResetPwdDTO } from '@packages/types'
 import type { FormInstance, FormRules } from 'element-plus'
+import type { EmailResetPwdDTO } from '@/apis'
 import type { IFormItems } from '@/components'
 import { Icon } from '@iconify/vue'
-import { authApi } from '@/api'
 import { CAPTCHA_LENGTH, PWD_MAX, PWD_MIN } from '@/constants'
 import { t } from '@/i18n'
 import { goTo } from '@/router'
+import { useAuth } from '@/store'
 
 export function useResetPwd() {
-  const formData = reactive<IEmailResetPwdDTO>({
+  const { resetPwd, emailCode } = useAuth()
+  const formData = reactive<EmailResetPwdDTO>({
     email: '',
     pwd: '',
     confirmPwd: '',
@@ -20,25 +21,25 @@ export function useResetPwd() {
     formInstance.value = _formInstance ?? null
   }
   const emailValidateState = computed(() => {
-    const email = formInstance.value?.fields.find((field) => field.prop === 'email')
+    const email = formInstance.value?.fields.find((field: any) => field.prop === 'email')
     return !email || email.validateState !== 'success'
   })
   const pwdValidateState = computed(() => {
-    const pwd = formInstance.value?.fields.find((field) => field.prop === 'pwd')
+    const pwd = formInstance.value?.fields.find((field: any) => field.prop === 'pwd')
     return !pwd || pwd.validateState !== 'success'
   })
   const confirmPwdValidateState = computed(() => {
-    const confirmPwd = formInstance.value?.fields.find((field) => field.prop === 'confirmPwd')
+    const confirmPwd = formInstance.value?.fields.find((field: any) => field.prop === 'confirmPwd')
     return !confirmPwd || confirmPwd.validateState !== 'success'
   })
   const formValidateState = computed<boolean>(() => {
     const length = formInstance.value?.fields.length
-    return formInstance.value?.fields.filter((item) => item.validateState === 'success').length !== length
+    return formInstance.value?.fields.filter((field: any) => field.validateState === 'success').length !== length
   })
   async function getCaptchaHandler() {
     try {
       formData.captcha = ''
-      const { code, msg } = await authApi.emailCaptcha('resetPwd', { email: formData.email })
+      const { code, msg } = await emailCode('resetPwd', { email: formData.email })
       if (code !== '0') {
         ElMessage({ message: msg, type: 'error', duration: 1000 })
         return
@@ -52,7 +53,7 @@ export function useResetPwd() {
     formInstance.value?.validate(async (isValid: boolean) => {
       if (isValid) {
         try {
-          const { code, msg } = await authApi.emailResetPwd(formData)
+          const { code, msg } = await resetPwd('email', formData)
           if (code !== '0') {
             ElMessage({ message: msg, type: 'error', duration: 1000 })
             return
@@ -65,7 +66,7 @@ export function useResetPwd() {
       }
     })
   }
-  const formRules = computed<FormRules<IEmailResetPwdDTO>>(() => ({
+  const formRules = computed<FormRules<EmailResetPwdDTO>>(() => ({
     email: [
       { required: true, message: t('common.form.email'), trigger: ['blur', 'change'] },
       {

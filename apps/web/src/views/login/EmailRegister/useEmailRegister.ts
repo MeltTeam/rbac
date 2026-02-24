@@ -1,14 +1,15 @@
-import type { IEmailRegisterDTO } from '@packages/types'
 import type { FormInstance, FormRules } from 'element-plus'
+import type { EmailRegisterDTO } from '@/apis'
 import type { IFormItems } from '@/components'
 import { Icon } from '@iconify/vue'
-import { authApi } from '@/api'
 import { CAPTCHA_LENGTH, PWD_MAX, PWD_MIN, USER_NAME_MAX, USER_NAME_MIN } from '@/constants'
 import { t } from '@/i18n'
 import { goTo } from '@/router'
+import { useAuth } from '@/store'
 
 export function useEmailRegister() {
-  const formData = reactive<IEmailRegisterDTO>({
+  const { emailCode, register } = useAuth()
+  const formData = reactive<EmailRegisterDTO>({
     name: '',
     pwd: '',
     email: '',
@@ -20,25 +21,25 @@ export function useEmailRegister() {
     formInstance.value = _formInstance ?? null
   }
   const nameValidateState = computed(() => {
-    const name = formInstance.value?.fields.find((field) => field.prop === 'name')
+    const name = formInstance.value?.fields.find((field: any) => field.prop === 'name')
     return !name || name.validateState !== 'success'
   })
   const pwdValidateState = computed(() => {
-    const pwd = formInstance.value?.fields.find((field) => field.prop === 'pwd')
+    const pwd = formInstance.value?.fields.find((field: any) => field.prop === 'pwd')
     return !pwd || pwd.validateState !== 'success'
   })
   const emailValidateState = computed(() => {
-    const email = formInstance.value?.fields.find((field) => field.prop === 'email')
+    const email = formInstance.value?.fields.find((field: any) => field.prop === 'email')
     return !email || email.validateState !== 'success'
   })
   const formValidateState = computed<boolean>(() => {
     const length = formInstance.value?.fields.length
-    return formInstance.value?.fields.filter((item) => item.validateState === 'success').length !== length
+    return formInstance.value?.fields.filter((field: any) => field.validateState === 'success').length !== length
   })
   async function getCaptchaHandler() {
     try {
       formData.captcha = ''
-      const { code, msg } = await authApi.emailCaptcha('register', { email: formData.email })
+      const { code, msg } = await emailCode('register', { email: formData.email })
       if (code !== '0') {
         ElMessage({ message: msg, type: 'error', duration: 1000 })
         return
@@ -52,7 +53,7 @@ export function useEmailRegister() {
     formInstance.value?.validate(async (isValid: boolean) => {
       if (isValid) {
         try {
-          const { code, msg } = await authApi.emailRegister(formData)
+          const { code, msg } = await register('email', formData)
           if (code !== '0') {
             ElMessage({ message: msg, type: 'error', duration: 1000 })
             return
@@ -65,7 +66,7 @@ export function useEmailRegister() {
       }
     })
   }
-  const formRules = computed<FormRules<IEmailRegisterDTO>>(() => ({
+  const formRules = computed<FormRules<EmailRegisterDTO>>(() => ({
     name: [
       { required: true, message: t('common.form.username'), trigger: ['blur', 'change'] },
       {

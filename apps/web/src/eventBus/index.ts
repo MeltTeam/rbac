@@ -1,4 +1,4 @@
-import type { INetworkErrorPluginEvents, ITokenPluginEvents } from '@/api/http/plugins'
+import type { INetworkErrorPluginEvents, ITokenPluginEvents } from '@/utils/http/plugins'
 import { EventBus } from './EventBus'
 
 /** http插件事件 */

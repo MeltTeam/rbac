@@ -1,6 +1,4 @@
 /* eslint-disable style/quote-props */
-import type { ClientRequest, IncomingMessage, ServerResponse } from 'node:http'
-import type { HttpProxy, ProxyOptions } from 'vite'
 import { dirname, resolve } from 'node:path'
 import { env } from 'node:process'
 import { fileURLToPath, URL } from 'node:url'
@@ -29,22 +27,14 @@ export default defineConfig({
     hmr: true,
     port: 4002,
     warmup: {
-      clientFiles: ['./index.html', './src/{views,components}/*'],
+      clientFiles: ['./index.html', './src/**/*.{ts,vue}'],
     },
     proxy: {
       '/api': {
-        target: 'http://192.168.0.105:4001/api/v1',
+        target: 'http://192.168.0.105:4001',
         changeOrigin: true,
+        ws: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
-        configure(proxy: HttpProxy.Server, _options: ProxyOptions) {
-          proxy.on('proxyReq', (proxyReq: ClientRequest, req: IncomingMessage, _res: ServerResponse, _options: HttpProxy.ServerOptions) => {
-            let clientIp: string
-            const forwardedFor = req.headers['x-forwarded-for']
-            clientIp = req.socket.remoteAddress || '未知IP'
-            if (forwardedFor) clientIp = clientIp = forwardedFor?.length ? forwardedFor[0] : (forwardedFor as string).split(',')[0].trim()
-            proxyReq.setHeader('x-forwarded-for', clientIp)
-          })
-        },
       },
     },
   },
@@ -68,7 +58,9 @@ export default defineConfig({
           'vue-router': ['vue-router'],
           pinia: ['pinia'],
           'element-plus': ['element-plus'],
+          utils: ['axios', 'lodash-es'],
         },
+        format: 'esm',
       },
     },
   },
@@ -116,11 +108,11 @@ export default defineConfig({
         optimizationLevel: 7,
       },
       mozjpeg: {
-        quality: 20,
+        quality: 75,
       },
       pngquant: {
-        quality: [0.8, 0.9],
-        speed: 4,
+        quality: [0.7, 0.8],
+        speed: 3,
       },
       svgo: {
         plugins: [

@@ -1,0 +1,19 @@
+{% if genType === "ts" %}
+  export * from './{{ interfaceFileName }}';
+  {%- if isDisplayEnumLabel %}
+    export * from './{{ displayEnumLabelFileName }}';
+  {% endif -%}
+  {%- if isDisplayTypeLabel %}
+    export * from './{{ displayTypeLabelFileName }}';
+  {% endif -%}
+{% endif %}
+{%- if isGenJsonSchemas %}
+  export * from './{{ schemaFileName }}';
+{%- endif %}
+
+{% for api in list -%}
+  export * from './{{ api.fileName }}';
+  {%- if isGenReactQuery -%}
+    export * from './{{ api.fileName }}.{{ reactQueryFileName }}';
+  {%- endif -%}
+{%- endfor -%}

@@ -1,5 +1,5 @@
 import type { Router } from 'vue-router'
-// import { authApi } from '@/api'
+// import { authApi } from '@/apis'
 
 function createAuthGuard(router: Router) {
   router.beforeEach(async (to, _from, next) => {

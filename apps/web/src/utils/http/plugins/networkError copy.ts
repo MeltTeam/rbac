@@ -1,4 +1,3 @@
-// import type { IErrorResponse } from '@packages/types'
 // import type { CustomConfig } from '..'
 // import type { CustomAxiosError, IHttpPlugin, IPluginError } from '../IAxiosUtils'
 // import type { IEventBusEvents } from '@/eventBus/IEventBus'

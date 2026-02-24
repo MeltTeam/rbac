@@ -4,8 +4,8 @@ import { Icon } from '@iconify/vue'
 import { t } from '@/i18n'
 
 defineOptions({ name: 'MThemeBtn' })
-const MThemeBtnRef = useTemplateRef<HTMLDivElement>('MThemeBtnRef')
-const ElColorPickerRef = useTemplateRef<InstanceType<typeof ElColorPicker>>('ElColorPickerRef')
+const MThemeBtnRef = ref<HTMLDivElement | null>(null)
+const ElColorPickerRef = ref<InstanceType<typeof ElColorPicker> | null>(null)
 const color = ref('')
 const changing = ref<boolean>(false)
 const showColorPicker = ref<boolean>(false)

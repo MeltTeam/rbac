@@ -25,8 +25,8 @@ export interface CustomConfig {
   /** 未知错误处理插件配置 */
   // UnknownErrorPlugin?: IUnknownErrorPluginConfig
 }
-export const request = new HttpUtils<CustomConfig>()
-request.plugins = [
+export const http = new HttpUtils<CustomConfig>()
+http.plugins = [
   NetworkErrorPlugin,
   TokenPlugin,
   {
