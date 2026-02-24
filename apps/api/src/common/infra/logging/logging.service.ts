@@ -7,7 +7,7 @@ import { InjectQueue } from '@nestjs/bullmq'
 import { Injectable } from '@nestjs/common'
 import { Queue } from 'bullmq'
 import winston, { createLogger } from 'winston'
-import { redisIsOk } from '@/common/utils'
+import { redisIsOk, uuid_v4 } from '@/common/utils'
 import { DEFAULT_APP_NAME } from '@/config'
 import { LOGGING_QUEUE_TOKEN, QueueModuleHelper } from '../queue'
 
@@ -20,6 +20,9 @@ export class LoggingService implements ILoggingService {
   public static Logger: Logger | null
   /** 日志模块的 MongoDB 连接 */
   public static MongoConnection: mongoose.Connection | null = null
+  /** mongoDB是否可用 */
+  public static MongoIsOK: boolean = false
+
   /** 应用名称 */
   public static appName: string = DEFAULT_APP_NAME
 
@@ -33,8 +36,10 @@ export class LoggingService implements ILoggingService {
           {
             /** 失败重试 */
             attempts: 3,
+            jobId: uuid_v4(),
             /** 指数退避重试 */
-            backoff: { type: 'exponential', delay: 500 },
+            // backoff: { type: 'exponential', delay: 500 },
+            delay: 50,
           },
         )
       : LoggingService.Logger![fnName](...args)

@@ -6,7 +6,10 @@ import { ILoggingJobData } from './ILogging'
 import { LoggingService } from './logging.service'
 
 /** 日志队列处理 */
-@Processor(LOGGING_QUEUE_TOKEN)
+@Processor(LOGGING_QUEUE_TOKEN, {
+  removeOnComplete: { count: 500 },
+  removeOnFail: { count: 500 },
+})
 @LogContextClass()
 export class LoggingProcessor extends WorkerHost {
   constructor(private readonly loggingService: LoggingService) {
@@ -17,7 +20,6 @@ export class LoggingProcessor extends WorkerHost {
     try {
       const { fnName, args } = job.data
       LoggingService.Logger![fnName](...args)
-      await job.log(`延迟写入日志成功`)
     } catch (err) {
       this.loggingService.error(`延迟写入日志失败:${err.message}`, err.stack)
       await job.log(`延迟写入日志失败:${err.message}`)

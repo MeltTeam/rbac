@@ -56,30 +56,47 @@ export function createTypeFilter(winstonType: (typeof WINSTON_TYPE)[number]) {
 /** 创建文件日志降级过滤器 */
 export function createFileDowngradeFilter(mode: (typeof WINSTON_MODE)[number]) {
   return winston.format((info) => {
+    let res: false | typeof info = false
     switch (mode) {
       case 'none':
-        return false
+        res = false
+        break
       case 'file':
-        return info
+        res = info
+        break
       case 'mongodb':
-        if (LoggingService.MongoConnection && LoggingService.MongoConnection.readyState === 1) return false
-        return info
+        if (LoggingService.MongoConnection && LoggingService.MongoIsOK) {
+          res = false
+        } else {
+          res = info
+        }
+        break
     }
+    return res
   })()
 }
 
 /** 创建MongoDB日志降级过滤器 */
 export function createMongoDowngradeFilter(mode: (typeof WINSTON_MODE)[number]) {
   return winston.format((info) => {
+    let res: false | typeof info = false
     switch (mode) {
       case 'none':
-        return false
+        res = false
+        break
       case 'file':
-        return false
+        res = false
+        break
       case 'mongodb':
-        if (LoggingService.MongoConnection && LoggingService.MongoConnection.readyState === 1) return info
-        return false
+        console.warn(LoggingService.MongoConnection!.readyState)
+        if (LoggingService.MongoConnection && LoggingService.MongoIsOK) {
+          res = info
+        } else {
+          res = false
+        }
+        break
     }
+    return res
   })()
 }
 
@@ -109,8 +126,14 @@ export async function createMongoDBTransport(
       minHeartbeatFrequencyMS: 500,
     })
     LoggingService.MongoConnection = mongoConnection
-    LoggingService.MongoConnection.on('open', () => LoggingModule.logger.verbose('mongodb 连接成功'))
-    LoggingService.MongoConnection.on('disconnected', () => LoggingModule.logger.warn('mongodb 已断开连接'))
+    LoggingService.MongoConnection.on('open', () => {
+      LoggingModule.logger.verbose('mongodb 连接成功')
+      LoggingService.MongoIsOK = true
+    })
+    LoggingService.MongoConnection.on('disconnected', () => {
+      LoggingModule.logger.warn('mongodb 已断开连接')
+      LoggingService.MongoIsOK = false
+    })
     LoggingService.MongoConnection.on('reconnected', () => LoggingModule.logger.warn('mongodb 重新连接中...'))
     LoggingService.MongoConnection.on('disconnecting', () => LoggingModule.logger.warn('mongodb 断开连接中...'))
     LoggingService.MongoConnection.on('error', (err) => LoggingModule.logger.error(`mongodb:${err.message}`, err.stack))

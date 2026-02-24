@@ -60,8 +60,14 @@ import { createConsoleTransport, createFileTransport, createMongoDBTransport } f
           onConnectionCreate(connection) {
             if (LoggingService.MongoConnection) return LoggingService.MongoConnection
             LoggingService.MongoConnection = connection
-            LoggingService.MongoConnection.on('open', () => LoggingModule.logger.verbose('mongodb 连接成功'))
-            LoggingService.MongoConnection.on('disconnected', () => LoggingModule.logger.warn('mongodb 已断开连接'))
+            LoggingService.MongoConnection.on('open', () => {
+              LoggingModule.logger.verbose('mongodb 连接成功')
+              LoggingService.MongoIsOK = true
+            })
+            LoggingService.MongoConnection.on('disconnected', () => {
+              LoggingModule.logger.warn('mongodb 已断开连接')
+              LoggingService.MongoIsOK = false
+            })
             LoggingService.MongoConnection.on('reconnected', () => LoggingModule.logger.warn('mongodb 重新连接中...'))
             LoggingService.MongoConnection.on('disconnecting', () => LoggingModule.logger.warn('mongodb 断开连接中...'))
             LoggingService.MongoConnection.on('error', (err) => LoggingModule.logger.error(`mongodb:${err.message}`, err.stack))

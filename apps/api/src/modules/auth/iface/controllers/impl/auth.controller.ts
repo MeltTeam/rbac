@@ -4,7 +4,7 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Res, UseGuard
 import { CommandBus, QueryBus } from '@nestjs/cqrs'
 import { ApiExtraModels } from '@nestjs/swagger'
 import { ResourceTypeEnum } from '@packages/types'
-import { ApiController, ApiMethod, IsPublic, ResourceDomain, ResourceMethod, ResourceType } from '@/common/deco'
+import { ApiController, ApiMethod, IsPublic, ResourceDomain, ResourceMethod, ResourceType, SkipCache } from '@/common/deco'
 import { FindAllDTO, UpdateSortDTO, UpdateStatusDTO } from '@/common/dto'
 import { EmailLoginGuard, EmailRegisterGuard, EmailResetPwdGuard, RefreshTokenGuard, SvgLoginGuard } from '@/common/guards'
 import { ResVO } from '@/common/vo'
@@ -54,6 +54,7 @@ export class AuthController implements IAuthController {
   ) {}
 
   @IsPublic()
+  @SkipCache()
   @Get('svg/:name')
   @ApiMethod({
     ApiOperationOptions: [{ summary: '获取SVG验证码' }],

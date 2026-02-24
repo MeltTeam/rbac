@@ -57,8 +57,9 @@ export interface ICacheTemplate extends ICacheTemplateOptions {
    * @param key 缓存键名
    * @param value 值
    * @param ttl 过期时间(default: 0),0 为永久缓存
+   * @param isLock 是否使用分布式锁(default: true)
    */
-  set: <T = any>(key: string, value: T, ttl: number) => Promise<void>
+  set: <T = any>(key: string, value: T, ttl?: number, isLock?: boolean) => Promise<void>
   /**
    * 读取缓存
    * @param key 缓存键名
@@ -67,19 +68,22 @@ export interface ICacheTemplate extends ICacheTemplateOptions {
   /**
    * 删除缓存
    * @param key 缓存键名
+   * @param isLock 是否使用分布式锁(default: true)
    */
-  del: (key: string) => Promise<void>
+  del: (key: string, isLock?: boolean) => Promise<void>
   /**
    * 批量删除缓存
    * @param keys 缓存键名数组
+   * @param isLock 是否使用分布式锁(default: true)
    */
-  delMany: (keys: string[]) => Promise<void>
+  delMany: (keys: string[], isLock?: boolean) => Promise<void>
   /**
    * 更新缓存
    * @param key 缓存键名
    * @param value 更新值
+   * @param isLock 是否使用分布式锁(default: true)
    */
-  update: <T = any>(key: string, value: T) => Promise<void>
+  update: <T = any>(key: string, value: T, isLock?: boolean) => Promise<void>
   /**
    * 延迟写入缓存(要提供队列)
    * @param key 键名

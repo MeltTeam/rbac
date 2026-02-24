@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "paths": {
-    "/api/v1/menu": {
+    "/v1/menu": {
       "post": {
         "operationId": "MenuController_create_v1",
         "parameters": [],
@@ -144,7 +144,7 @@
         "tags": ["Menu"]
       }
     },
-    "/api/v1/menu/{id}": {
+    "/v1/menu/{id}": {
       "delete": {
         "operationId": "MenuController_delete_v1",
         "parameters": [
@@ -306,7 +306,7 @@
         "tags": ["Menu"]
       }
     },
-    "/api/v1/menu/{id}/status": {
+    "/v1/menu/{id}/status": {
       "patch": {
         "operationId": "MenuController_updateStatus_v1",
         "parameters": [
@@ -368,7 +368,7 @@
         "tags": ["Menu"]
       }
     },
-    "/api/v1/menu/{id}/sort": {
+    "/v1/menu/{id}/sort": {
       "patch": {
         "operationId": "MenuController_updateSort_v1",
         "parameters": [
@@ -430,7 +430,7 @@
         "tags": ["Menu"]
       }
     },
-    "/api/v1/menu/{id}/move": {
+    "/v1/menu/{id}/move": {
       "patch": {
         "operationId": "MenuController_move_v1",
         "parameters": [
@@ -492,7 +492,7 @@
         "tags": ["Menu"]
       }
     },
-    "/api/v1/menu/tree/{id}": {
+    "/v1/menu/tree/{id}": {
       "get": {
         "operationId": "MenuController_tree_v1",
         "parameters": [
@@ -555,7 +555,7 @@
         "tags": ["Menu"]
       }
     },
-    "/api/v1/menu/trees": {
+    "/v1/menu/trees": {
       "post": {
         "operationId": "MenuController_trees_v1",
         "parameters": [],
@@ -607,7 +607,7 @@
         "tags": ["Menu"]
       }
     },
-    "/api/v1/resource": {
+    "/v1/resource": {
       "post": {
         "operationId": "ResourceController_create_v1",
         "parameters": [],
@@ -750,7 +750,7 @@
         "tags": ["Resource"]
       }
     },
-    "/api/v1/resource/{id}": {
+    "/v1/resource/{id}": {
       "delete": {
         "operationId": "ResourceController_delete_v1",
         "parameters": [
@@ -912,7 +912,7 @@
         "tags": ["Resource"]
       }
     },
-    "/api/v1/resource/{id}/status": {
+    "/v1/resource/{id}/status": {
       "patch": {
         "operationId": "ResourceController_updateStatus_v1",
         "parameters": [
@@ -974,7 +974,7 @@
         "tags": ["Resource"]
       }
     },
-    "/api/v1/resource/{id}/sort": {
+    "/v1/resource/{id}/sort": {
       "patch": {
         "operationId": "ResourceController_updateSort_v1",
         "parameters": [
@@ -1036,7 +1036,7 @@
         "tags": ["Resource"]
       }
     },
-    "/api/v1/role": {
+    "/v1/role": {
       "post": {
         "operationId": "RoleController_create_v1",
         "parameters": [],
@@ -1179,7 +1179,7 @@
         "tags": ["Role"]
       }
     },
-    "/api/v1/role/{id}": {
+    "/v1/role/{id}": {
       "delete": {
         "operationId": "RoleController_delete_v1",
         "parameters": [
@@ -1341,7 +1341,7 @@
         "tags": ["Role"]
       }
     },
-    "/api/v1/role/{id}/status": {
+    "/v1/role/{id}/status": {
       "patch": {
         "operationId": "RoleController_updateStatus_v1",
         "parameters": [
@@ -1403,7 +1403,7 @@
         "tags": ["Role"]
       }
     },
-    "/api/v1/role/{id}/sort": {
+    "/v1/role/{id}/sort": {
       "patch": {
         "operationId": "RoleController_updateSort_v1",
         "parameters": [
@@ -1465,7 +1465,7 @@
         "tags": ["Role"]
       }
     },
-    "/api/v1/role/{id}/move": {
+    "/v1/role/{id}/move": {
       "patch": {
         "operationId": "RoleController_move_v1",
         "parameters": [
@@ -1527,7 +1527,7 @@
         "tags": ["Role"]
       }
     },
-    "/api/v1/role/tree/{id}": {
+    "/v1/role/tree/{id}": {
       "get": {
         "operationId": "RoleController_tree_v1",
         "parameters": [
@@ -1590,7 +1590,7 @@
         "tags": ["Role"]
       }
     },
-    "/api/v1/role/trees": {
+    "/v1/role/trees": {
       "post": {
         "operationId": "RoleController_trees_v1",
         "parameters": [],
@@ -1642,7 +1642,7 @@
         "tags": ["Role"]
       }
     },
-    "/api/v1/role/menu": {
+    "/v1/role/menu": {
       "post": {
         "operationId": "RoleMenuController_assign_v1",
         "parameters": [],
@@ -1691,7 +1691,7 @@
         "tags": ["RoleMenu"]
       }
     },
-    "/api/v1/role/menu/batch": {
+    "/v1/role/menu/batch": {
       "post": {
         "operationId": "RoleMenuController_batchAssign_v1",
         "parameters": [],
@@ -1740,7 +1740,7 @@
         "tags": ["RoleMenu"]
       }
     },
-    "/api/v1/role/menu/{id}/menu-ids": {
+    "/v1/role/menu/{id}/menu-ids": {
       "get": {
         "operationId": "RoleMenuController_menuIds_v1",
         "parameters": [
@@ -1792,7 +1792,7 @@
         "tags": ["RoleMenu"]
       }
     },
-    "/api/v1/role/menu/{id}/role-ids": {
+    "/v1/role/menu/{id}/role-ids": {
       "get": {
         "operationId": "RoleMenuController_roleIds_v1",
         "parameters": [
@@ -1844,7 +1844,7 @@
         "tags": ["RoleMenu"]
       }
     },
-    "/api/v1/role/resource": {
+    "/v1/role/resource": {
       "post": {
         "operationId": "RoleResourceController_assign_v1",
         "parameters": [],
@@ -1893,7 +1893,7 @@
         "tags": ["RoleResource"]
       }
     },
-    "/api/v1/role/resource/batch": {
+    "/v1/role/resource/batch": {
       "post": {
         "operationId": "RoleResourceController_batchAssign_v1",
         "parameters": [],
@@ -1942,7 +1942,7 @@
         "tags": ["RoleResource"]
       }
     },
-    "/api/v1/role/resource/{id}/resource-ids": {
+    "/v1/role/resource/{id}/resource-ids": {
       "get": {
         "operationId": "RoleResourceController_resourceIds_v1",
         "parameters": [
@@ -1994,7 +1994,7 @@
         "tags": ["RoleResource"]
       }
     },
-    "/api/v1/role/resource/{id}/role-ids": {
+    "/v1/role/resource/{id}/role-ids": {
       "get": {
         "operationId": "RoleResourceController_roleIds_v1",
         "parameters": [
@@ -2046,7 +2046,7 @@
         "tags": ["RoleResource"]
       }
     },
-    "/api/v1/user": {
+    "/v1/user": {
       "post": {
         "operationId": "UserController_create_v1",
         "parameters": [],
@@ -2189,7 +2189,7 @@
         "tags": ["User"]
       }
     },
-    "/api/v1/user/{id}": {
+    "/v1/user/{id}": {
       "delete": {
         "operationId": "UserController_delete_v1",
         "parameters": [
@@ -2351,7 +2351,7 @@
         "tags": ["User"]
       }
     },
-    "/api/v1/user/{id}/status": {
+    "/v1/user/{id}/status": {
       "patch": {
         "operationId": "UserController_updateStatus_v1",
         "parameters": [
@@ -2413,7 +2413,7 @@
         "tags": ["User"]
       }
     },
-    "/api/v1/user/{id}/sort": {
+    "/v1/user/{id}/sort": {
       "patch": {
         "operationId": "UserController_updateSort_v1",
         "parameters": [
@@ -2475,7 +2475,7 @@
         "tags": ["User"]
       }
     },
-    "/api/v1/user/role": {
+    "/v1/user/role": {
       "post": {
         "operationId": "UserRoleController_assign_v1",
         "parameters": [],
@@ -2524,7 +2524,7 @@
         "tags": ["UserRole"]
       }
     },
-    "/api/v1/user/role/batch": {
+    "/v1/user/role/batch": {
       "post": {
         "operationId": "UserRoleController_batchAssign_v1",
         "parameters": [],
@@ -2573,7 +2573,7 @@
         "tags": ["UserRole"]
       }
     },
-    "/api/v1/user/role/{id}/role-ids": {
+    "/v1/user/role/{id}/role-ids": {
       "get": {
         "operationId": "UserRoleController_roleIds_v1",
         "parameters": [
@@ -2625,7 +2625,7 @@
         "tags": ["UserRole"]
       }
     },
-    "/api/v1/user/role/{id}/user-ids": {
+    "/v1/user/role/{id}/user-ids": {
       "get": {
         "operationId": "UserRoleController_userIds_v1",
         "parameters": [
@@ -2677,7 +2677,7 @@
         "tags": ["UserRole"]
       }
     },
-    "/api/v1/auth/svg/{name}": {
+    "/v1/auth/svg/{name}": {
       "get": {
         "operationId": "AuthController_svgCaptcha_v1",
         "parameters": [
@@ -2719,7 +2719,7 @@
         "tags": ["Auth"]
       }
     },
-    "/api/v1/auth/email/{name}": {
+    "/v1/auth/email/{name}": {
       "post": {
         "operationId": "AuthController_emailCaptcha_v1",
         "parameters": [
@@ -2771,7 +2771,7 @@
         "tags": ["Auth"]
       }
     },
-    "/api/v1/auth/login/svg": {
+    "/v1/auth/login/svg": {
       "post": {
         "operationId": "AuthController_svgLogin_v1",
         "parameters": [],
@@ -2812,7 +2812,7 @@
         "tags": ["Auth"]
       }
     },
-    "/api/v1/auth/register/email": {
+    "/v1/auth/register/email": {
       "post": {
         "operationId": "AuthController_emailRegister_v1",
         "parameters": [],
@@ -2853,7 +2853,7 @@
         "tags": ["Auth"]
       }
     },
-    "/api/v1/auth/login/email": {
+    "/v1/auth/login/email": {
       "post": {
         "operationId": "AuthController_emailLogin_v1",
         "parameters": [],
@@ -2894,7 +2894,7 @@
         "tags": ["Auth"]
       }
     },
-    "/api/v1/auth/reset-pwd/email": {
+    "/v1/auth/reset-pwd/email": {
       "post": {
         "operationId": "AuthController_emailResetPwd_v1",
         "parameters": [],
@@ -2935,7 +2935,7 @@
         "tags": ["Auth"]
       }
     },
-    "/api/v1/auth/refresh": {
+    "/v1/auth/refresh": {
       "post": {
         "operationId": "AuthController_refreshToken_v1",
         "parameters": [],
@@ -2976,7 +2976,7 @@
         "tags": ["Auth"]
       }
     },
-    "/api/v1/auth/logout": {
+    "/v1/auth/logout": {
       "post": {
         "operationId": "AuthController_loginOut_v1",
         "parameters": [],
@@ -3017,7 +3017,7 @@
         "tags": ["Auth"]
       }
     },
-    "/api/v1/auth/me": {
+    "/v1/auth/me": {
       "get": {
         "operationId": "AuthController_meInfo_v1",
         "parameters": [],
@@ -3056,7 +3056,7 @@
         "tags": ["Auth"]
       }
     },
-    "/api/v1/auth": {
+    "/v1/auth": {
       "post": {
         "operationId": "AuthController_create_v1",
         "parameters": [],
@@ -3199,7 +3199,7 @@
         "tags": ["Auth"]
       }
     },
-    "/api/v1/auth/{id}": {
+    "/v1/auth/{id}": {
       "delete": {
         "operationId": "AuthController_delete_v1",
         "parameters": [
@@ -3361,7 +3361,7 @@
         "tags": ["Auth"]
       }
     },
-    "/api/v1/auth/{id}/status": {
+    "/v1/auth/{id}/status": {
       "patch": {
         "operationId": "AuthController_updateStatus_v1",
         "parameters": [
@@ -3423,7 +3423,7 @@
         "tags": ["Auth"]
       }
     },
-    "/api/v1/auth/{id}/sort": {
+    "/v1/auth/{id}/sort": {
       "patch": {
         "operationId": "AuthController_updateSort_v1",
         "parameters": [
@@ -3485,7 +3485,7 @@
         "tags": ["Auth"]
       }
     },
-    "/api/v1": {
+    "/v1": {
       "get": {
         "operationId": "BootController_boot_v1",
         "parameters": [],
@@ -3498,7 +3498,7 @@
         "tags": ["跳转swagger文档"]
       }
     },
-    "/api/v1/set-str": {
+    "/v1/set-str": {
       "get": {
         "operationId": "BootController_setStr_v1",
         "parameters": [],
@@ -3510,7 +3510,7 @@
         "tags": ["跳转swagger文档"]
       }
     },
-    "/api/v1/get-str": {
+    "/v1/get-str": {
       "get": {
         "operationId": "BootController_getStr_v1",
         "parameters": [],
@@ -3529,7 +3529,7 @@
         "tags": ["跳转swagger文档"]
       }
     },
-    "/api/v1/del-str": {
+    "/v1/del-str": {
       "get": {
         "operationId": "BootController_delStr_v1",
         "parameters": [],
@@ -3541,7 +3541,7 @@
         "tags": ["跳转swagger文档"]
       }
     },
-    "/api/v1/update-str": {
+    "/v1/update-str": {
       "get": {
         "operationId": "BootController_updateStr_v1",
         "parameters": [],
@@ -3553,7 +3553,7 @@
         "tags": ["跳转swagger文档"]
       }
     },
-    "/api/v1/set-arr": {
+    "/v1/set-arr": {
       "get": {
         "operationId": "BootController_setArr_v1",
         "parameters": [],
@@ -3565,7 +3565,7 @@
         "tags": ["跳转swagger文档"]
       }
     },
-    "/api/v1/get-obj": {
+    "/v1/get-obj": {
       "get": {
         "operationId": "BootController_getObj_v1",
         "parameters": [],
@@ -3584,7 +3584,7 @@
         "tags": ["跳转swagger文档"]
       }
     },
-    "/api/v1/del-obj": {
+    "/v1/del-obj": {
       "get": {
         "operationId": "BootController_delObj_v1",
         "parameters": [],
@@ -3596,7 +3596,7 @@
         "tags": ["跳转swagger文档"]
       }
     },
-    "/api/v1/set-obj": {
+    "/v1/set-obj": {
       "get": {
         "operationId": "BootController_setObj_v1",
         "parameters": [],
@@ -3608,7 +3608,7 @@
         "tags": ["跳转swagger文档"]
       }
     },
-    "/api/v1/put-obj": {
+    "/v1/put-obj": {
       "get": {
         "operationId": "BootController_putObj_v1",
         "parameters": [],
@@ -3620,7 +3620,7 @@
         "tags": ["跳转swagger文档"]
       }
     },
-    "/api/v1/dd-obj": {
+    "/v1/dd-obj": {
       "get": {
         "operationId": "BootController_ddObj_v1",
         "parameters": [],
@@ -3632,7 +3632,7 @@
         "tags": ["跳转swagger文档"]
       }
     },
-    "/api/v1/test": {
+    "/v1/test": {
       "get": {
         "operationId": "BootController_test_v1",
         "parameters": [],

@@ -6,7 +6,10 @@ import { CACHE_QUEUE_TOKEN } from '@/common/infra/queue'
 import { CacheService } from './cache.service'
 
 /** 缓存队列处理 */
-@Processor(CACHE_QUEUE_TOKEN)
+@Processor(CACHE_QUEUE_TOKEN, {
+  removeOnComplete: { count: 500 },
+  removeOnFail: { count: 500 },
+})
 export class CacheProcessor extends WorkerHost {
   constructor(
     private readonly cacheService: CacheService,
@@ -29,10 +32,7 @@ export class CacheProcessor extends WorkerHost {
         case 'update':
           await this.cacheService.update(key, value)
           break
-        default:
-          return
       }
-      await job.log(`延迟${type}成功`)
     } catch (error) {
       this.loggingService.error(`延迟${type}失败:${error.message}`)
       await job.log(`延迟${type}失败:${error.message}`)

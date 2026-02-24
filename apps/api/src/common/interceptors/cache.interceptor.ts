@@ -6,7 +6,7 @@ import { CACHE_MANAGER, CacheInterceptor as NestCacheInterceptor } from '@nestjs
 import { Inject, Injectable } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import { ClsService } from 'nestjs-cls'
-import { LogContextClass } from '@/common/deco'
+import { LogContextClass, SKIP_CACHE_KEY } from '@/common/deco'
 import { LoggingService } from '@/common/infra/logging'
 
 @Injectable()
@@ -28,6 +28,9 @@ export class CacheInterceptor extends NestCacheInterceptor implements NestInterc
   }
 
   protected isRequestCacheable(context: ExecutionContext): boolean {
+    // 看有没有跳过缓存装饰器
+    const isSkipCache = this.reflector.getAllAndOverride<boolean>(SKIP_CACHE_KEY, [context.getHandler(), context.getClass()])
+    if (isSkipCache) return false
     const isCacheable = super.isRequestCacheable(context)
     if (isCacheable) this.loggingService.debug('请求可缓存')
     return isCacheable

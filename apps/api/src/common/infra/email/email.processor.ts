@@ -10,7 +10,10 @@ import { EMAIL_QUEUE_TOKEN } from '@/common/infra/queue'
 import { APP_CONFIG_KEY, EMAIL_CONFIG_KEY, EMAIL_SERVICE_KEYS } from '@/config'
 
 /** 邮件队列处理 */
-@Processor(EMAIL_QUEUE_TOKEN)
+@Processor(EMAIL_QUEUE_TOKEN, {
+  removeOnComplete: { count: 500 },
+  removeOnFail: { count: 500 },
+})
 export class EmailProcessor extends WorkerHost {
   constructor(
     private readonly mailerService: MailerService,
@@ -35,7 +38,7 @@ export class EmailProcessor extends WorkerHost {
           sender: `${fromName ?? 'test'}`,
           date: new Date(),
         })
-        await job.log(JSON.stringify(res))
+        this.logging.debug(JSON.stringify(res))
         return
       } catch (error) {
         lastError = error

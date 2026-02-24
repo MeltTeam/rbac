@@ -34,9 +34,9 @@ export class CaptchaService implements ICaptchaService {
     const id = uuid_v4()
     const key = this.getCaptchaKey({ type: 'svg', name, id })
     // 生成
-    const { data, text } = create({ noise: 5, size: CAPTCHA_LENGTH, background, ...configObject })
+    const { data, text } = create({ noise: 2, size: CAPTCHA_LENGTH, background, ...configObject })
     // 缓存
-    this.cacheService.set(key, text, DEFAULT_CAPTCHA_TIMEOUT).then(() => this.loggingService.debug(text))
+    this.cacheService.set(key, text, DEFAULT_CAPTCHA_TIMEOUT, false).then(() => this.loggingService.debug(text))
     const svgBse64 = `data:image/svg+xml;base64,${Buffer.from(data).toString('base64')}`
     return { svg: svgBse64, token: id }
   }
@@ -47,7 +47,7 @@ export class CaptchaService implements ICaptchaService {
     const code = getCode(CAPTCHA_LENGTH, 16)
     const key = this.getCaptchaKey({ type: 'email', name, id: to })
     // 缓存
-    this.cacheService.set(key, code, DEFAULT_CAPTCHA_TIMEOUT).then(() => this.loggingService.debug(code))
+    this.cacheService.set(key, code, DEFAULT_CAPTCHA_TIMEOUT, false).then(() => this.loggingService.debug(code))
     const { name: APP_NAME } = this.configService.get<AppConfigType>(APP_CONFIG_KEY)!
     await this.emailService.sendEmail({ fromName: subject, to, subject, template, context: { subject, APP_NAME, code } })
     return []

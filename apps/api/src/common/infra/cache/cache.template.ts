@@ -68,21 +68,24 @@ export abstract class CacheTemplate implements ICacheTemplate, OnApplicationBoot
       throw new CacheException(ExceptionCode.COMMON_TOO_MANY_REQUESTS, ExceptionCodeTextMap)
     }
     await acquireLockWithRetry()
+    let res: T
     try {
       // 执行操作
-      return await callback()
+      res = await callback()
     } finally {
       // 释放锁
       await releaseLock()
     }
+    return res
   }
 
-  async set<T = unknown>(key: string, value: T, ttl: number = 0) {
-    return this.withLock(key, async () => {
+  async set<T = unknown>(key: string, value: T, ttl: number = 0, isLock: boolean = true) {
+    const cb = async () => {
       await this.cache.set<T>(key, value, ttl)
       /** 发布通知 */
       await this.RedisClient.publish(this.channelName, key)
-    })
+    }
+    return isLock ? this.withLock(key, cb) : await cb()
   }
 
   async get<T = unknown>(key: string) {
@@ -115,44 +118,43 @@ export abstract class CacheTemplate implements ICacheTemplate, OnApplicationBoot
     return this.cache.stores[1]
   }
 
-  async del(key: string) {
-    return this.withLock(key, async () => {
+  async del(key: string, isLock: boolean = true) {
+    const cb = async () => {
       await this.cache.del(key)
       /** 发布通知 */
       await this.RedisClient.publish(this.channelName, key)
-    })
+    }
+    return isLock ? this.withLock(key, cb) : await cb()
   }
 
-  async delMany(keys: string[]) {
-    await Promise.all(keys.map((key) => this.del(key)))
+  async delMany(keys: string[], isLock: boolean = true) {
+    await Promise.all(keys.map((key) => this.del(key, isLock)))
   }
 
-  async update<T = unknown>(key: string, value: T) {
-    return this.withLock(key, async () => {
+  async update<T = unknown>(key: string, value: T, isLock: boolean = true) {
+    const cb = async () => {
       const [ttl, old] = await Promise.all([this.RedisClient.ttl(key), this.get(key)])
       if (!old) return
       await this.cache.set<T>(key, value, Math.max(ttl * 800, 0))
       /** 发布通知 */
       await this.RedisClient.publish(this.channelName, key)
-    })
+    }
+    return isLock ? this.withLock(key, cb) : await cb()
   }
 
   async delayedSet<T = unknown>(key: string, value: T, ttl: number = 0, delay: number = 1000, attempts: number = 3) {
     if ((!this.queue && !this.queueRedis) || (!redisIsOk(this.queueRedis!))) throw new CacheException(ExceptionCode.CACHE_NO_QUEUE_INSTANCE_PROVIDED, ExceptionCodeTextMap)
-    const existingJob = await this.queue?.getJob(key)
-    if (!existingJob) await this.queue?.add('delayedSet', { type: 'set', key, value, ttl }, { attempts, delay })
+    await this.queue?.add('delayedSet', { type: 'set', key, value, ttl }, { jobId: key, attempts, delay })
   }
 
   async delayedUpdate<T = unknown>(key: string, value: T, delay: number = 1000, attempts: number = 3) {
     if ((!this.queue && !this.queueRedis) || (!redisIsOk(this.queueRedis!))) throw new CacheException(ExceptionCode.CACHE_NO_QUEUE_INSTANCE_PROVIDED, ExceptionCodeTextMap)
-    const existingJob = await this.queue?.getJob(key)
-    if (!existingJob) await this.queue?.add('delayedUpdate', { type: 'update', key, value }, { attempts, delay })
+    await this.queue?.add('delayedUpdate', { type: 'update', key, value }, { jobId: key, attempts, delay })
   }
 
   async delayedDel(key: string, delay: number = 1000, attempts: number = 3) {
     if ((!this.queue && !this.queueRedis) || (!redisIsOk(this.queueRedis!))) throw new CacheException(ExceptionCode.CACHE_NO_QUEUE_INSTANCE_PROVIDED, ExceptionCodeTextMap)
-    const existingJob = await this.queue?.getJob(key)
-    if (!existingJob) await this.queue?.add('delayedDel', { type: 'del', key }, { attempts, delay })
+    await this.queue?.add('delayedDel', { type: 'del', key }, { jobId: key, attempts, delay })
   }
 
   async delayedDelMany(keys: string[], delay: number = 1000, attempts: number = 3) {

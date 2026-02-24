@@ -19,9 +19,10 @@ export class EmailService implements IEmailService {
   @LogContextMethod()
   async sendEmail<T = any>(options: IEmailJobData<T>) {
     if (!redisIsOk(QueueModuleHelper.redis!)) throw new QueueException(ExceptionCode.QUEUE_SERVICE_ERROR, ExceptionCodeTextMap)
-    await this.emailQueue.add(`${options.to}`, options, {
+    await this.emailQueue.add('sendEmail', options, {
       /** 失败重试 */
       attempts: 3,
+      jobId: `${options.to}`,
       /** 指数退避重试 */
       backoff: { type: 'exponential', delay: 1000 },
     })
