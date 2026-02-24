@@ -1,5 +1,6 @@
 import type { ClientRequest, IncomingMessage, ServerResponse } from 'node:http'
 import type { HttpProxy, ProxyOptions } from 'vite'
+import { fileURLToPath, URL } from 'node:url'
 import Uni from '@uni-helper/plugin-uni'
 import { defineConfig } from 'vite'
 
@@ -31,4 +32,10 @@ export default defineConfig({
     },
   },
   plugins: [Uni()],
+  resolve: {
+    alias: {
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+      '@p': fileURLToPath(new URL('./public', import.meta.url)),
+    },
+  },
 })
