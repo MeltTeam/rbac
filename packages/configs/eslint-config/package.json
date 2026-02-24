@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "catalog:cli",
+    "@uni-helper/eslint-config": "catalog:uni_dev",
     "@unocss/eslint-plugin": "catalog:cli",
     "eslint": "catalog:cli",
     "eslint-plugin-format": "catalog:cli"

@@ -1,6 +1,6 @@
 import antfu from '@antfu/eslint-config'
 
-export const serviceConfig = antfu({
+export const apiConfig = antfu({
   typescript: true,
   yaml: true,
   test: true,

@@ -10,6 +10,7 @@ catalog:
   '@swc/cli': ^0.7.9
   '@swc/core': ^1.15.8
   '@swc/jest': ^0.2.39
+  openapi-ts-request: ^1.12.6
   swc-loader: ^0.2.6
   vue-i18n: ^11.1.11
   vue: 3.4.21
@@ -19,6 +20,10 @@ catalog:
 catalogs:
   # 工程化相关依赖
   cli:
+    '@tsconfig/node22': ^22.0.1
+    # 接口文件生成
+    '@apidevtools/swagger-parser': ^12.1.0
+    openapi-types: ^12.1.3
     vite: 5.2.8
     vue-tsc: ^2.2.8
     glob: ^13.0.0
@@ -174,9 +179,6 @@ catalogs:
     '@unocss/reset': ^66.1.4
   # web开发依赖
   web_dev:
-    # 接口文件生成
-    '@apidevtools/swagger-parser': ^12.1.0
-    openapi-types: ^12.1.3
     # css工程化
     '@unocss/preset-icons': ^66.3.3
     unocss: ^66.1.4
@@ -188,7 +190,6 @@ catalogs:
     vite-plugin-imagemin: ^0.6.1
     vite-plugin-html: ^3.2.2
     rollup-plugin-visualizer: 6.0.5
-    '@tsconfig/node22': ^22.0.1
     '@vitejs/plugin-vue': ^5.2.3
     '@vitejs/plugin-vue-jsx': ^4.1.2
     '@vue/tsconfig': ^0.7.0
@@ -226,3 +227,4 @@ catalogs:
     'jest': 27.0.4
     'jest-environment-node': 27.5.1
     '@uni-helper/plugin-uni': ^0.1.0
+    '@uni-helper/eslint-config': 0.4.1

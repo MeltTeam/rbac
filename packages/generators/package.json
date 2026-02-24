@@ -14,9 +14,9 @@
     "clear": "pnpm clear:modules"
   },
   "devDependencies": {
-    "@apidevtools/swagger-parser": "catalog:web_dev",
+    "@apidevtools/swagger-parser": "catalog:cli",
     "glob": "catalog:cli",
-    "openapi-types": "catalog:web_dev",
+    "openapi-types": "catalog:cli",
     "plop": "catalog:cli"
   }
 }
