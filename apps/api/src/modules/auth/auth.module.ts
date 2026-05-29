@@ -1,13 +1,17 @@
 import type { ModuleMetadata } from '@nestjs/common'
 import type { EntityClassOrSchema } from '@nestjs/typeorm/dist/interfaces/entity-class-or-schema.type'
 import type { JwtConfigType } from '@/config'
-import { Global, Module } from '@nestjs/common'
+import { Module } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { JwtModule, JwtService } from '@nestjs/jwt'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { JWT_CONFIG_KEY } from '@/config'
+import { MenuModule } from '../rbac/menu/menu.module'
+import { ResourceModule } from '../rbac/resource/resource.module'
+import { RoleModule } from '../rbac/role/role.module'
+import { UserModule } from '../rbac/user/user.module'
 import {
-  CreateAuthByNameHandler,
+  CreateAuthHandler,
   DeleteAuthHandler,
   GetAuthByIdHandler,
   GetAuthsHandler,
@@ -33,9 +37,10 @@ import {
   RefreshTokenStrategy,
   SvgLoginStrategy,
 } from './app/strategies'
-import { AuthDomainListener, AuthDomainService, AuthEntity, AuthValidateService, CaptchaService, TokenService } from './domain'
+import { AuthDomainListener, AuthDomainService, AuthEntity, AuthValidateService, CaptchaService } from './domain'
 import { AuthController } from './iface/controllers'
 import { AuthRepository } from './infra/repo'
+import { JwtTokenService, TokenCacheService, TokenCookieService } from './infra/token'
 
 /** 实体 */
 const entities: EntityClassOrSchema[] = [AuthEntity]
@@ -53,7 +58,7 @@ const passportStrategies: ModuleMetadata['providers'] = [
 ]
 /** 命令处理 */
 const commandHandlers: ModuleMetadata['providers'] = [
-  CreateAuthByNameHandler,
+  CreateAuthHandler,
   DeleteAuthHandler,
   UpdateAuthHandler,
   UpdateAuthSortHandler,
@@ -70,11 +75,19 @@ const queryHandlers: ModuleMetadata['providers'] = [GetAuthsHandler, GetAuthById
 /** 事件处理 */
 const eventHandlers: ModuleMetadata['providers'] = [AuthDomainListener]
 /** 服务 */
-const services: ModuleMetadata['providers'] = [AuthValidateService, AuthDomainService, CaptchaService, TokenService, JwtService, AuthUserService]
+const services: ModuleMetadata['providers'] = [
+  AuthValidateService,
+  AuthDomainService,
+  CaptchaService,
+  JwtService,
+  AuthUserService,
+  JwtTokenService,
+  TokenCacheService,
+  TokenCookieService,
+]
 /** 仓库 */
 const repo: ModuleMetadata['providers'] = [AuthRepository]
 /** 认证模块 */
-@Global()
 @Module({
   imports: [
     /** JWT 模块 */
@@ -86,6 +99,10 @@ const repo: ModuleMetadata['providers'] = [AuthRepository]
       inject: [ConfigService],
     }),
     TypeOrmModule.forFeature(entities),
+    UserModule,
+    RoleModule,
+    MenuModule,
+    ResourceModule,
   ],
   controllers,
   providers: [...repo, ...services, ...commandHandlers, ...queryHandlers, ...eventHandlers, ...passportStrategies],

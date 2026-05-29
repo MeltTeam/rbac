@@ -1,13 +1,13 @@
-/** 给角色分配菜单接口参数校验  */
-export interface IAssignRoleMenuDTO {
+/** 替换角色的菜单(全量替换)接口参数校验  */
+export interface IReplaceRoleMenuDTO {
   /** 角色ID */
   id: string
   /** 菜单ID列表 */
   menuIds: string[]
 }
 
-/** 批量给角色分配菜单接口参数校验  */
-export interface IAssignRolesMenuDTO {
+/** 批量替换角色的菜单(全量替换)接口参数校验  */
+export interface IReplaceRolesMenuDTO {
   /** 角色ID列表 */
   ids: string[]
   /** 菜单ID列表 */

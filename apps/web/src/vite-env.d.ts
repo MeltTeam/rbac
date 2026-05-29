@@ -4,12 +4,19 @@ declare module '*.json' {
   const value: any
   export default value
 }
+declare module 'element-plus/dist/locale/zh-cn.mjs'
+declare module 'element-plus/dist/locale/en.mjs'
 
 declare module '*.vue' {
   import type { ComponentOptions } from 'vue'
 
   const componentOptions: ComponentOptions
   export default componentOptions
+}
+
+declare module '*.svg?raw' {
+  const content: string
+  export default content
 }
 
 interface ViteTypeOptions {

@@ -1,0 +1,222 @@
+import type { FormInstance, FormRules } from 'element-plus'
+import type { EmailRegisterDTO } from '@/apis'
+import type { IFormItems } from '@/components'
+import { Icon } from '@iconify/vue'
+import { CAPTCHA_LENGTH, PWD_MAX, PWD_MIN, USER_NAME_MAX, USER_NAME_MIN } from '@/constants'
+import { t } from '@/i18n'
+import { userStore } from '@/stores'
+
+export function useEmailRegister() {
+  const { emailCode, register } = userStore()
+  const r = useRouter()
+  const formData = reactive<EmailRegisterDTO>({
+    name: '',
+    pwd: '',
+    email: '',
+    captcha: '',
+  })
+  const getFormTitle = () => t('pages.Login.EmailRegister.title')
+  const formInstance = ref<FormInstance | null>(null)
+  function setInstance(_formInstance: any) {
+    formInstance.value = _formInstance ?? null
+  }
+  const nameValidateState = computed(() => {
+    const name = formInstance.value?.fields.find((field: any) => field.prop === 'name')
+    return !name || name.validateState !== 'success'
+  })
+  const pwdValidateState = computed(() => {
+    const pwd = formInstance.value?.fields.find((field: any) => field.prop === 'pwd')
+    return !pwd || pwd.validateState !== 'success'
+  })
+  const emailValidateState = computed(() => {
+    const email = formInstance.value?.fields.find((field: any) => field.prop === 'email')
+    return !email || email.validateState !== 'success'
+  })
+  const formValidateState = computed<boolean>(() => {
+    const length = formInstance.value?.fields.length
+    return formInstance.value?.fields.filter((field: any) => field.validateState === 'success').length !== length
+  })
+  async function getCaptchaHandler() {
+    try {
+      formData.captcha = ''
+      const { code, msg } = await emailCode('register', { email: formData.email })
+      if (code !== '0') {
+        ElMessage({ message: msg, type: 'error', duration: 1000 })
+        return
+      }
+      ElMessage({ message: msg, type: 'success', duration: 1000 })
+    } catch (e) {
+      console.error(e)
+    }
+  }
+  async function submitHandler() {
+    formInstance.value?.validate(async (isValid: boolean) => {
+      if (isValid) {
+        try {
+          const { code, msg } = await register('email', formData)
+          if (code !== '0') {
+            ElMessage({ message: msg, type: 'error', duration: 1000 })
+            return
+          }
+          ElMessage({ message: msg, type: 'success', duration: 1000 })
+          r.push({ name: 'EmailLogin' })
+        } catch {
+          formData.captcha = ''
+        }
+      }
+    })
+  }
+  const formRules = computed<FormRules<EmailRegisterDTO>>(() => ({
+    name: [
+      { required: true, message: t('common.form.username'), trigger: ['blur', 'change'] },
+      {
+        min: USER_NAME_MIN,
+        max: USER_NAME_MAX,
+        message: `${t('common.form.usernameLength')} ${USER_NAME_MIN} ~ ${USER_NAME_MAX}`,
+        trigger: ['blur', 'change'],
+      },
+    ],
+    pwd: [
+      { required: true, message: t('common.form.password'), trigger: ['blur', 'change'] },
+      { min: PWD_MIN, max: PWD_MAX, message: `${t('common.form.passwordLength')} ${PWD_MIN} ~ ${PWD_MAX}`, trigger: ['blur', 'change'] },
+    ],
+    email: [
+      { required: true, message: t('common.form.email'), trigger: ['blur', 'change'] },
+      {
+        pattern: /^[\w.%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i,
+        message: t('common.form.emailInvalid'),
+        trigger: ['blur', 'change'],
+      },
+    ],
+    captcha: [
+      { required: true, message: t('common.form.captcha'), trigger: ['blur', 'change'] },
+      {
+        min: CAPTCHA_LENGTH,
+        max: CAPTCHA_LENGTH,
+        message: `${t('common.form.captchaLength')} ${CAPTCHA_LENGTH}`,
+        trigger: ['blur', 'change'],
+      },
+    ],
+  }))
+  const formItems = computed<IFormItems[]>(() => [
+    {
+      type: 'ElInput',
+      key: 'name',
+      props: {
+        placeholder: t('common.form.username'),
+        autocomplete: 'off',
+        prefixIcon: h(Icon, {
+          icon: 'icon-park-outline:user',
+          color: '#bbb',
+        }),
+      },
+    },
+    {
+      type: 'ElInput',
+      key: 'pwd',
+      props: {
+        showPassword: true,
+        type: 'password',
+        placeholder: t('common.form.password'),
+        autocomplete: 'off',
+        prefixIcon: h(Icon, {
+          icon: 'icon-park-outline:key',
+          color: '#bbb',
+        }),
+      },
+    },
+    {
+      type: 'ElInput',
+      key: 'email',
+      props: {
+        placeholder: t('common.form.email'),
+        autocomplete: 'off',
+        prefixIcon: h(Icon, {
+          icon: 'icon-park-outline:email-lock',
+          color: '#bbb',
+        }),
+      },
+    },
+    {
+      type: 'ElInput',
+      key: 'captcha',
+      props: {
+        placeholder: t('common.form.captcha'),
+        autocomplete: 'off',
+        prefixIcon: h(Icon, {
+          icon: 'icon-park-outline:unlock-one',
+          color: '#bbb',
+        }),
+      },
+      span: 14,
+    },
+    {
+      type: 'MButton',
+      key: 'captchaEmail',
+      props: {
+        type: 'primary',
+        disabled: nameValidateState.value || pwdValidateState.value || emailValidateState.value,
+      },
+      attrs: {
+        onClick: getCaptchaHandler,
+      },
+      slots: t('common.form.send'),
+      span: 10,
+    },
+    {
+      type: 'MButton',
+      key: 'submit',
+      props: {
+        type: 'primary',
+
+        disabled: formValidateState.value,
+      },
+      attrs: {
+        onClick: submitHandler,
+      },
+      slots: t('common.form.confirm'),
+    },
+    {
+      type: 'MButton',
+      key: 'Back',
+      attrs: {
+        onClick: r.back,
+      },
+      slots: t('common.form.back'),
+    },
+  ])
+  async function enterHandler(e: KeyboardEvent) {
+    if (e.key !== 'Enter') return
+    if (formValidateState.value && !(nameValidateState.value || pwdValidateState.value || emailValidateState.value)) await getCaptchaHandler()
+    if (!formValidateState.value) await submitHandler()
+  }
+  // 异步组件绑定事件
+  // watch(
+  //   formInstance,
+  //   (val) => {
+  //     if (!val) return
+  //     window.addEventListener('keydown', enterHandler)
+  //   },
+  //   { once: true },
+  // )
+  onActivated(() => {
+    window.addEventListener('keydown', enterHandler)
+  })
+  onDeactivated(() => {
+    window.removeEventListener('keydown', enterHandler)
+  })
+  return {
+    /** 表单数据 */
+    formData,
+    /** 表单实例 */
+    formInstance,
+    /** 表单规则 */
+    formRules,
+    /** 表单实例获取  */
+    setInstance,
+    /** 表单项 */
+    formItems,
+    /** 获取表单标题 */
+    getFormTitle,
+  }
+}

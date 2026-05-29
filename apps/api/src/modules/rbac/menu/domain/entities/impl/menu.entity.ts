@@ -7,6 +7,7 @@ import { RoleEntity } from '@/modules/rbac/role/domain'
 import {
   MENU_ACTION,
   MENU_ACTION_MAX,
+  MENU_ALIAS,
   MENU_CODE,
   MENU_COMPONENT,
   MENU_DOMAIN,
@@ -20,7 +21,10 @@ import {
   MENU_PARENT_ID,
   MENU_PATH,
   MENU_QUERY,
+  MENU_REDIRECT,
   MENU_TABLE,
+  MENU_TITLE,
+  MENU_TITLE_MAX,
   MENU_TYPE,
 } from '../../../domain'
 import { MenuTreeEntity } from './menu-tree.entity'
@@ -58,6 +62,15 @@ export class MenuEntity extends CommonEntity implements IMenuEntity {
   menuCode: string
 
   @Column({
+    comment: MENU_TYPE,
+    name: 'menu_type',
+    type: 'tinyint',
+    unsigned: true,
+    default: MenuTypeEnum.MENU,
+  })
+  menuType: MenuTypeEnum
+
+  @Column({
     comment: MENU_DOMAIN,
     name: 'domain',
     type: 'varchar',
@@ -85,6 +98,37 @@ export class MenuEntity extends CommonEntity implements IMenuEntity {
   path: string | null
 
   @Column({
+    comment: MENU_ALIAS,
+    name: 'alias',
+    type: 'varchar',
+    length: URL_MAX,
+    charset: 'utf8mb4',
+    nullable: true,
+    default: null,
+  })
+  alias: string | null
+
+  @Column({
+    comment: MENU_COMPONENT,
+    name: 'component',
+    type: 'varchar',
+    length: URL_MAX,
+    charset: 'utf8mb4',
+  })
+  component: string
+
+  @Column({
+    comment: MENU_REDIRECT,
+    name: 'redirect',
+    type: 'varchar',
+    length: URL_MAX,
+    charset: 'utf8mb4',
+    nullable: true,
+    default: null,
+  })
+  redirect: string | null
+
+  @Column({
     comment: MENU_QUERY,
     name: 'query',
     type: 'varchar',
@@ -96,15 +140,15 @@ export class MenuEntity extends CommonEntity implements IMenuEntity {
   query: string | null
 
   @Column({
-    comment: MENU_COMPONENT,
-    name: 'component',
+    comment: MENU_TITLE,
+    name: 'title',
     type: 'varchar',
-    length: URL_MAX,
+    length: MENU_TITLE_MAX,
     charset: 'utf8mb4',
     nullable: true,
     default: null,
   })
-  component: string | null
+  title: string | null
 
   @Column({
     comment: MENU_ICON,
@@ -143,15 +187,6 @@ export class MenuEntity extends CommonEntity implements IMenuEntity {
     default: CheckEnum.FALSE,
   })
   isRefresh: CheckEnum
-
-  @Column({
-    comment: MENU_TYPE,
-    name: 'menu_type',
-    type: 'tinyint',
-    unsigned: true,
-    default: MenuTypeEnum.MENU,
-  })
-  menuType: MenuTypeEnum
 
   @ManyToMany(() => RoleEntity, (role) => role.menus)
   roles: RoleEntity[]

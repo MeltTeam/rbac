@@ -1,97 +1,97 @@
-import type { AuthDetailsVO, FindAllAuthVO, ResVO, SvgCaptchaVO, TokenVO, UserDetailsVO } from '../../common.type'
+import type { AuthDetailsVO, FindAllAuthVO, MeInfoVO, ResVO, SvgCaptchaVO, TokenVO } from '../../common.type'
 
-export interface V1AuthEmailNamePostResponses {
+export interface CreateAuthResponses {
+  200: ResVO & {
+    data?: AuthDetailsVO
+  }
+}
+
+export interface DeleteAuthResponses {
   200: ResVO & {
     data?: unknown
   }
 }
 
-export interface V1AuthGetResponses {
+export interface EmailCaptchaResponses {
+  200: ResVO & {
+    data?: unknown
+  }
+}
+
+export interface EmailLoginResponses {
+  200: ResVO & {
+    data?: TokenVO
+  }
+}
+
+export interface EmailRegisterResponses {
+  200: ResVO & {
+    data?: unknown
+  }
+}
+
+export interface EmailResetPwdResponses {
+  200: ResVO & {
+    data?: unknown
+  }
+}
+
+export interface GetAuthByIdResponses {
+  200: ResVO & {
+    data?: AuthDetailsVO
+  }
+}
+
+export interface GetAuthsResponses {
   200: ResVO & {
     data?: FindAllAuthVO
   }
 }
 
-export interface V1AuthIdDeleteResponses {
+export interface GetMeInfoResponses {
+  200: ResVO & {
+    data?: MeInfoVO
+  }
+}
+
+export interface LoginOutResponses {
   200: ResVO & {
     data?: unknown
   }
 }
 
-export interface V1AuthIdGetResponses {
-  200: ResVO & {
-    data?: AuthDetailsVO
-  }
-}
-
-export interface V1AuthIdPatchResponses {
-  200: ResVO & {
-    data?: unknown
-  }
-}
-
-export interface V1AuthIdSortPatchResponses {
-  200: ResVO & {
-    data?: unknown
-  }
-}
-
-export interface V1AuthIdStatusPatchResponses {
-  200: ResVO & {
-    data?: unknown
-  }
-}
-
-export interface V1AuthLoginEmailPostResponses {
+export interface RefreshTokenResponses {
   200: ResVO & {
     data?: TokenVO
   }
 }
 
-export interface V1AuthLoginSvgPostResponses {
-  200: ResVO & {
-    data?: TokenVO
-  }
-}
-
-export interface V1AuthLogoutPostResponses {
-  200: ResVO & {
-    data?: unknown
-  }
-}
-
-export interface V1AuthMeGetResponses {
-  200: ResVO & {
-    data?: UserDetailsVO
-  }
-}
-
-export interface V1AuthPostResponses {
-  200: ResVO & {
-    data?: AuthDetailsVO
-  }
-}
-
-export interface V1AuthRefreshPostResponses {
-  200: ResVO & {
-    data?: TokenVO
-  }
-}
-
-export interface V1AuthRegisterEmailPostResponses {
-  200: ResVO & {
-    data?: unknown
-  }
-}
-
-export interface V1AuthResetpwdEmailPostResponses {
-  200: ResVO & {
-    data?: unknown
-  }
-}
-
-export interface V1AuthSvgNameGetResponses {
+export interface SvgCaptchaResponses {
   200: ResVO & {
     data?: SvgCaptchaVO
+  }
+}
+
+export interface SvgLoginResponses {
+  200: ResVO & {
+    data?: TokenVO
+  }
+}
+
+export interface UpdateAuthResponses {
+  200: ResVO & {
+    data?: unknown
+  }
+}
+
+export interface UpdateAuthSortResponses {
+  200: ResVO & {
+    data?: unknown
+  }
+}
+
+export interface UpdateAuthStatusResponses {
+  200: ResVO & {
+    data?: unknown
   }
 }

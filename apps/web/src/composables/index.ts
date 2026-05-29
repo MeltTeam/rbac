@@ -1,1 +1,1 @@
-export * from './useColorPalette'
+export * from './useWebEvents'

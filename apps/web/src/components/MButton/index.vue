@@ -1,63 +1,59 @@
 <script lang="ts" setup>
-import type { MButtonProps } from './IMButton'
+import type { MButtonInstance, MButtonProps } from './IMButton'
 import { Icon } from '@iconify/vue'
 import { ElButton } from 'element-plus'
-import { h } from 'vue'
+import { mergeProps } from 'vue'
 
 defineOptions({ name: 'MButton' })
-const props = withDefaults(defineProps<MButtonProps>(), {
-  async: false,
-})
-function getSlot(slots: InstanceType<typeof ElButton>['$slots']) {
-  return {
-    ...slots,
-    loading: () => h(Icon, { icon: 'icon-park-outline:loading-four', class: 'loading-icon' }),
-  }
-}
+const props = withDefaults(defineProps<MButtonProps>(), {})
+defineSlots<MButtonInstance['$slots']>()
 const vm = getCurrentInstance()
-
-function changeRef(instance: any) {
-  if (!instance) return
-  if (vm) {
-    vm.exposeProxy = vm.exposed = instance || {}
-  }
+function changeRef(i: Element | ComponentPublicInstance | null) {
+  if (!i) return
+  if (vm && i) vm.exposed = vm.exposeProxy = i as MButtonInstance
 }
 </script>
 
 <template>
-  <Component :is="h(ElButton, { ...$attrs, ...props }, getSlot($slots))" :ref="changeRef"></Component>
+  <ElButton v-bind="mergeProps($attrs, props)" :ref="changeRef" class="MButton_container">
+    <template v-for="(_, name) in $slots" :key="name" #[name]="slotProps">
+      <slot :name="name" v-bind="slotProps ?? {}"></slot>
+    </template>
+    <template #loading>
+      <slot name="loading"><Icon class="loading_icon" icon="icon-park-outline:loading-four" /></slot>
+    </template>
+  </ElButton>
 </template>
 
 <style scoped>
-.el-button {
+.el-button.MButton_container {
   --shadow-num: 3px;
   --shadow-a: 0.4;
   --click-shadow: var(--primary-color-400);
   --n-1: ease-in-out;
 }
-.el-button.el-button--success {
+.el-button.MButton_container.el-button--success {
   --click-shadow: var(--success-color-400);
 }
-.el-button.el-button--warning {
+.el-button.MButton_container.el-button--warning {
   --click-shadow: var(--warning-color-400);
 }
-.el-button.el-button--danger {
+.el-button.MButton_container.el-button--danger {
   --click-shadow: var(--danger-color-400);
 }
-.el-button.el-button--info {
+.el-button.MButton_container.el-button--info {
   --click-shadow: var(--info-color-400);
 }
-
-.el-button:active {
+.el-button.MButton_container:active {
   animation: click-shadow 1s infinite ease-in-out;
 }
-.el-button:hover {
+.el-button.MButton_container:hover {
   box-shadow: 0 0 0 1px rgb(var(--click-shadow) / 1);
 }
-.el-button.is-disabled:active {
+.el-button.MButton_container.is-disabled:active {
   animation: none;
 }
-.el-button.is-disabled:hover {
+.el-button.MButton_container.is-disabled:hover {
   box-shadow: none;
 }
 
@@ -72,7 +68,7 @@ function changeRef(instance: any) {
     box-shadow: 0 0 0 var(--shadow-num) rgb(var(--click-shadow) / var(--shadow-a));
   }
 }
-.loading-icon {
+.loading_icon {
   animation: rotate 400ms infinite linear;
   @apply mr-1;
 }

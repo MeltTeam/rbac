@@ -24,6 +24,18 @@ export interface IExtendConfig<C = any> {
   /** 自定义配置 */
   customConfig?: C
 }
+/** 插件结果类型 */
+export enum PluginResType {
+  /** 继续 */
+  NEXT = 'NEXT',
+  /** 结束 */
+  END = 'END',
+}
+/** 插件结果 */
+export interface IPluginRes<T> {
+  type: PluginResType
+  res: T
+}
 /** 重写axios内部请求配置接口(请求拦截器回调参数) */
 export interface ICustomInternalAxiosRequestConfig<C = any> extends InternalAxiosRequestConfig, IExtendConfig<C> {}
 /** 重写axios响应配置接口(响应拦截器回调参数) */
@@ -49,6 +61,8 @@ export interface IHttpUtils<C = any> {
   plugins: IHttpUtilsPlugin<C>[]
   /** 暴漏给插件使用的上下文 */
   ctx: IHttpUtilsPluginCTX<C>
+  /** 创建插件结果 */
+  createPluginRes: <T>(type: PluginResType, res: T) => Promise<IPluginRes<T>>
   /** 获取插件列表 */
   getPlugins: () => IHttpUtilsPlugin<C>[] | null
   /** 设置插件 */

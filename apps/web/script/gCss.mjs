@@ -1,9 +1,7 @@
 import { existsSync, mkdirSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { stringify } from 'css'
-import { colors } from './unoColors.mjs'
-// eslint-disable-next-line no-console
-console.clear()
+
 const ROOT_SELECTOR = 'html:root'
 const ROOT_DARK_SELECTOR = 'html.dark:root'
 /** 16进制转rgb */
@@ -86,8 +84,11 @@ async function gCssVars(themeColors, config = defaultConfig) {
   }
   if (unoToken) {
     const unoTokenD = unoToken?.declarations
+    const processedColors = new Set()
     colors.forEach(({ name }) => {
       name = name.toLowerCase()
+      if (processedColors.has(name)) return
+      processedColors.add(name)
       unoTokenD?.push({
         type: 'comment',
         comment: ` ${name} `,
@@ -229,7 +230,8 @@ async function gCssVars(themeColors, config = defaultConfig) {
     const _outputDir = dirname(outPath)
     if (!existsSync(_outputDir)) mkdirSync(_outputDir, { recursive: true })
     writeFileSync(outPath, code, 'utf-8')
-    console.warn(`[生成] 主题文件 ${outPath}`)
+    console.warn(`[生成] 颜色变量文件 ${outPath}`)
   }
 }
-gCssVars(colors)
+
+export { gCssVars, hexToRgb }

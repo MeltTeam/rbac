@@ -34,7 +34,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
   ) {}
 
   catch(exception: HttpException, host: ArgumentsHost) {
-    this.loggingService.log('http异常过滤器')
+    this.loggingService.debug('http异常过滤器')
     const ctx = host.switchToHttp()
     const res = ctx.getResponse<Response>()
     let status = exception.getStatus()

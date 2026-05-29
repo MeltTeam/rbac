@@ -233,3 +233,11 @@ export function displayStatusEnum8(field: API.StatusEnum8) {
 export function displaySortEnum8(field: API.SortEnum8) {
   return { 10: 'NUMBER_10', 20: 'NUMBER_20', 30: 'NUMBER_30' }[field]
 }
+
+export function displayStatusEnum9(field: API.StatusEnum9) {
+  return { 10: 'NUMBER_10', 20: 'NUMBER_20', 30: 'NUMBER_30' }[field]
+}
+
+export function displaySortEnum9(field: API.SortEnum9) {
+  return { 10: 'NUMBER_10', 20: 'NUMBER_20', 30: 'NUMBER_30' }[field]
+}

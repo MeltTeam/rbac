@@ -25,10 +25,15 @@
       "content": "Language"
     },
     "MThemeBtn": {
-      "content": "Theme"
+      "content": "Theme",
+      "apply": "apply",
+      "reset": "reset"
     },
     "MModeBtn": {
       "content": "Mode"
+    },
+    "MLogoutBtn": {
+      "content": "Logout"
     }
   },
   "layouts": {
@@ -37,10 +42,13 @@
     }
   },
 
-  "views": {
+  "pages": {
     "Error": {
       "NotFound": {
         "title": "NotFound"
+      },
+      "Forbidden": {
+        "title": "Forbidden"
       }
     },
     "Login": {
@@ -100,6 +108,9 @@
     },
     "Test": {
       "title": "Test"
+    },
+    "Menu": {
+      "title": "Menu"
     }
   }
 }

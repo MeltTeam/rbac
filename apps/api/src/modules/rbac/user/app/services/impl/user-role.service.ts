@@ -1,5 +1,5 @@
 import type { EntityManager } from 'typeorm'
-import type { AssignUsersRoleDTO, UserIdsDTO } from '../../dto'
+import type { ReplaceUsersRoleDTO, UserIdsDTO } from '../../dto'
 import type { IUserRoleService } from '../IUserRoleService'
 import type { RoleIdsDTO } from '@/modules/rbac/role/app'
 import { Injectable } from '@nestjs/common'
@@ -29,8 +29,8 @@ export class UserRoleService implements IUserRoleService {
     return await this.roleDomainService.getRolesByIds(ids, false, em)
   }
 
-  async assignUsersRoleByIds(em: EntityManager, assignUsersRoleDTO: AssignUsersRoleDTO, by: string = SYSTEM_DEFAULT_BY) {
-    const { ids, roleIds } = assignUsersRoleDTO
+  async replaceUsersRoleByIds(em: EntityManager, replaceUsersRoleDTO: ReplaceUsersRoleDTO, by: string = SYSTEM_DEFAULT_BY) {
+    const { ids, roleIds } = replaceUsersRoleDTO
     const users = await this.userDomainService.getUsersByIds(ids, false, em)
     const roles = await this.roleDomainService.getRolesByIds(roleIds, false, em)
     await this.userRoleRepo.deleteMany(ids, 'user_id', em)

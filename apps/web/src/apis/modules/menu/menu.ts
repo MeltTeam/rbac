@@ -3,18 +3,18 @@ import type { ICustomAxiosRequestConfig } from '@/utils/http/IHttpUtils'
 
 import { http } from '@/utils/http'
 
-/** 获取菜单列表 GET /v1/menu */
-export function v1MenuGet({
+/** 获取菜单列表 getMenus GET /v1/menu */
+export function getMenus({
   params,
   options,
 }: {
   // 叠加生成的Param类型 (非body参数openapi默认没有生成对象)
-  params: API.V1MenuGetParams
+  params: API.GetMenusParams
 
   options?: ICustomAxiosRequestConfig
 }) {
   return http.request<
-    API.V1MenuGetParams,
+    API.GetMenusParams,
     API.ResVO & {
       data?: API.FindAllMenuVO
     }
@@ -30,8 +30,8 @@ export function v1MenuGet({
   })
 }
 
-/** 创建菜单 POST /v1/menu */
-export function v1MenuPost({
+/** 创建菜单 createMenu POST /v1/menu */
+export function createMenu({
   body,
   options,
 }: {
@@ -57,20 +57,20 @@ export function v1MenuPost({
   })
 }
 
-/** 查看单个菜单详情 GET /v1/menu/${param0} */
-export function v1MenuIdGet({
+/** 查看单个菜单详情 getMenuById GET /v1/menu/${param0} */
+export function getMenuById({
   params,
   options,
 }: {
   // 叠加生成的Param类型 (非body参数openapi默认没有生成对象)
-  params: API.V1MenuIdGetParams
+  params: API.GetMenuByIdParams
 
   options?: ICustomAxiosRequestConfig
 }) {
   const { id: param0, ...queryParams } = params
 
   return http.request<
-    API.V1MenuIdGetParams,
+    API.GetMenuByIdParams,
     API.ResVO & {
       data?: API.MenuDetailsVO
     }
@@ -84,20 +84,20 @@ export function v1MenuIdGet({
   })
 }
 
-/** 删除菜单 DELETE /v1/menu/${param0} */
-export function v1MenuIdDelete({
+/** 删除菜单 deleteMenu DELETE /v1/menu/${param0} */
+export function deleteMenu({
   params,
   options,
 }: {
   // 叠加生成的Param类型 (非body参数openapi默认没有生成对象)
-  params: API.V1MenuIdDeleteParams
+  params: API.DeleteMenuParams
 
   options?: ICustomAxiosRequestConfig
 }) {
   const { id: param0, ...queryParams } = params
 
   return http.request<
-    API.V1MenuIdDeleteParams,
+    API.DeleteMenuParams,
     API.ResVO & {
       data?: unknown
     }
@@ -111,14 +111,14 @@ export function v1MenuIdDelete({
   })
 }
 
-/** 更新菜单 PATCH /v1/menu/${param0} */
-export function v1MenuIdPatch({
+/** 更新菜单 updateMenu PATCH /v1/menu/${param0} */
+export function updateMenu({
   params,
   body,
   options,
 }: {
   // 叠加生成的Param类型 (非body参数openapi默认没有生成对象)
-  params: API.V1MenuIdPatchParams
+  params: API.UpdateMenuParams
   body: API.UpdateMenuDTO
 
   options?: ICustomAxiosRequestConfig
@@ -144,14 +144,14 @@ export function v1MenuIdPatch({
   })
 }
 
-/** 移动菜单 PATCH /v1/menu/${param0}/move */
-export function v1MenuIdMovePatch({
+/** 移动菜单 moveMenu PATCH /v1/menu/${param0}/move */
+export function moveMenu({
   params,
   body,
   options,
 }: {
   // 叠加生成的Param类型 (非body参数openapi默认没有生成对象)
-  params: API.V1MenuIdMovePatchParams
+  params: API.MoveMenuParams
   body: API.MoveMenuDTO
 
   options?: ICustomAxiosRequestConfig
@@ -177,14 +177,14 @@ export function v1MenuIdMovePatch({
   })
 }
 
-/** 更新菜单排序优先级 PATCH /v1/menu/${param0}/sort */
-export function v1MenuIdSortPatch({
+/** 更新菜单排序优先级 updateMenuSort PATCH /v1/menu/${param0}/sort */
+export function updateMenuSort({
   params,
   body,
   options,
 }: {
   // 叠加生成的Param类型 (非body参数openapi默认没有生成对象)
-  params: API.V1MenuIdSortPatchParams
+  params: API.UpdateMenuSortParams
   body: API.UpdateSortDTO
 
   options?: ICustomAxiosRequestConfig
@@ -210,14 +210,14 @@ export function v1MenuIdSortPatch({
   })
 }
 
-/** 更新菜单状态 PATCH /v1/menu/${param0}/status */
-export function v1MenuIdStatusPatch({
+/** 更新菜单状态 updateMenuStatus PATCH /v1/menu/${param0}/status */
+export function updateMenuStatus({
   params,
   body,
   options,
 }: {
   // 叠加生成的Param类型 (非body参数openapi默认没有生成对象)
-  params: API.V1MenuIdStatusPatchParams
+  params: API.UpdateMenuStatusParams
   body: API.UpdateStatusDTO
 
   options?: ICustomAxiosRequestConfig
@@ -243,20 +243,20 @@ export function v1MenuIdStatusPatch({
   })
 }
 
-/** 查看单个菜单树结构 GET /v1/menu/tree/${param0} */
-export function v1MenuTreeIdGet({
+/** 查看单个菜单树结构 getMenuTree GET /v1/menu/tree/${param0} */
+export function getMenuTree({
   params,
   options,
 }: {
   // 叠加生成的Param类型 (非body参数openapi默认没有生成对象)
-  params: API.V1MenuTreeIdGetParams
+  params: API.GetMenuTreeParams
 
   options?: ICustomAxiosRequestConfig
 }) {
   const { id: param0, ...queryParams } = params
 
   return http.request<
-    API.V1MenuTreeIdGetParams,
+    API.GetMenuTreeParams,
     API.ResVO & {
       data?: API.MenuTreeVO
     }
@@ -272,8 +272,8 @@ export function v1MenuTreeIdGet({
   })
 }
 
-/** 查看多个菜单树结构 POST /v1/menu/trees */
-export function v1MenuTreesPost({
+/** 查看多个菜单树结构 getMenuTrees POST /v1/menu/trees */
+export function getMenuTrees({
   body,
   options,
 }: {

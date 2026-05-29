@@ -16,12 +16,18 @@ export interface IMenuEntity extends ICommonEntity {
   domain: string
   /** 菜单操作类型 */
   action: string
-  /** 访问路径(MENU,LINK,INNER_LINK) */
+  /** 访问路径(MENU,DIRECTORY,LINK,INNER_LINK) */
   path: string | null
-  /** 路由参数(MENU) */
+  /** 别名(MENU,DIRECTORY,LINK,INNER_LINK)(JSON) */
+  alias: string | null
+  /** 组件路径 */
+  component: string
+  /** 重定向(MENU,DIRECTORY,LINK,INNER_LINK)(JSON) */
+  redirect: string | null
+  /** 路由参数(MENU,DIRECTORY,LINK,INNER_LINK)(JSON)  */
   query: string | null
-  /** 组件路径(COMPONENT) */
-  component: string | null
+  /** 标题(MENU,DIRECTORY,LINK,INNER_LINK) */
+  title: string | null
   /** 图标地址(MENU,DIRECTORY,LINK,INNER_LINK) */
   icon: string | null
   /** 是否缓存(MENU,COMPONENT,INNER_LINK) */

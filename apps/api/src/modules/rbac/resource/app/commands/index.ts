@@ -1,5 +1,5 @@
-export * from './create-resource-by-name.command'
-export * from './create-resource-by-name.handler'
+export * from './create-resource.command'
+export * from './create-resource.handler'
 export * from './delete-resource.command'
 export * from './delete-resource.handler'
 export * from './update-resource-sort.command'

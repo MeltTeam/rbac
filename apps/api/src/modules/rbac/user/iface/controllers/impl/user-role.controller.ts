@@ -7,18 +7,18 @@ import { ApiController, ApiMethod, ResourceDomain, ResourceMethod, ResourceType 
 import { ResVO } from '@/common/vo'
 import { RoleIdDTO, RoleIdsVO } from '@/modules/rbac/role/app'
 import {
-  AssignUserRoleCommand,
-  AssignUserRoleDTO,
-  AssignUsersRoleCommand,
-  AssignUsersRoleDTO,
   GetRoleByUserQuery,
   GetUserByRoleQuery,
+  ReplaceUserRoleCommand,
+  ReplaceUserRoleDTO,
+  ReplaceUsersRoleCommand,
+  ReplaceUsersRoleDTO,
   UserIdDTO,
   UserIdsVO,
 } from '../../../app'
 
 /** 用户角色控制器实现 */
-@Controller('user/role')
+@Controller('user-role')
 @ResourceType(ResourceTypeEnum.API)
 @ResourceDomain('USER_ROLE')
 @ApiController({ ApiTagsOptions: ['UserRole'] })
@@ -29,34 +29,34 @@ export class UserRoleController implements IUserRoleController {
     private readonly commandBus: CommandBus,
   ) {}
 
-  @Post()
-  @ResourceMethod('assign')
+  @Post('replace')
+  @ResourceMethod('replace')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '给用户分配角色' }],
+    ApiOperationOptions: [{ description: 'replaceUserRole', summary: '替换用户的角色(全量替换)' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess()],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',
   })
-  async assign(@Body() assignUserRoleDTO: AssignUserRoleDTO) {
-    return await this.commandBus.execute(new AssignUserRoleCommand(assignUserRoleDTO))
+  async replace(@Body() replaceUserRoleDTO: ReplaceUserRoleDTO) {
+    return await this.commandBus.execute(new ReplaceUserRoleCommand(replaceUserRoleDTO))
   }
 
-  @Post('batch')
-  @ResourceMethod('batchAssign')
+  @Post('batch-replace')
+  @ResourceMethod('batchReplace')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '批量给用户分配角色' }],
+    ApiOperationOptions: [{ description: 'replaceUsersRole', summary: '批量替换用户的角色(全量替换)' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess()],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',
   })
-  async batchAssign(@Body() assignUsersRoleDTO: AssignUsersRoleDTO) {
-    return await this.commandBus.execute(new AssignUsersRoleCommand(assignUsersRoleDTO))
+  async batchReplace(@Body() replaceUsersRoleDTO: ReplaceUsersRoleDTO) {
+    return await this.commandBus.execute(new ReplaceUsersRoleCommand(replaceUsersRoleDTO))
   }
 
-  @Get(':id/role-ids')
+  @Get('role-ids/:id')
   @ResourceMethod('roleIds')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '获取用户的角色ID列表' }],
+    ApiOperationOptions: [{ description: 'getRoleByUser', summary: '获取用户的角色ID列表' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess(RoleIdsVO)],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',
@@ -65,10 +65,10 @@ export class UserRoleController implements IUserRoleController {
     return this.queryBus.execute(new GetRoleByUserQuery(userIdDTO.id))
   }
 
-  @Get(':id/user-ids')
+  @Get('user-ids/:id')
   @ResourceMethod('userIds')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '获取角色的用户ID列表' }],
+    ApiOperationOptions: [{ description: 'getUserByRole', summary: '获取角色的用户ID列表' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess(UserIdsVO)],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',

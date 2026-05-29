@@ -1,8 +1,11 @@
 import type { IQueryHandler } from '@nestjs/cqrs'
 import { UnauthorizedException } from '@nestjs/common'
 import { QueryHandler } from '@nestjs/cqrs'
+import { MenuTypeEnum } from '@packages/types'
 import { ClsService } from 'nestjs-cls'
 import { REQ_CTX } from '@/common/infra'
+import { MenuRouteVO } from '@/modules/rbac/menu/app'
+import { MenuDomainService } from '@/modules/rbac/menu/domain'
 import { UserDomainService } from '@/modules/rbac/user/domain'
 import { AuthVOAssembler } from '../assemblers'
 import { GetMeInfoQuery } from './get-me-info.query'
@@ -13,12 +16,25 @@ export class GetMeInfoHandler implements IQueryHandler<GetMeInfoQuery> {
   constructor(
     private readonly clsService: ClsService,
     private readonly userDomainService: UserDomainService,
+    private readonly menuDomainService: MenuDomainService,
   ) {}
 
   async execute(_: GetMeInfoQuery) {
     const currentUserId = this.clsService.get<string>(REQ_CTX.USER_ID)
     if (!currentUserId) throw new UnauthorizedException()
     const [user] = await this.userDomainService.getUsersByIds([currentUserId])
-    return AuthVOAssembler.toMeInfo(user)
+
+    const allMenus = user.roles.flatMap((r) => r.menus)
+    const routeMenuIds = [
+      ...new Set(
+        allMenus
+          .filter((m) => [MenuTypeEnum.MENU, MenuTypeEnum.DIRECTORY, MenuTypeEnum.LINK, MenuTypeEnum.INNER_LINK].includes(m.menuType))
+          .map((m) => m.id),
+      ),
+    ]
+
+    const routes = routeMenuIds.length > 0 ? await this.menuDomainService.getMenuTreesByIds(routeMenuIds, MenuRouteVO, -1) : []
+
+    return AuthVOAssembler.toMeInfo(user, routes)
   }
 }

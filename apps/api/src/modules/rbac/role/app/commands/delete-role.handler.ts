@@ -26,8 +26,8 @@ export class DeleteRoleHandler implements ICommandHandler<DeleteRoleCommand> {
       const by = this.clsService.get<string>(REQ_CTX.USER_ID) ?? SYSTEM_DEFAULT_BY
       // 置空关联关系
       await Promise.all([
-        this.roleMenuService.assignRolesMenuByIds(em, { ids: [command.id], menuIds: [] }, by),
-        this.roleResourceService.assignRolesResourceByIds(em, { ids: [command.id], resourceIds: [] }, by),
+        this.roleMenuService.replaceRolesMenuByIds(em, { ids: [command.id], menuIds: [] }, by),
+        this.roleResourceService.replaceRolesResourceByIds(em, { ids: [command.id], resourceIds: [] }, by),
       ])
       await this.roleDomainService.deleteRoles(em, [command.id], by)
       return []

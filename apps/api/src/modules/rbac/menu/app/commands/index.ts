@@ -1,5 +1,5 @@
-export * from './create-menu-by-name.command'
-export * from './create-menu-by-name.handler'
+export * from './create-menu.command'
+export * from './create-menu.handler'
 export * from './delete-menu.command'
 export * from './delete-menu.handler'
 export * from './move-menu.command'

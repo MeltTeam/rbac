@@ -1,8 +1,10 @@
 import type { MiddlewareConsumer, ModuleMetadata, NestModule, Type } from '@nestjs/common'
+import { join } from 'node:path'
 import { Module } from '@nestjs/common'
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core'
 import { CqrsModule } from '@nestjs/cqrs'
 import { EventEmitterModule } from '@nestjs/event-emitter'
+import { ServeStaticModule } from '@nestjs/serve-static'
 import { CacheExceptionFilter, HttpExceptionFilter, OrmExceptionFilter, UnknownExceptionFilter } from '@/common/filters'
 import { JwtGuard, ResourceGuard, ThrottlerGuard } from '@/common/guards'
 import { CacheModule, EmailModule, HttpModule, LoggingModule, OrmModule, QueueModule, ThrottlerModule } from '@/common/infra'
@@ -16,6 +18,7 @@ import { BootController } from './boot.controller'
 /** 基础设施模块 */
 const infrastructureModule: ModuleMetadata['imports'] = [
   ConfigModule,
+  ServeStaticModule.forRoot(...[{ rootPath: join(__dirname, '..', 'public'), serveRoot: '/ui' }]),
   EventEmitterModule.forRoot({
     maxListeners: 0,
     wildcard: true,

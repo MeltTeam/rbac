@@ -1,20 +1,18 @@
 import { createApp } from 'vue'
 import App from '@/App.vue'
-import router from '@/router'
-import { setUpI18n } from './i18n'
-import { pluginsInstall } from './plugins'
-import { setUpPinia } from './store'
-// 格式化
+import { setupRouter } from '@/routers'
+import { setupI18n } from './i18n'
+import { setupPinia } from './stores'
+import { pluginsInstall } from './utils/plugins.util'
 import '@unocss/reset/tailwind-compat.css'
-import '@/assets/css/base.css'
+import '@/assets/css/design-tokens.css'
 import '@/assets/css/uno-vars.css'
-import '@/assets/css/dark/css-vars.css'
+import '@/assets/css/base.css'
 import '@/assets/css/nprogress.css'
 
 const app = createApp(App)
-
-setUpPinia(app)
-setUpI18n(app)
-app.use(router)
+setupPinia(app)
+setupI18n(app)
+setupRouter(app)
 app.use(pluginsInstall)
 app.mount('#app')

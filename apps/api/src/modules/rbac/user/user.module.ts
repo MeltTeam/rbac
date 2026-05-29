@@ -1,16 +1,17 @@
 import type { ModuleMetadata } from '@nestjs/common'
 import type { EntityClassOrSchema } from '@nestjs/typeorm/dist/interfaces/entity-class-or-schema.type'
-import { Global, Module } from '@nestjs/common'
+import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
+import { RoleModule } from '../role/role.module'
 import {
-  AssignUserRoleHandler,
-  AssignUsersRoleHandler,
   CreateUserHandler,
   DeleteUserHandler,
   GetRoleByUserHandler,
   GetUserByIdHandler,
   GetUserByRoleHandler,
   GetUsersHandler,
+  ReplaceUserRoleHandler,
+  ReplaceUsersRoleHandler,
   UpdateUserHandler,
   UpdateUserSortHandler,
   UpdateUserStatusHandler,
@@ -31,8 +32,8 @@ const commandHandlers: ModuleMetadata['providers'] = [
   UpdateUserHandler,
   UpdateUserSortHandler,
   UpdateUserStatusHandler,
-  AssignUserRoleHandler,
-  AssignUsersRoleHandler,
+  ReplaceUserRoleHandler,
+  ReplaceUsersRoleHandler,
 ]
 /** 查询处理 */
 const queryHandlers: ModuleMetadata['providers'] = [GetUsersHandler, GetUserByIdHandler, GetRoleByUserHandler, GetUserByRoleHandler]
@@ -43,9 +44,9 @@ const services: ModuleMetadata['providers'] = [UserValidateService, UserDomainSe
 /** 仓库 */
 const repo: ModuleMetadata['providers'] = [UserRepository, UserProfileRepository, UserRoleRepository]
 /** 用户模块 */
-@Global()
+
 @Module({
-  imports: [TypeOrmModule.forFeature(entities)],
+  imports: [TypeOrmModule.forFeature(entities), RoleModule],
   controllers,
   providers: [...repo, ...services, ...commandHandlers, ...queryHandlers, ...eventHandlers],
   exports: [...repo, ...services, ...commandHandlers, ...queryHandlers, ...eventHandlers],

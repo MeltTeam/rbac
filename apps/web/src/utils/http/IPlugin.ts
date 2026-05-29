@@ -1,4 +1,4 @@
-import type { ICustomAxiosError, ICustomAxiosResponse, ICustomInternalAxiosRequestConfig, IHttpUtils } from './IHttpUtils'
+import type { ICustomAxiosError, ICustomAxiosResponse, ICustomInternalAxiosRequestConfig, IHttpUtils, IPluginRes } from './IHttpUtils'
 
 export type THttpUtilsPluginHook = 'onReq' | 'onReqErr' | 'onRes' | 'onResErr'
 /** 插件钩子数据类型映射 */
@@ -13,6 +13,7 @@ export type TPluginHookData<C, H extends THttpUtilsPluginHook> = H extends 'onRe
         : never
 /** 插件上下文接口 */
 export interface IHttpUtilsPluginCTX<C = any> {
+  createPluginRes: IHttpUtils<C>['createPluginRes']
   getPlugins: IHttpUtils<C>['getPlugins']
   setPlugin: IHttpUtils<C>['setPlugin']
   delPlugin: IHttpUtils<C>['delPlugin']
@@ -49,14 +50,11 @@ export interface IHttpUtilsPlugin<C = any> {
   /** 插件配置 */
   config?: C
   /** 请求拦截钩子 */
-  onReq?: (
-    config: ICustomInternalAxiosRequestConfig<C>,
-    ctx: IHttpUtilsPluginCTX<C>,
-  ) => ICustomInternalAxiosRequestConfig<C> | Promise<ICustomInternalAxiosRequestConfig<C>>
+  onReq?: (config: ICustomInternalAxiosRequestConfig<C>, ctx: IHttpUtilsPluginCTX<C>) => Promise<IPluginRes<ICustomInternalAxiosRequestConfig<C>>>
   /** 请求拦截异常钩子 */
-  onReqErr?: (err: ICustomAxiosError<C>, ctx: IHttpUtilsPluginCTX<C>) => ICustomAxiosError<C> | Promise<ICustomAxiosError<C>> | any
+  onReqErr?: (err: ICustomAxiosError<C>, ctx: IHttpUtilsPluginCTX<C>) => Promise<IPluginRes<ICustomAxiosError<C>>>
   /** 响应拦截钩子 */
-  onRes?: (res: ICustomAxiosResponse<C>, ctx: IHttpUtilsPluginCTX<C>) => ICustomAxiosResponse<C> | Promise<ICustomAxiosResponse<C>>
+  onRes?: (res: ICustomAxiosResponse<C>, ctx: IHttpUtilsPluginCTX<C>) => Promise<IPluginRes<ICustomAxiosResponse<C>>>
   /** 响应拦截异常钩子 */
-  onResErr?: (err: ICustomAxiosError<C>, ctx: IHttpUtilsPluginCTX<C>) => ICustomAxiosError<C> | Promise<ICustomAxiosError<C>> | any
+  onResErr?: (err: ICustomAxiosError<C>, ctx: IHttpUtilsPluginCTX<C>) => Promise<IPluginRes<ICustomAxiosError<C>>>
 }

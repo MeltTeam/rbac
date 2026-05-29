@@ -1,9 +1,8 @@
-import type { ButtonProps, FormProps, InputProps } from 'element-plus'
+import type { FormInstance, FormProps } from 'element-plus'
 import type { RendererElement, RendererNode } from 'vue'
+import type { CompMap, ICompAttrsMap, ICompEventsMap, ICompPropsMap, ICompSlotsMap } from './compMap'
 
 /** 组件类型 */
-export type componentType = 'Input' | 'Button' | 'Template'
-export type TComponentMap = Record<componentType, any>
 export type THFn = () => globalThis.VNode<
   RendererNode,
   RendererElement,
@@ -11,15 +10,17 @@ export type THFn = () => globalThis.VNode<
     [key: string]: any
   }
 >
-export interface IFormItems {
-  /** 组件类型或h函数 */
-  type: componentType | THFn
+export type TCompMapKey = keyof typeof CompMap
+export interface IFormItems<T extends TCompMapKey = TCompMapKey> {
+  /** 组件类型,h函数,不传(插槽传模板) */
+  type: TCompMapKey | THFn
   /** 绑定key */
   key: string
   label?: string
-  attrs?: any
-  props?: Partial<InputProps> | Partial<ButtonProps>
-  slots?: Record<string, THFn> | string | number
+  attrs?: T extends keyof ICompAttrsMap ? ICompAttrsMap[T] : Record<string, never>
+  props?: T extends keyof ICompPropsMap ? ICompPropsMap[T] : Record<string, never>
+  events?: T extends keyof ICompEventsMap ? ICompEventsMap[T] : Record<string, never>
+  slots?: T extends keyof ICompSlotsMap ? ICompSlotsMap[T] | string | number : Record<string, never>
   span?: number
   /** 是否隐藏 */
   hidden?: boolean
@@ -33,4 +34,7 @@ export type MFormProps = {
   formItems: Array<IFormItems>
   /** 表单数据绑定 */
   model: FormProps['model']
-} & Partial<FormProps>
+} & FormProps
+export interface MFormInstance extends FormInstance {
+  $props: MFormProps
+}

@@ -3,11 +3,11 @@ import type { AppLocale } from '@/i18n'
 import { Icon } from '@iconify/vue'
 import { useRoute } from 'vue-router'
 import { localeKeys, t } from '@/i18n'
-import { useApp } from '@/store/modules/app'
+import { appStore } from '@/stores'
 
 defineOptions({ name: 'MI18nBtn' })
 const route = useRoute()
-const app = useApp()
+const app = appStore()
 const { setLocale, setTitle } = app
 function _setLocale(locale: AppLocale) {
   setLocale(locale)
@@ -21,7 +21,7 @@ function _setLocale(locale: AppLocale) {
 </script>
 
 <template>
-  <ElTooltip :auto-close="200" placement="bottom" :content="t('components.MI18nBtn.content')">
+  <ElTooltip class="MI18nBtn_container" :auto-close="500" placement="bottom" :content="t('components.MI18nBtn.content')">
     <ElDropdown size="large" placement="bottom" trigger="click" popper-class="MI18nBtn_container">
       <ElButton class="m-0 border-none">
         <template #icon>
@@ -30,7 +30,7 @@ function _setLocale(locale: AppLocale) {
       </ElButton>
       <template v-if="localeKeys.length > 0" #dropdown>
         <ElDropdownMenu>
-          <ElDropdownItem v-for="item in localeKeys" :key="item" :disabled="app.locale === item" @click="_setLocale(item)">
+          <ElDropdownItem v-for="item in localeKeys" :key="item" :disabled="app.locale === item" @click="() => _setLocale(item)">
             {{ t(`common.locale.${item}`) }}
           </ElDropdownItem>
         </ElDropdownMenu>

@@ -1,6 +1,7 @@
-import type { CheckEnum, IMenuDetailsVO, MenuTypeEnum } from '@packages/types'
+import type { CheckEnum } from '@packages/types'
 import type { MenuEntity } from '../../domain'
 import { ApiSchema } from '@nestjs/swagger'
+import { IMenuDetailsVO, MenuTypeEnum } from '@packages/types'
 import { omit } from 'lodash-es'
 import { BaseVO } from '@/common/vo'
 
@@ -8,8 +9,8 @@ import { BaseVO } from '@/common/vo'
 @ApiSchema({ description: '菜单详情' })
 export class MenuDetailsVO extends BaseVO implements IMenuDetailsVO {
   /**
-   * 菜单父节点ID
-   * @example '菜单父节点ID'
+   * 父菜单ID
+   * @example '父菜单ID'
    */
   parentId: string | null
   /**
@@ -28,7 +29,7 @@ export class MenuDetailsVO extends BaseVO implements IMenuDetailsVO {
    */
   menuCode: string
   /**
-   * 菜单类型
+   * 菜单类型(10:菜单 20:按钮 30:组件 40:目录 50:外链 60:内链)
    * @example 10
    */
   menuType: MenuTypeEnum
@@ -43,20 +44,35 @@ export class MenuDetailsVO extends BaseVO implements IMenuDetailsVO {
    */
   action: string
   /**
-   * 访问路径(MENU,LINK,INNER_LINK)
+   * 访问路径(MENU,DIRECTORY,LINK,INNER_LINK)
    * @example '/user'
    */
   path: string | null
   /**
-   * 路由参数(MENU)
-   * @example '{id:"xxx"}'
+   * 别名(MENU,DIRECTORY,LINK,INNER_LINK)(JSON)
+   * @example '["users"]'
+   */
+  alias: string | null
+  /**
+   * 组件路径
+   * @example 'src/views/userView/index'
+   */
+  component: string
+  /**
+   * 重定向(MENU,DIRECTORY,LINK,INNER_LINK)(JSON)
+   * @example '{name:"user"}'
+   */
+  redirect: string | null
+  /**
+   * 路由参数(MENU,DIRECTORY,LINK,INNER_LINK)(JSON)
+   * @example '{redirect:"/login"}'
    */
   query: string | null
   /**
-   * 组件路径(COMPONENT)
-   * @example 'UserButton'
+   * 标题(MENU,DIRECTORY,LINK,INNER_LINK)
+   * @example '用户管理'
    */
-  component: string | null
+  title: string | null
   /**
    * 图标地址(MENU,DIRECTORY,LINK,INNER_LINK)
    * @example 'https://www.icon.com'

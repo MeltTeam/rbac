@@ -102,9 +102,9 @@ export async function initUser(
           }
           // 分配资源权限
           await Promise.all([
-            SUPER_ADMIN_ID ? userRoleService.assignUsersRoleByIds(em, { ids: [SUPER_ADMIN_ID], roleIds: SUPER_ADMIN_ROLE }) : null,
-            ADMIN_ID ? userRoleService.assignUsersRoleByIds(em, { ids: [ADMIN_ID], roleIds: ADMIN_ROLE }) : null,
-            USER_ID ? userRoleService.assignUsersRoleByIds(em, { ids: [USER_ID], roleIds: USER_ROLE }) : null,
+            SUPER_ADMIN_ID ? userRoleService.replaceUsersRoleByIds(em, { ids: [SUPER_ADMIN_ID], roleIds: SUPER_ADMIN_ROLE }) : null,
+            ADMIN_ID ? userRoleService.replaceUsersRoleByIds(em, { ids: [ADMIN_ID], roleIds: ADMIN_ROLE }) : null,
+            USER_ID ? userRoleService.replaceUsersRoleByIds(em, { ids: [USER_ID], roleIds: USER_ROLE }) : null,
           ])
           logger.log(`√ 批量创建用户成功，共创建 ${newUsers.length} 个新用户`)
         } catch (err) {

@@ -1,24 +1,24 @@
 import type { ResVO, RoleIdsVO, UserIdsVO } from '../../common.type'
 
-export interface V1UserRoleBatchPostResponses {
-  200: ResVO & {
-    data?: unknown
-  }
-}
-
-export interface V1UserRoleIdRoleidsGetResponses {
+export interface GetRoleByUserResponses {
   200: ResVO & {
     data?: RoleIdsVO
   }
 }
 
-export interface V1UserRoleIdUseridsGetResponses {
+export interface GetUserByRoleResponses {
   200: ResVO & {
     data?: UserIdsVO
   }
 }
 
-export interface V1UserRolePostResponses {
+export interface ReplaceUserRoleResponses {
+  200: ResVO & {
+    data?: unknown
+  }
+}
+
+export interface ReplaceUsersRoleResponses {
   200: ResVO & {
     data?: unknown
   }

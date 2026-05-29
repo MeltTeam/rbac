@@ -18,7 +18,7 @@ export class CacheExceptionFilter implements ExceptionFilter {
   ) {}
 
   catch(exception: RedisError, host: ArgumentsHost) {
-    this.loggingService.log('缓存异常过滤器')
+    this.loggingService.debug('缓存异常过滤器')
     const ctx = host.switchToHttp()
     const res = ctx.getResponse<Response>()
     ResVO.setLoggerContext(this.clsService, CacheExceptionFilter.name)

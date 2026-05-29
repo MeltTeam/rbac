@@ -1,6 +1,7 @@
 import type { ISvgCaptchaVO, ITokenVO } from '@packages/types'
 import type { ExcludeKeys } from '@/common/utils'
 import type { IFindAllVOOptions } from '@/common/vo'
+import type { MenuRouteVO } from '@/modules/rbac/menu/app'
 import type { UserEntity } from '@/modules/rbac/user/domain'
 import { AuthEntity } from '../../domain'
 import { AuthDetailsVO, AuthIdsVO, FindAllAuthVO, MeInfoVO, SvgCaptchaVO, TokenVO } from '../vo'
@@ -33,7 +34,7 @@ export class AuthVOAssembler {
     return new TokenVO(token)
   }
 
-  static toMeInfo(user: UserEntity) {
-    return new MeInfoVO(user)
+  static toMeInfo(user: UserEntity, routes: MenuRouteVO[] = []) {
+    return new MeInfoVO(user, routes)
   }
 }

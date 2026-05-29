@@ -3,18 +3,18 @@ import type { ICustomAxiosRequestConfig } from '@/utils/http/IHttpUtils'
 
 import { http } from '@/utils/http'
 
-/** 获取用户列表 GET /v1/user */
-export function v1UserGet({
+/** 获取用户列表 getUsers GET /v1/user */
+export function getUsers({
   params,
   options,
 }: {
   // 叠加生成的Param类型 (非body参数openapi默认没有生成对象)
-  params: API.V1UserGetParams
+  params: API.GetUsersParams
 
   options?: ICustomAxiosRequestConfig
 }) {
   return http.request<
-    API.V1UserGetParams,
+    API.GetUsersParams,
     API.ResVO & {
       data?: API.FindAllUserVO
     }
@@ -30,8 +30,8 @@ export function v1UserGet({
   })
 }
 
-/** 创建用户 POST /v1/user */
-export function v1UserPost({
+/** 创建用户 createUser POST /v1/user */
+export function createUser({
   body,
   options,
 }: {
@@ -57,20 +57,20 @@ export function v1UserPost({
   })
 }
 
-/** 查看单个用户详情 GET /v1/user/${param0} */
-export function v1UserIdGet({
+/** 查看单个用户详情 getUserById GET /v1/user/${param0} */
+export function getUserById({
   params,
   options,
 }: {
   // 叠加生成的Param类型 (非body参数openapi默认没有生成对象)
-  params: API.V1UserIdGetParams
+  params: API.GetUserByIdParams
 
   options?: ICustomAxiosRequestConfig
 }) {
   const { id: param0, ...queryParams } = params
 
   return http.request<
-    API.V1UserIdGetParams,
+    API.GetUserByIdParams,
     API.ResVO & {
       data?: API.UserDetailsVO
     }
@@ -84,20 +84,20 @@ export function v1UserIdGet({
   })
 }
 
-/** 删除用户 DELETE /v1/user/${param0} */
-export function v1UserIdDelete({
+/** 删除用户 deleteUser DELETE /v1/user/${param0} */
+export function deleteUser({
   params,
   options,
 }: {
   // 叠加生成的Param类型 (非body参数openapi默认没有生成对象)
-  params: API.V1UserIdDeleteParams
+  params: API.DeleteUserParams
 
   options?: ICustomAxiosRequestConfig
 }) {
   const { id: param0, ...queryParams } = params
 
   return http.request<
-    API.V1UserIdDeleteParams,
+    API.DeleteUserParams,
     API.ResVO & {
       data?: unknown
     }
@@ -111,14 +111,14 @@ export function v1UserIdDelete({
   })
 }
 
-/** 更新用户 PATCH /v1/user/${param0} */
-export function v1UserIdPatch({
+/** 更新用户 updateUser PATCH /v1/user/${param0} */
+export function updateUser({
   params,
   body,
   options,
 }: {
   // 叠加生成的Param类型 (非body参数openapi默认没有生成对象)
-  params: API.V1UserIdPatchParams
+  params: API.UpdateUserParams
   body: API.UpdateUserDTO
 
   options?: ICustomAxiosRequestConfig
@@ -144,14 +144,14 @@ export function v1UserIdPatch({
   })
 }
 
-/** 更新用户排序优先级 PATCH /v1/user/${param0}/sort */
-export function v1UserIdSortPatch({
+/** 更新用户排序优先级 updateUserSort PATCH /v1/user/${param0}/sort */
+export function updateUserSort({
   params,
   body,
   options,
 }: {
   // 叠加生成的Param类型 (非body参数openapi默认没有生成对象)
-  params: API.V1UserIdSortPatchParams
+  params: API.UpdateUserSortParams
   body: API.UpdateSortDTO
 
   options?: ICustomAxiosRequestConfig
@@ -177,14 +177,14 @@ export function v1UserIdSortPatch({
   })
 }
 
-/** 更新用户状态 PATCH /v1/user/${param0}/status */
-export function v1UserIdStatusPatch({
+/** 更新用户状态 updateUserStatus PATCH /v1/user/${param0}/status */
+export function updateUserStatus({
   params,
   body,
   options,
 }: {
   // 叠加生成的Param类型 (非body参数openapi默认没有生成对象)
-  params: API.V1UserIdStatusPatchParams
+  params: API.UpdateUserStatusParams
   body: API.UpdateStatusDTO
 
   options?: ICustomAxiosRequestConfig

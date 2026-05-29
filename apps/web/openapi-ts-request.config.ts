@@ -19,14 +19,15 @@ export default defineConfig([
     hook: {
       customClassName: (tagName: string) => `modules/${tagName}/${tagName}`,
       afterOpenApiDataInited: (openAPIData) => {
-        console.warn(openAPIData)
+        // 可以统一更改url前缀
+        // openAPIData.paths = Object.fromEntries(Object.entries(openAPIData.paths).map(([path, methods]) => [path.replace('/v1', ''), methods]))
+        // console.warn(openAPIData.paths)
         return openAPIData
       },
       customFunctionName(data) {
-        // 解析summary中[]定义的函数名
-        const bracketMatch = data.summary?.match(/\[([^\]]+)\]$/)
-        if (bracketMatch) {
-          return bracketMatch[1]
+        // 解析description中定义的函数名
+        if (data.description && (data.description as string).length !== 0) {
+          return data.description
         }
         const urlToCamelCase = (url: string) => {
           return url

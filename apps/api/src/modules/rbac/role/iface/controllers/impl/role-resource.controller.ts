@@ -7,18 +7,18 @@ import { ApiController, ApiMethod, ResourceDomain, ResourceMethod, ResourceType 
 import { ResVO } from '@/common/vo'
 import { ResourceIdDTO, ResourceIdsVO } from '@/modules/rbac/resource/app'
 import {
-  AssignRoleResourceCommand,
-  AssignRoleResourceDTO,
-  AssignRolesResourceCommand,
-  AssignRolesResourceDTO,
   GetResourceByRoleQuery,
   GetRoleByResourceQuery,
+  ReplaceRoleResourceCommand,
+  ReplaceRoleResourceDTO,
+  ReplaceRolesResourceCommand,
+  ReplaceRolesResourceDTO,
   RoleIdDTO,
   RoleIdsVO,
 } from '../../../app'
 
 /** 角色资源控制器实现 */
-@Controller('role/resource')
+@Controller('role-resource')
 @ResourceType(ResourceTypeEnum.API)
 @ResourceDomain('ROLE_RESOURCE')
 @ApiController({ ApiTagsOptions: ['RoleResource'] })
@@ -29,34 +29,34 @@ export class RoleResourceController implements IRoleResourceController {
     private readonly commandBus: CommandBus,
   ) {}
 
-  @Post()
-  @ResourceMethod('assign')
+  @Post('replace')
+  @ResourceMethod('replace')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '给角色分配资源' }],
+    ApiOperationOptions: [{ description: 'replaceRoleResource', summary: '替换角色的资源(全量替换)' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess()],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',
   })
-  async assign(@Body() assignRoleResourceDTO: AssignRoleResourceDTO) {
-    return await this.commandBus.execute(new AssignRoleResourceCommand(assignRoleResourceDTO))
+  async replace(@Body() replaceRoleResourceDTO: ReplaceRoleResourceDTO) {
+    return await this.commandBus.execute(new ReplaceRoleResourceCommand(replaceRoleResourceDTO))
   }
 
-  @Post('batch')
-  @ResourceMethod('batchAssign')
+  @Post('batch-replace')
+  @ResourceMethod('batchReplace')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '批量给角色分配资源' }],
+    ApiOperationOptions: [{ description: 'replaceRolesResource', summary: '批量替换角色的资源(全量替换)' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess()],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',
   })
-  async batchAssign(@Body() assignRolesResourceDTO: AssignRolesResourceDTO) {
-    return await this.commandBus.execute(new AssignRolesResourceCommand(assignRolesResourceDTO))
+  async batchReplace(@Body() replaceRolesResourceDTO: ReplaceRolesResourceDTO) {
+    return await this.commandBus.execute(new ReplaceRolesResourceCommand(replaceRolesResourceDTO))
   }
 
-  @Get(':id/resource-ids')
+  @Get('resource-ids/:id')
   @ResourceMethod('resourceIds')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '获取角色的资源ID列表' }],
+    ApiOperationOptions: [{ description: 'getResourceByRole', summary: '获取角色的资源ID列表' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess(ResourceIdsVO)],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',
@@ -65,10 +65,10 @@ export class RoleResourceController implements IRoleResourceController {
     return this.queryBus.execute(new GetResourceByRoleQuery(roleIdDTO.id))
   }
 
-  @Get(':id/role-ids')
+  @Get('role-ids/:id')
   @ResourceMethod('roleIds')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '获取资源的角色ID列表' }],
+    ApiOperationOptions: [{ description: 'getRoleByResource', summary: '获取资源的角色ID列表' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess(RoleIdsVO)],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',

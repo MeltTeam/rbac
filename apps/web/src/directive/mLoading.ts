@@ -1,20 +1,36 @@
-import type { DirectiveBinding } from 'vue'
+import type { Directive } from 'vue'
 import { MLoading } from '@/components'
 import { getComponentDom } from '@/utils/component.util'
 
-export function mLoading(_el: Element, binding: DirectiveBinding) {
+export interface MLoadingBinding {
+  isLoading: boolean
+}
+/** 处理 loading 显示/隐藏的逻辑 */
+function handleLoading(value: boolean, el: HTMLElement) {
   const isDom = window.document.querySelector('.MLoading_container')
-  if (!binding.value) {
+  if (!value) {
     if (isDom) {
       isDom.remove()
       console.warn('mLoading remove')
     }
     return
   }
-  const appDom = window.document.querySelector('.App_container')
-  if (!isDom && appDom) {
+  if (!isDom && el) {
     const loadingDom = getComponentDom(MLoading)
     console.warn('mLoading append')
-    appDom.appendChild(loadingDom)
+    el.appendChild(loadingDom)
   }
+}
+
+/** mLoading 指令 */
+export const mLoading: Directive = {
+  mounted(el, binding) {
+    handleLoading(binding.value, el)
+  },
+  updated(el, binding) {
+    handleLoading(binding.value, el)
+  },
+  unmounted(el) {
+    handleLoading(false, el)
+  },
 }

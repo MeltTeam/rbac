@@ -8,7 +8,7 @@ import { NestExpressApplication } from '@nestjs/platform-express'
 import { CacheService, LoggingService } from '@/common/infra'
 import { APP_CONFIG_KEY } from '@/config'
 import { BootController } from './boot.controller'
-import { initGlobalSettings, initMiddlewares, initPipes, initResource, initRole, initSwagger, initUser } from './init'
+import { initGlobalSettings, initMenu, initMiddlewares, initPipes, initResource, initRole, initSwagger, initUser } from './init'
 
 /** webpack热更新模块 */
 declare const module: any
@@ -47,8 +47,9 @@ export class BootImpl implements IBoot {
     await initMiddlewares(this.appInstance, configService)
     await initPipes(this.appInstance, configService)
     setTimeout(async () => {
-      const limit = await initResource(this.appInstance, configService)
-      await initRole(this.appInstance, configService, limit)
+      const limitR = await initResource(this.appInstance, configService)
+      const limitM = await initMenu(this.appInstance, configService)
+      await initRole(this.appInstance, configService, Math.max(limitR, limitM))
       await initUser(this.appInstance, configService)
     }, 1)
     await initSwagger(this.appInstance, configService)

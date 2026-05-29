@@ -1,10 +1,13 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 
 const title = ref('Hello')
 function handlerClick() {
   title.value = 'Hello uni-app'
 }
+onMounted(() => {
+  console.warn('测试日志5')
+})
 </script>
 
 <template>
@@ -26,6 +29,7 @@ function handlerClick() {
   align-items: center;
   justify-content: center;
 }
+
 .btn {
   background-color: red;
   width: 200rpx;

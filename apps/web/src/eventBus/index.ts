@@ -1,8 +1,14 @@
-import type { INetworkErrorPluginEvents, ITokenPluginEvents } from '@/utils/http/plugins'
+import type {
+  IDuplicationPluginEvents,
+  ILimitPluginEvents,
+  INetworkErrorPluginEvents,
+  INetworkStatusPluginEvents,
+  ITokenPluginEvents,
+} from '@/utils/http/plugins'
 import { EventBus } from './EventBus'
 
-/** http插件事件 */
-type IHttpPluginEvents = INetworkErrorPluginEvents & ITokenPluginEvents
+/** http 插件事件 */
+type IHttpPluginEvents = INetworkErrorPluginEvents & ITokenPluginEvents & IDuplicationPluginEvents & ILimitPluginEvents & INetworkStatusPluginEvents
 
 /** 事件总线事件 */
 type IEventBusEvents = IHttpPluginEvents

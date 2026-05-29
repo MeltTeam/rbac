@@ -9,11 +9,11 @@ import { DEFAULT_ROLES, RoleDomainService } from '@/modules/rbac/role/domain'
 import { UserDomainService } from '../../domain'
 import { UserVOAssembler } from '../assemblers'
 import { UserRoleService } from '../services'
-import { CreateUserByNameCommand } from './create-user.command'
+import { CreateUserCommand } from './create-user.command'
 
 /** 创建用户Handler */
-@CommandHandler(CreateUserByNameCommand)
-export class CreateUserHandler implements ICommandHandler<CreateUserByNameCommand> {
+@CommandHandler(CreateUserCommand)
+export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
   constructor(
     private readonly em: EntityManager,
     private readonly userDomainService: UserDomainService,
@@ -23,7 +23,7 @@ export class CreateUserHandler implements ICommandHandler<CreateUserByNameComman
   ) {}
 
   @LogContextMethod()
-  async execute(command: CreateUserByNameCommand) {
+  async execute(command: CreateUserCommand) {
     return this.em.transaction(async (em: EntityManager) => {
       const by = this.clsService.get<string>(REQ_CTX.USER_ID) ?? SYSTEM_DEFAULT_BY
       // 创建新用户
@@ -32,7 +32,7 @@ export class CreateUserHandler implements ICommandHandler<CreateUserByNameComman
         this.roleDomainService.getRolesByCodes([DEFAULT_ROLES.USER.roleCode], false, em),
       ])
       // 赋予默认角色(普通用户)
-      await this.userRoleService.assignUsersRoleByIds(em, { ids: [user.id], roleIds: [role.id] }, by)
+      await this.userRoleService.replaceUsersRoleByIds(em, { ids: [user.id], roleIds: [role.id] }, by)
       return UserVOAssembler.toDetailsVO(user)
     })
   }

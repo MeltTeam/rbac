@@ -1,4 +1,5 @@
 import type { ICommonVO, IFindAllVO, IIdsVO } from './ICommon.vo'
+import type { IMenuRouteVO } from './IMenu.vo'
 import type { IUserDetailsVO, IUserProfileVO } from './IUser.vo'
 
 /** 用户信息 */
@@ -37,6 +38,12 @@ export interface IMeInfoVO extends IUserDetailsVO {
   roles: string[]
   /** 菜单编码 */
   menus: string[]
+  /** 菜单路由 */
+  routes: IMenuRouteVO[]
+  /** 按钮编码 */
+  btns: string[]
+  /** 组件编码 */
+  comps: string[]
 }
 
 /** 认证详情 */

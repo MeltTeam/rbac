@@ -11,7 +11,7 @@ import { BusinessException, ExceptionCode, ExceptionCodeTextMap } from '@/common
 import { CacheService, EmailService, LoggingService } from '@/common/infra'
 import { getCode, uuid_v4 } from '@/common/utils'
 import { APP_CONFIG_KEY } from '@/config'
-import { DEFAULT_CAPTCHA_TIMEOUT } from '../../constants'
+import { DEFAULT_CAPTCHA_TIMEOUT, THROTTLE_DEFAULT_NUM, THROTTLE_DEFAULT_TIMER } from '../../constants'
 
 /** 验证码服务实现 */
 @Injectable()
@@ -30,11 +30,11 @@ export class CaptchaService implements ICaptchaService {
   }
 
   async generateSvgCaptcha(name: TCaptchaName, configObject?: ConfigObject) {
-    const background = `#${getCode(6, 16)}`
+    const background = `#cccccc`
     const id = uuid_v4()
     const key = this.getCaptchaKey({ type: 'svg', name, id })
     // 生成
-    const { data, text } = create({ noise: 2, size: CAPTCHA_LENGTH, background, ...configObject })
+    const { data, text } = create({ noise: 2, size: CAPTCHA_LENGTH, background, color: true, fontSize: 42, ...configObject, height: 40, width: 144 })
     // 缓存
     this.cacheService.set(key, text, DEFAULT_CAPTCHA_TIMEOUT, false).then(() => this.loggingService.debug(text))
     const svgBse64 = `data:image/svg+xml;base64,${Buffer.from(data).toString('base64')}`
@@ -61,12 +61,9 @@ export class CaptchaService implements ICaptchaService {
   }
 
   async validateThrottle(throttleInfo: IThrottleInfo) {
-    /** 默认单个(邮箱，手机号)3分钟内只能发送2次 */
-    const { id, name, type, timer = 3 * 60 * 1000, num = 2 } = throttleInfo
+    const { id, name, type, timer = THROTTLE_DEFAULT_TIMER, num = THROTTLE_DEFAULT_NUM } = throttleInfo
     const key = `auth:throttle:${name}:${type}:${id}`
-    /** 没有就设置，有就更新 */
-    const old = await this.cacheService.get<number>(key)
-    Object.is(old, null) ? await this.cacheService.set(key, 1, timer) : await this.cacheService.update(key, +old! + 1)
-    if (+old! >= num) throw new BusinessException(ExceptionCode.AUTH_CAPTCHA_TOO_FREQUENT, ExceptionCodeTextMap)
+    const count = await this.cacheService.incr(key, timer)
+    if (count > num) throw new BusinessException(ExceptionCode.AUTH_CAPTCHA_TOO_FREQUENT, ExceptionCodeTextMap)
   }
 }

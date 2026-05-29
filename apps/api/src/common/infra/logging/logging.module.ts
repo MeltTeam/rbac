@@ -26,6 +26,7 @@ import { createConsoleTransport, createFileTransport, createMongoDBTransport } f
         } else {
           LoggingService.Logger.level = level
         }
+        LoggingModule.logger.debug(`日志模式为 ${mode} `)
         LoggingService.Logger.add(createFileTransport('app', 'error', mode, fileConfig))
         LoggingService.Logger.add(createFileTransport('app', 'warn', mode, fileConfig))
         LoggingService.Logger.add(createFileTransport('app', 'verbose', mode, fileConfig))
@@ -52,9 +53,9 @@ import { createConsoleTransport, createFileTransport, createMongoDBTransport } f
           uri,
           retryAttempts: 30,
           retryDelay: 3000,
-          // lazyConnection: true,
+          lazyConnection: true,
           connectionErrorFactory(err) {
-            LoggingModule.logger.error(`mongodb1:${err.message}`, err.stack)
+            LoggingModule.logger.error(`mongodb:${err.message}`, err.stack)
             return err
           },
           onConnectionCreate(connection) {

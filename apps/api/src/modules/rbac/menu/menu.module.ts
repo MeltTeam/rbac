@@ -1,9 +1,9 @@
 import type { ModuleMetadata } from '@nestjs/common'
 import type { EntityClassOrSchema } from '@nestjs/typeorm/dist/interfaces/entity-class-or-schema.type'
-import { Global, Module } from '@nestjs/common'
+import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import {
-  CreateMenuByNameHandler,
+  CreateMenuHandler,
   DeleteMenuHandler,
   GetMenuByIdHandler,
   GetMenusHandler,
@@ -24,7 +24,7 @@ const entities: EntityClassOrSchema[] = [MenuEntity, MenuTreeEntity]
 const controllers: ModuleMetadata['controllers'] = [MenuController]
 /** 命令处理 */
 const commandHandlers: ModuleMetadata['providers'] = [
-  CreateMenuByNameHandler,
+  CreateMenuHandler,
   DeleteMenuHandler,
   UpdateMenuHandler,
   UpdateMenuSortHandler,
@@ -40,7 +40,6 @@ const services: ModuleMetadata['providers'] = [MenuValidateService, MenuDomainSe
 /** 仓库 */
 const repo: ModuleMetadata['providers'] = [MenuRepository, MenuTreeRepository]
 /** 菜单模块 */
-@Global()
 @Module({
   imports: [TypeOrmModule.forFeature(entities)],
   controllers,

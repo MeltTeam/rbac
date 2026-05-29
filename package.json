@@ -29,7 +29,8 @@
     "docker:dev:stop": "docker-compose -f docker-compose.dev.yml stop",
     "docker:dev:del": "docker-compose -f docker-compose.dev.yml down --volumes",
     "lint-staged": "lint-staged",
-    "prepare": "husky"
+    "prepare": "husky",
+    "ui:init": "uipro init --ai trae "
   },
   "devDependencies": {
     "@commitlint/cli": "catalog:cli",

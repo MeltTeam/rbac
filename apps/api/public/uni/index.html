@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RBAC 移动端</title>
+    <link rel="stylesheet" href="../css/common.css">
+</head>
+<body>
+    <div class="mobile-layout">
+        <header class="mobile-header">
+            <button class="topbar-btn" onclick="window.location.href='../index.html'">←</button>
+            <h1>RBAC 管理</h1>
+            <button class="theme-toggle-btn topbar-btn" onclick="toggleTheme()">🌙</button>
+        </header>
+        <div class="mobile-content">
+            <div id="mobile-home" class="mobile-page">
+                <div class="stats-grid" style="grid-template-columns: repeat(2, 1fr);">
+                    <div class="stat-card" onclick="showMobilePage('users')">
+                        <div class="stat-icon blue">👥</div>
+                        <div class="stat-info">
+                            <h4>用户管理</h4>
+                            <div class="stat-value">1,234</div>
+                        </div>
+                    </div>
+                    <div class="stat-card" onclick="showMobilePage('roles')">
+                        <div class="stat-icon green">🛡️</div>
+                        <div class="stat-info">
+                            <h4>角色管理</h4>
+                            <div class="stat-value">56</div>
+                        </div>
+                    </div>
+                    <div class="stat-card" onclick="showMobilePage('menus')">
+                        <div class="stat-icon orange">📋</div>
+                        <div class="stat-info">
+                            <h4>菜单管理</h4>
+                            <div class="stat-value">89</div>
+                        </div>
+                    </div>
+                    <div class="stat-card" onclick="showMobilePage('resources')">
+                        <div class="stat-icon purple">🔗</div>
+                        <div class="stat-info">
+                            <h4>资源管理</h4>
+                            <div class="stat-value">245</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" style="margin-top: 20px;">
+                    <div class="card-header">
+                        <h3>快速操作</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="mobile-grid">
+                            <div class="mobile-card">
+                                <div class="card-icon">➕</div>
+                                <h3>添加用户</h3>
+                            </div>
+                            <div class="mobile-card">
+                                <div class="card-icon">➕</div>
+                                <h3>添加角色</h3>
+                            </div>
+                            <div class="mobile-card">
+                                <div class="card-icon">📊</div>
+                                <h3>数据统计</h3>
+                            </div>
+                            <div class="mobile-card">
+                                <div class="card-icon">⚙️</div>
+                                <h3>系统设置</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" style="margin-top: 20px;">
+                    <div class="card-header">
+                        <h3>最近活动</h3>
+                    </div>
+                    <div class="card-body" style="padding: 0;">
+                        <div style="padding: 12px 16px; border-bottom: 1px solid var(--border);">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <div style="font-weight: 500;">张三</div>
+                                    <div style="font-size: 0.85rem; color: var(--text-secondary);">登录系统</div>
+                                </div>
+                                <span class="badge badge-success">成功</span>
+                            </div>
+                            <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 4px;">2024-01-15 10:30</div>
+                        </div>
+                        <div style="padding: 12px 16px; border-bottom: 1px solid var(--border);">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <div style="font-weight: 500;">李四</div>
+                                    <div style="font-size: 0.85rem; color: var(--text-secondary);">更新角色权限</div>
+                                </div>
+                                <span class="badge badge-success">成功</span>
+                            </div>
+                            <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 4px;">2024-01-15 10:15</div>
+                        </div>
+                        <div style="padding: 12px 16px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <div style="font-weight: 500;">王五</div>
+                                    <div style="font-size: 0.85rem; color: var(--text-secondary);">添加新用户</div>
+                                </div>
+                                <span class="badge badge-warning">待审核</span>
+                            </div>
+                            <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 4px;">2024-01-15 09:45</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="mobile-users" class="mobile-page hidden">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>用户列表</h3>
+                        <button class="btn btn-primary btn-sm">+ 添加</button>
+                    </div>
+                    <div class="card-body" style="padding: 0;">
+                        <div style="padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div style="font-weight: 500;">admin</div>
+                                <div style="font-size: 0.85rem; color: var(--text-secondary);">admin@example.com</div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span class="badge badge-success">启用</span>
+                                <button class="icon-btn">✏️</button>
+                            </div>
+                        </div>
+                        <div style="padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div style="font-weight: 500;">zhangsan</div>
+                                <div style="font-size: 0.85rem; color: var(--text-secondary);">zhangsan@example.com</div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span class="badge badge-success">启用</span>
+                                <button class="icon-btn">✏️</button>
+                            </div>
+                        </div>
+                        <div style="padding: 12px 16px; display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div style="font-weight: 500;">lisi</div>
+                                <div style="font-size: 0.85rem; color: var(--text-secondary);">lisi@example.com</div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span class="badge badge-warning">禁用</span>
+                                <button class="icon-btn">✏️</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="mobile-roles" class="mobile-page hidden">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>角色列表</h3>
+                        <button class="btn btn-primary btn-sm">+ 添加</button>
+                    </div>
+                    <div class="card-body" style="padding: 0;">
+                        <div style="padding: 12px 16px; border-bottom: 1px solid var(--border);">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <div style="font-weight: 500;">超级管理员</div>
+                                    <div style="font-size: 0.85rem; color: var(--text-secondary);">super_admin</div>
+                                </div>
+                                <button class="icon-btn">🔗</button>
+                            </div>
+                            <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px;">系统最高权限 · 2个用户</div>
+                        </div>
+                        <div style="padding: 12px 16px; border-bottom: 1px solid var(--border);">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <div style="font-weight: 500;">管理员</div>
+                                    <div style="font-size: 0.85rem; color: var(--text-secondary);">admin</div>
+                                </div>
+                                <button class="icon-btn">🔗</button>
+                            </div>
+                            <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px;">系统管理权限 · 5个用户</div>
+                        </div>
+                        <div style="padding: 12px 16px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <div style="font-weight: 500;">普通用户</div>
+                                    <div style="font-size: 0.85rem; color: var(--text-secondary);">user</div>
+                                </div>
+                                <button class="icon-btn">🔗</button>
+                            </div>
+                            <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px;">基础访问权限 · 123个用户</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="mobile-menus" class="mobile-page hidden">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>菜单列表</h3>
+                        <button class="btn btn-primary btn-sm">+ 添加</button>
+                    </div>
+                    <div class="card-body" style="padding: 0;">
+                        <div style="padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <span style="font-size: 1.5rem;">📊</span>
+                                <div>
+                                    <div style="font-weight: 500;">仪表板</div>
+                                    <div style="font-size: 0.85rem; color: var(--text-secondary);">/dashboard</div>
+                                </div>
+                            </div>
+                            <span class="badge badge-success">启用</span>
+                        </div>
+                        <div style="padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <span style="font-size: 1.5rem;">👥</span>
+                                <div>
+                                    <div style="font-weight: 500;">用户管理</div>
+                                    <div style="font-size: 0.85rem; color: var(--text-secondary);">/users</div>
+                                </div>
+                            </div>
+                            <span class="badge badge-success">启用</span>
+                        </div>
+                        <div style="padding: 12px 16px; display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <span style="font-size: 1.5rem;">🛡️</span>
+                                <div>
+                                    <div style="font-weight: 500;">角色管理</div>
+                                    <div style="font-size: 0.85rem; color: var(--text-secondary);">/roles</div>
+                                </div>
+                            </div>
+                            <span class="badge badge-success">启用</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="mobile-resources" class="mobile-page hidden">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>资源列表</h3>
+                        <button class="btn btn-primary btn-sm">+ 添加</button>
+                    </div>
+                    <div class="card-body" style="padding: 0;">
+                        <div style="padding: 12px 16px; border-bottom: 1px solid var(--border);">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <div style="font-weight: 500;">获取用户列表</div>
+                                    <div style="font-size: 0.85rem; color: var(--text-secondary);">user:list</div>
+                                </div>
+                                <span class="badge badge-success">GET</span>
+                            </div>
+                            <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px;">/api/users</div>
+                        </div>
+                        <div style="padding: 12px 16px; border-bottom: 1px solid var(--border);">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <div style="font-weight: 500;">创建用户</div>
+                                    <div style="font-size: 0.85rem; color: var(--text-secondary);">user:create</div>
+                                </div>
+                                <span class="badge badge-info">POST</span>
+                            </div>
+                            <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px;">/api/users</div>
+                        </div>
+                        <div style="padding: 12px 16px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <div style="font-weight: 500;">删除用户</div>
+                                    <div style="font-size: 0.85rem; color: var(--text-secondary);">user:delete</div>
+                                </div>
+                                <span class="badge badge-danger">DELETE</span>
+                            </div>
+                            <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px;">/api/users/:id</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nav class="mobile-bottom-nav" style="padding-bottom: 24px;">
+            <div class="mobile-nav-item active" onclick="showMobilePage('home'); setMobileNavActive(0);">
+                <span class="nav-icon">🏠</span>
+                <span>首页</span>
+            </div>
+            <div class="mobile-nav-item" onclick="showMobilePage('users'); setMobileNavActive(1);">
+                <span class="nav-icon">👥</span>
+                <span>用户</span>
+            </div>
+            <div class="mobile-nav-item" onclick="showMobilePage('roles'); setMobileNavActive(2);">
+                <span class="nav-icon">🛡️</span>
+                <span>角色</span>
+            </div>
+            <div class="mobile-nav-item" onclick="showMobilePage('menus'); setMobileNavActive(3);">
+                <span class="nav-icon">📋</span>
+                <span>菜单</span>
+            </div>
+        </nav>
+    </div>
+    <script src="../js/common.js"></script>
+    <script>
+        function showMobilePage(pageId) {
+            const pages = document.querySelectorAll('.mobile-page');
+            pages.forEach(page => page.classList.add('hidden'));
+            
+            const targetPage = document.getElementById('mobile-' + pageId);
+            if (targetPage) {
+                targetPage.classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>

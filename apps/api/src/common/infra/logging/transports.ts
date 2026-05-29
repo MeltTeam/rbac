@@ -177,7 +177,7 @@ export function createFileTransport(
 ) {
   const { dirname, datePattern, zippedArchive, maxSize, maxFiles } = config
   const _dirname = join(dirname, type, level as unknown as string)
-  mkdir(_dirname)
+  if (mode !== 'none') mkdir(_dirname)
   const format = [
     createLevelFilter(level),
     createTypeFilter(type),

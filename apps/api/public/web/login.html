@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录 - RBAC 管理系统</title>
+    <link rel="stylesheet" href="../css/common.css">
+</head>
+<body>
+    <button class="theme-toggle-btn topbar-btn theme-toggle" onclick="toggleTheme()">🌙</button>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <h1>RBAC 管理系统</h1>
+                <p>欢迎回来，请登录您的账户</p>
+            </div>
+            <div class="login-form">
+                <div class="input-wrapper">
+                    <label for="username">用户名</label>
+                    <input type="text" id="username" placeholder="请输入用户名" value="admin">
+                </div>
+                <div class="input-wrapper">
+                    <label for="password">密码</label>
+                    <input type="password" id="password" placeholder="请输入密码" value="123456">
+                </div>
+                <button class="btn btn-primary btn-lg login-btn" onclick="handleLogin()">登录</button>
+            </div>
+            <div style="text-align: center; margin-top: 24px;">
+                <a href="../index.html" class="back-link">← 返回首页</a>
+            </div>
+        </div>
+    </div>
+    <script src="../js/common.js"></script>
+    <script>
+        function handleLogin() {
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

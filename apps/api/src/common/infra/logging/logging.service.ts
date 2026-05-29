@@ -9,7 +9,7 @@ import { Queue } from 'bullmq'
 import winston, { createLogger } from 'winston'
 import { redisIsOk, uuid_v4 } from '@/common/utils'
 import { DEFAULT_APP_NAME } from '@/config'
-import { LOGGING_QUEUE_TOKEN, QueueModuleHelper } from '../queue'
+import { LOGGING_QUEUE_TOKEN, QueueModule } from '../queue'
 
 /** 应用日志服务 */
 @Injectable()
@@ -29,7 +29,7 @@ export class LoggingService implements ILoggingService {
   constructor(@InjectQueue(LOGGING_QUEUE_TOKEN) private readonly loggingQueue: Queue<ILoggingJobData>) {}
   record(loggingJobData: ILoggingJobData) {
     const { fnName, args } = loggingJobData
-    redisIsOk(QueueModuleHelper.redis!)
+    redisIsOk(QueueModule.initRedis!.redisClient)
       ? this.loggingQueue.add(
           'delayedLog',
           { fnName, args },

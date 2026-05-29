@@ -1,45 +1,53 @@
 import type { Request } from 'express'
+import type { ICaptchaInfo } from '../../domain/services/ICaptchaService'
 import type { SvgLoginDTO } from '../dto'
+import type { ILoginCredentials } from '../services/IAuthUserService'
 import { Injectable } from '@nestjs/common'
 import { PassportStrategy } from '@nestjs/passport'
 import { ClsService } from 'nestjs-cls'
 import { Strategy } from 'passport-custom'
 import { EntityManager } from 'typeorm'
-import { SYSTEM_DEFAULT_BY } from '@/common/constants'
-import { BusinessException, ExceptionCode, ExceptionCodeTextMap } from '@/common/exceptions'
-import { REQ_CTX } from '@/common/infra'
-import { UserDomainService } from '@/modules/rbac/user/domain'
 import { CaptchaService } from '../../domain'
+import { AuthUserService } from '../services'
+import { LoginStrategyHelper } from './login-strategy-helper'
 
 /** SVG登录策略 */
 @Injectable()
 export class SvgLoginStrategy extends PassportStrategy(Strategy, 'svg-login') {
+  private readonly helper: LoginStrategyHelper
+
   constructor(
-    private readonly userDomainService: UserDomainService,
-    private readonly captchaService: CaptchaService,
-    private readonly clsService: ClsService,
+    authService: AuthUserService,
+    captchaService: CaptchaService,
+    clsService: ClsService,
     private readonly em: EntityManager,
   ) {
     super()
+    this.helper = new LoginStrategyHelper(
+      authService,
+      captchaService,
+      clsService,
+      this.extractCredentials.bind(this),
+      this.getCaptchaInfo.bind(this),
+      this.getIdentifierType.bind(this),
+    )
   }
 
   async validate(req: Request) {
-    return await this.em.transaction(async (em) => {
-      const { name, pwd, token, captcha } = req.body as SvgLoginDTO
-      // 验证码校验
-      const key = this.captchaService.getCaptchaKey({ type: 'svg', name: 'login', id: token })
-      await this.captchaService.validateCaptcha(key, captcha)
-      // 用户校验
-      const [user] = await this.userDomainService.getUsersByNames([name], false, em)
-      const compare = await this.userDomainService.comparePwd(pwd, user.salt, user.pwd)
-      if (!compare) throw new BusinessException(ExceptionCode.AUTH_INCORRECT_PASSWORD, ExceptionCodeTextMap)
-      const loginIp = this.clsService.get<string>(REQ_CTX.CLIENT_IP)
-      const loginAt = new Date(this.clsService.get<string>(REQ_CTX.START_TIMESTAMP))
-      user.loginIp = loginIp
-      user.loginAt = loginAt
-      await this.userDomainService.userRepo.patch([user], SYSTEM_DEFAULT_BY, em)
-      this.clsService.set<string>(REQ_CTX.USER_ID, user.id)
-      return true
-    })
+    return this.em.transaction((em: EntityManager) => this.helper.validate(req, em))
+  }
+
+  protected extractCredentials(req: Request): ILoginCredentials {
+    const { name, pwd, captcha } = req.body as SvgLoginDTO
+    return { identifier: name, password: pwd, captcha }
+  }
+
+  protected getCaptchaInfo(req: Request): ICaptchaInfo {
+    const { token } = req.body as SvgLoginDTO
+    return { type: 'svg', name: 'login', id: token }
+  }
+
+  protected getIdentifierType() {
+    return 'svg' as const
   }
 }

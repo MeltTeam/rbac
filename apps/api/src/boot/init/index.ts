@@ -1,4 +1,5 @@
 export * from './initGlobalSettings'
+export * from './initMenu'
 export * from './initMiddlewares'
 export * from './initPipes'
 export * from './initResource'

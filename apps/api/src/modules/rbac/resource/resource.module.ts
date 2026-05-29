@@ -1,9 +1,9 @@
 import type { ModuleMetadata } from '@nestjs/common'
 import type { EntityClassOrSchema } from '@nestjs/typeorm/dist/interfaces/entity-class-or-schema.type'
-import { Global, Module } from '@nestjs/common'
+import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import {
-  CreateResourceByNameHandler,
+  CreateResourceHandler,
   DeleteResourceHandler,
   GetResourceByIdHandler,
   GetResourcesHandler,
@@ -21,7 +21,7 @@ const entities: EntityClassOrSchema[] = [ResourceEntity]
 const controllers: ModuleMetadata['controllers'] = [ResourceController]
 /** 命令处理 */
 const commandHandlers: ModuleMetadata['providers'] = [
-  CreateResourceByNameHandler,
+  CreateResourceHandler,
   DeleteResourceHandler,
   UpdateResourceHandler,
   UpdateResourceSortHandler,
@@ -36,7 +36,6 @@ const services: ModuleMetadata['providers'] = [ResourceValidateService, Resource
 /** 仓库 */
 const repo: ModuleMetadata['providers'] = [ResourceRepository]
 /** 资源模块 */
-@Global()
 @Module({
   imports: [TypeOrmModule.forFeature(entities)],
   controllers,

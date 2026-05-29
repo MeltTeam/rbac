@@ -1,5 +1,5 @@
 import type { EntityManager } from 'typeorm'
-import type { AssignRolesResourceDTO, RoleIdsDTO } from '../../dto'
+import type { ReplaceRolesResourceDTO, RoleIdsDTO } from '../../dto'
 import type { IRoleResourceService } from '../IRoleResourceService'
 import type { ResourceIdsDTO } from '@/modules/rbac/resource/app'
 import { Injectable } from '@nestjs/common'
@@ -29,8 +29,8 @@ export class RoleResourceService implements IRoleResourceService {
     return await this.resourceDomainService.getResourcesByIds(ids, false, em)
   }
 
-  async assignRolesResourceByIds(em: EntityManager, assignRolesResourceDTO: AssignRolesResourceDTO, by: string = SYSTEM_DEFAULT_BY) {
-    const { ids, resourceIds } = assignRolesResourceDTO
+  async replaceRolesResourceByIds(em: EntityManager, replaceRolesResourceDTO: ReplaceRolesResourceDTO, by: string = SYSTEM_DEFAULT_BY) {
+    const { ids, resourceIds } = replaceRolesResourceDTO
     const roles = await this.roleDomainService.getRolesByIds(ids, false, em)
     const resources = await this.resourceDomainService.getResourcesByIds(resourceIds, false, em)
     await this.RoleResourceRepo.deleteMany(ids, 'role_id', em)

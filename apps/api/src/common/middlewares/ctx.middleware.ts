@@ -14,7 +14,7 @@ export class CtxMiddleware extends ClsMiddleware {
       idGenerator: (request) => ((request as Request).headers['X-Trace-Id'] as string) ?? uuid_v4(),
       setup(cls: ClsService<ILoggingCls>, req: Request, res: Response) {
         const logger = new Logger(CtxMiddleware.name)
-        logger.log(CtxMiddleware.name)
+        logger.debug(CtxMiddleware.name)
         const traceID = cls.getId()
         const now = dayjs().valueOf()
         // 请求信息注入请求上下文

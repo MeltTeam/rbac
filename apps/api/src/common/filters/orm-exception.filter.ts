@@ -18,7 +18,7 @@ export class OrmExceptionFilter implements ExceptionFilter {
   ) {}
 
   catch(exception: TypeORMError, host: ArgumentsHost) {
-    this.loggingService.log('数据库异常过滤器')
+    this.loggingService.debug('数据库异常过滤器')
     const ctx = host.switchToHttp()
     const res = ctx.getResponse<Response>()
     ResVO.setLoggerContext(this.clsService, OrmExceptionFilter.name)

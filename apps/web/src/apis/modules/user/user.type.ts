@@ -1,43 +1,43 @@
 import type { FindAllUserVO, ResVO, UserDetailsVO } from '../../common.type'
 
-export interface V1UserGetResponses {
+export interface CreateUserResponses {
+  200: ResVO & {
+    data?: UserDetailsVO
+  }
+}
+
+export interface DeleteUserResponses {
+  200: ResVO & {
+    data?: unknown
+  }
+}
+
+export interface GetUserByIdResponses {
+  200: ResVO & {
+    data?: UserDetailsVO
+  }
+}
+
+export interface GetUsersResponses {
   200: ResVO & {
     data?: FindAllUserVO
   }
 }
 
-export interface V1UserIdDeleteResponses {
+export interface UpdateUserResponses {
   200: ResVO & {
     data?: unknown
   }
 }
 
-export interface V1UserIdGetResponses {
-  200: ResVO & {
-    data?: UserDetailsVO
-  }
-}
-
-export interface V1UserIdPatchResponses {
+export interface UpdateUserSortResponses {
   200: ResVO & {
     data?: unknown
   }
 }
 
-export interface V1UserIdSortPatchResponses {
+export interface UpdateUserStatusResponses {
   200: ResVO & {
     data?: unknown
-  }
-}
-
-export interface V1UserIdStatusPatchResponses {
-  200: ResVO & {
-    data?: unknown
-  }
-}
-
-export interface V1UserPostResponses {
-  200: ResVO & {
-    data?: UserDetailsVO
   }
 }

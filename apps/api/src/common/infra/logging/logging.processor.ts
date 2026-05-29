@@ -1,14 +1,14 @@
 import type { Job } from 'bullmq'
 import { Processor, WorkerHost } from '@nestjs/bullmq'
 import { LogContextClass } from '@/common/deco'
-import { LOGGING_QUEUE_TOKEN } from '@/common/infra/queue'
+import { LOGGING_QUEUE_COMPLETE, LOGGING_QUEUE_FAIL, LOGGING_QUEUE_TOKEN } from '@/common/infra/queue'
 import { ILoggingJobData } from './ILogging'
 import { LoggingService } from './logging.service'
 
 /** 日志队列处理 */
 @Processor(LOGGING_QUEUE_TOKEN, {
-  removeOnComplete: { count: 500 },
-  removeOnFail: { count: 500 },
+  removeOnComplete: { count: LOGGING_QUEUE_COMPLETE },
+  removeOnFail: { count: LOGGING_QUEUE_FAIL },
 })
 @LogContextClass()
 export class LoggingProcessor extends WorkerHost {

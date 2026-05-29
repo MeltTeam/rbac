@@ -3,6 +3,7 @@
   "paths": {
     "/v1/menu": {
       "post": {
+        "description": "createMenu",
         "operationId": "MenuController_create_v1",
         "parameters": [],
         "requestBody": {
@@ -50,6 +51,7 @@
         "tags": ["Menu"]
       },
       "get": {
+        "description": "getMenus",
         "operationId": "MenuController_list_v1",
         "parameters": [
           {
@@ -146,6 +148,7 @@
     },
     "/v1/menu/{id}": {
       "delete": {
+        "description": "deleteMenu",
         "operationId": "MenuController_delete_v1",
         "parameters": [
           {
@@ -196,6 +199,7 @@
         "tags": ["Menu"]
       },
       "patch": {
+        "description": "updateMenu",
         "operationId": "MenuController_update_v1",
         "parameters": [
           {
@@ -256,6 +260,7 @@
         "tags": ["Menu"]
       },
       "get": {
+        "description": "getMenuById",
         "operationId": "MenuController_detail_v1",
         "parameters": [
           {
@@ -308,6 +313,7 @@
     },
     "/v1/menu/{id}/status": {
       "patch": {
+        "description": "updateMenuStatus",
         "operationId": "MenuController_updateStatus_v1",
         "parameters": [
           {
@@ -370,6 +376,7 @@
     },
     "/v1/menu/{id}/sort": {
       "patch": {
+        "description": "updateMenuSort",
         "operationId": "MenuController_updateSort_v1",
         "parameters": [
           {
@@ -432,6 +439,7 @@
     },
     "/v1/menu/{id}/move": {
       "patch": {
+        "description": "moveMenu",
         "operationId": "MenuController_move_v1",
         "parameters": [
           {
@@ -494,6 +502,7 @@
     },
     "/v1/menu/tree/{id}": {
       "get": {
+        "description": "getMenuTree",
         "operationId": "MenuController_tree_v1",
         "parameters": [
           {
@@ -557,6 +566,7 @@
     },
     "/v1/menu/trees": {
       "post": {
+        "description": "getMenuTrees",
         "operationId": "MenuController_trees_v1",
         "parameters": [],
         "requestBody": {
@@ -609,6 +619,7 @@
     },
     "/v1/resource": {
       "post": {
+        "description": "createResource",
         "operationId": "ResourceController_create_v1",
         "parameters": [],
         "requestBody": {
@@ -656,6 +667,7 @@
         "tags": ["Resource"]
       },
       "get": {
+        "description": "getResources",
         "operationId": "ResourceController_list_v1",
         "parameters": [
           {
@@ -752,6 +764,7 @@
     },
     "/v1/resource/{id}": {
       "delete": {
+        "description": "deleteResource",
         "operationId": "ResourceController_delete_v1",
         "parameters": [
           {
@@ -802,6 +815,7 @@
         "tags": ["Resource"]
       },
       "patch": {
+        "description": "updateResource",
         "operationId": "ResourceController_update_v1",
         "parameters": [
           {
@@ -862,6 +876,7 @@
         "tags": ["Resource"]
       },
       "get": {
+        "description": "getResourceById",
         "operationId": "ResourceController_detail_v1",
         "parameters": [
           {
@@ -914,6 +929,7 @@
     },
     "/v1/resource/{id}/status": {
       "patch": {
+        "description": "updateResourceStatus",
         "operationId": "ResourceController_updateStatus_v1",
         "parameters": [
           {
@@ -976,6 +992,7 @@
     },
     "/v1/resource/{id}/sort": {
       "patch": {
+        "description": "updateResourceSort",
         "operationId": "ResourceController_updateSort_v1",
         "parameters": [
           {
@@ -1038,6 +1055,7 @@
     },
     "/v1/role": {
       "post": {
+        "description": "createRole",
         "operationId": "RoleController_create_v1",
         "parameters": [],
         "requestBody": {
@@ -1085,6 +1103,7 @@
         "tags": ["Role"]
       },
       "get": {
+        "description": "getRoles",
         "operationId": "RoleController_list_v1",
         "parameters": [
           {
@@ -1181,6 +1200,7 @@
     },
     "/v1/role/{id}": {
       "delete": {
+        "description": "deleteRole",
         "operationId": "RoleController_delete_v1",
         "parameters": [
           {
@@ -1231,6 +1251,7 @@
         "tags": ["Role"]
       },
       "patch": {
+        "description": "updateRole",
         "operationId": "RoleController_update_v1",
         "parameters": [
           {
@@ -1291,6 +1312,7 @@
         "tags": ["Role"]
       },
       "get": {
+        "description": "getRoleById",
         "operationId": "RoleController_detail_v1",
         "parameters": [
           {
@@ -1343,6 +1365,7 @@
     },
     "/v1/role/{id}/status": {
       "patch": {
+        "description": "updateRoleStatus",
         "operationId": "RoleController_updateStatus_v1",
         "parameters": [
           {
@@ -1405,6 +1428,7 @@
     },
     "/v1/role/{id}/sort": {
       "patch": {
+        "description": "updateRoleSort",
         "operationId": "RoleController_updateSort_v1",
         "parameters": [
           {
@@ -1467,6 +1491,7 @@
     },
     "/v1/role/{id}/move": {
       "patch": {
+        "description": "moveRole",
         "operationId": "RoleController_move_v1",
         "parameters": [
           {
@@ -1529,6 +1554,7 @@
     },
     "/v1/role/tree/{id}": {
       "get": {
+        "description": "getRoleTree",
         "operationId": "RoleController_tree_v1",
         "parameters": [
           {
@@ -1592,6 +1618,7 @@
     },
     "/v1/role/trees": {
       "post": {
+        "description": "getRoleTrees",
         "operationId": "RoleController_trees_v1",
         "parameters": [],
         "requestBody": {
@@ -1642,16 +1669,17 @@
         "tags": ["Role"]
       }
     },
-    "/v1/role/menu": {
+    "/v1/role-menu/replace": {
       "post": {
-        "operationId": "RoleMenuController_assign_v1",
+        "description": "replaceRoleMenu",
+        "operationId": "RoleMenuController_replace_v1",
         "parameters": [],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AssignRoleMenuDTO"
+                "$ref": "#/components/schemas/ReplaceRoleMenuDTO"
               }
             }
           }
@@ -1687,20 +1715,21 @@
             "COOKIE-JWT": []
           }
         ],
-        "summary": "给角色分配菜单",
+        "summary": "替换角色的菜单(全量替换)",
         "tags": ["RoleMenu"]
       }
     },
-    "/v1/role/menu/batch": {
+    "/v1/role-menu/batch-replace": {
       "post": {
-        "operationId": "RoleMenuController_batchAssign_v1",
+        "description": "replaceRolesMenu",
+        "operationId": "RoleMenuController_batchReplace_v1",
         "parameters": [],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AssignRolesMenuDTO"
+                "$ref": "#/components/schemas/ReplaceRolesMenuDTO"
               }
             }
           }
@@ -1736,12 +1765,13 @@
             "COOKIE-JWT": []
           }
         ],
-        "summary": "批量给角色分配菜单",
+        "summary": "批量替换角色的菜单(全量替换)",
         "tags": ["RoleMenu"]
       }
     },
-    "/v1/role/menu/{id}/menu-ids": {
+    "/v1/role-menu/menu-ids/{id}": {
       "get": {
+        "description": "getMenuByRole",
         "operationId": "RoleMenuController_menuIds_v1",
         "parameters": [
           {
@@ -1792,8 +1822,9 @@
         "tags": ["RoleMenu"]
       }
     },
-    "/v1/role/menu/{id}/role-ids": {
+    "/v1/role-menu/role-ids/{id}": {
       "get": {
+        "description": "getRoleByMenu",
         "operationId": "RoleMenuController_roleIds_v1",
         "parameters": [
           {
@@ -1844,16 +1875,17 @@
         "tags": ["RoleMenu"]
       }
     },
-    "/v1/role/resource": {
+    "/v1/role-resource/replace": {
       "post": {
-        "operationId": "RoleResourceController_assign_v1",
+        "description": "replaceRoleResource",
+        "operationId": "RoleResourceController_replace_v1",
         "parameters": [],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AssignRoleResourceDTO"
+                "$ref": "#/components/schemas/ReplaceRoleResourceDTO"
               }
             }
           }
@@ -1889,20 +1921,21 @@
             "COOKIE-JWT": []
           }
         ],
-        "summary": "给角色分配资源",
+        "summary": "替换角色的资源(全量替换)",
         "tags": ["RoleResource"]
       }
     },
-    "/v1/role/resource/batch": {
+    "/v1/role-resource/batch-replace": {
       "post": {
-        "operationId": "RoleResourceController_batchAssign_v1",
+        "description": "replaceRolesResource",
+        "operationId": "RoleResourceController_batchReplace_v1",
         "parameters": [],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AssignRolesResourceDTO"
+                "$ref": "#/components/schemas/ReplaceRolesResourceDTO"
               }
             }
           }
@@ -1938,12 +1971,13 @@
             "COOKIE-JWT": []
           }
         ],
-        "summary": "批量给角色分配资源",
+        "summary": "批量替换角色的资源(全量替换)",
         "tags": ["RoleResource"]
       }
     },
-    "/v1/role/resource/{id}/resource-ids": {
+    "/v1/role-resource/resource-ids/{id}": {
       "get": {
+        "description": "getResourceByRole",
         "operationId": "RoleResourceController_resourceIds_v1",
         "parameters": [
           {
@@ -1994,8 +2028,9 @@
         "tags": ["RoleResource"]
       }
     },
-    "/v1/role/resource/{id}/role-ids": {
+    "/v1/role-resource/role-ids/{id}": {
       "get": {
+        "description": "getRoleByResource",
         "operationId": "RoleResourceController_roleIds_v1",
         "parameters": [
           {
@@ -2048,6 +2083,7 @@
     },
     "/v1/user": {
       "post": {
+        "description": "createUser",
         "operationId": "UserController_create_v1",
         "parameters": [],
         "requestBody": {
@@ -2095,6 +2131,7 @@
         "tags": ["User"]
       },
       "get": {
+        "description": "getUsers",
         "operationId": "UserController_list_v1",
         "parameters": [
           {
@@ -2191,6 +2228,7 @@
     },
     "/v1/user/{id}": {
       "delete": {
+        "description": "deleteUser",
         "operationId": "UserController_delete_v1",
         "parameters": [
           {
@@ -2241,6 +2279,7 @@
         "tags": ["User"]
       },
       "patch": {
+        "description": "updateUser",
         "operationId": "UserController_update_v1",
         "parameters": [
           {
@@ -2301,6 +2340,7 @@
         "tags": ["User"]
       },
       "get": {
+        "description": "getUserById",
         "operationId": "UserController_detail_v1",
         "parameters": [
           {
@@ -2353,6 +2393,7 @@
     },
     "/v1/user/{id}/status": {
       "patch": {
+        "description": "updateUserStatus",
         "operationId": "UserController_updateStatus_v1",
         "parameters": [
           {
@@ -2415,6 +2456,7 @@
     },
     "/v1/user/{id}/sort": {
       "patch": {
+        "description": "updateUserSort",
         "operationId": "UserController_updateSort_v1",
         "parameters": [
           {
@@ -2475,16 +2517,17 @@
         "tags": ["User"]
       }
     },
-    "/v1/user/role": {
+    "/v1/user-role/replace": {
       "post": {
-        "operationId": "UserRoleController_assign_v1",
+        "description": "replaceUserRole",
+        "operationId": "UserRoleController_replace_v1",
         "parameters": [],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AssignUserRoleDTO"
+                "$ref": "#/components/schemas/ReplaceUserRoleDTO"
               }
             }
           }
@@ -2520,20 +2563,21 @@
             "COOKIE-JWT": []
           }
         ],
-        "summary": "给用户分配角色",
+        "summary": "替换用户的角色(全量替换)",
         "tags": ["UserRole"]
       }
     },
-    "/v1/user/role/batch": {
+    "/v1/user-role/batch-replace": {
       "post": {
-        "operationId": "UserRoleController_batchAssign_v1",
+        "description": "replaceUsersRole",
+        "operationId": "UserRoleController_batchReplace_v1",
         "parameters": [],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AssignUsersRoleDTO"
+                "$ref": "#/components/schemas/ReplaceUsersRoleDTO"
               }
             }
           }
@@ -2569,12 +2613,13 @@
             "COOKIE-JWT": []
           }
         ],
-        "summary": "批量给用户分配角色",
+        "summary": "批量替换用户的角色(全量替换)",
         "tags": ["UserRole"]
       }
     },
-    "/v1/user/role/{id}/role-ids": {
+    "/v1/user-role/role-ids/{id}": {
       "get": {
+        "description": "getRoleByUser",
         "operationId": "UserRoleController_roleIds_v1",
         "parameters": [
           {
@@ -2625,8 +2670,9 @@
         "tags": ["UserRole"]
       }
     },
-    "/v1/user/role/{id}/user-ids": {
+    "/v1/user-role/user-ids/{id}": {
       "get": {
+        "description": "getUserByRole",
         "operationId": "UserRoleController_userIds_v1",
         "parameters": [
           {
@@ -2677,8 +2723,9 @@
         "tags": ["UserRole"]
       }
     },
-    "/v1/auth/svg/{name}": {
+    "/v1/auth/captcha/svg/{name}": {
       "get": {
+        "description": "svgCaptcha",
         "operationId": "AuthController_svgCaptcha_v1",
         "parameters": [
           {
@@ -2719,8 +2766,9 @@
         "tags": ["Auth"]
       }
     },
-    "/v1/auth/email/{name}": {
+    "/v1/auth/captcha/email/{name}": {
       "post": {
+        "description": "emailCaptcha",
         "operationId": "AuthController_emailCaptcha_v1",
         "parameters": [
           {
@@ -2773,6 +2821,7 @@
     },
     "/v1/auth/login/svg": {
       "post": {
+        "description": "svgLogin",
         "operationId": "AuthController_svgLogin_v1",
         "parameters": [],
         "requestBody": {
@@ -2814,6 +2863,7 @@
     },
     "/v1/auth/register/email": {
       "post": {
+        "description": "emailRegister",
         "operationId": "AuthController_emailRegister_v1",
         "parameters": [],
         "requestBody": {
@@ -2855,6 +2905,7 @@
     },
     "/v1/auth/login/email": {
       "post": {
+        "description": "emailLogin",
         "operationId": "AuthController_emailLogin_v1",
         "parameters": [],
         "requestBody": {
@@ -2896,6 +2947,7 @@
     },
     "/v1/auth/reset-pwd/email": {
       "post": {
+        "description": "emailResetPwd",
         "operationId": "AuthController_emailResetPwd_v1",
         "parameters": [],
         "requestBody": {
@@ -2937,6 +2989,7 @@
     },
     "/v1/auth/refresh": {
       "post": {
+        "description": "refreshToken",
         "operationId": "AuthController_refreshToken_v1",
         "parameters": [],
         "requestBody": {
@@ -2978,6 +3031,7 @@
     },
     "/v1/auth/logout": {
       "post": {
+        "description": "loginOut",
         "operationId": "AuthController_loginOut_v1",
         "parameters": [],
         "requestBody": {
@@ -3019,6 +3073,7 @@
     },
     "/v1/auth/me": {
       "get": {
+        "description": "getMeInfo",
         "operationId": "AuthController_meInfo_v1",
         "parameters": [],
         "responses": {
@@ -3034,7 +3089,7 @@
                     {
                       "properties": {
                         "data": {
-                          "$ref": "#/components/schemas/UserDetailsVO"
+                          "$ref": "#/components/schemas/MeInfoVO"
                         }
                       }
                     }
@@ -3058,6 +3113,7 @@
     },
     "/v1/auth": {
       "post": {
+        "description": "createAuth",
         "operationId": "AuthController_create_v1",
         "parameters": [],
         "requestBody": {
@@ -3105,6 +3161,7 @@
         "tags": ["Auth"]
       },
       "get": {
+        "description": "getAuths",
         "operationId": "AuthController_list_v1",
         "parameters": [
           {
@@ -3201,6 +3258,7 @@
     },
     "/v1/auth/{id}": {
       "delete": {
+        "description": "deleteAuth",
         "operationId": "AuthController_delete_v1",
         "parameters": [
           {
@@ -3251,6 +3309,7 @@
         "tags": ["Auth"]
       },
       "patch": {
+        "description": "updateAuth",
         "operationId": "AuthController_update_v1",
         "parameters": [
           {
@@ -3311,6 +3370,7 @@
         "tags": ["Auth"]
       },
       "get": {
+        "description": "getAuthById",
         "operationId": "AuthController_detail_v1",
         "parameters": [
           {
@@ -3363,6 +3423,7 @@
     },
     "/v1/auth/{id}/status": {
       "patch": {
+        "description": "updateAuthStatus",
         "operationId": "AuthController_updateStatus_v1",
         "parameters": [
           {
@@ -3425,6 +3486,7 @@
     },
     "/v1/auth/{id}/sort": {
       "patch": {
+        "description": "updateAuthSort",
         "operationId": "AuthController_updateSort_v1",
         "parameters": [
           {
@@ -3498,147 +3560,20 @@
         "tags": ["跳转swagger文档"]
       }
     },
-    "/v1/set-str": {
-      "get": {
-        "operationId": "BootController_setStr_v1",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": ["跳转swagger文档"]
-      }
-    },
-    "/v1/get-str": {
-      "get": {
-        "operationId": "BootController_getStr_v1",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          }
-        },
-        "tags": ["跳转swagger文档"]
-      }
-    },
-    "/v1/del-str": {
-      "get": {
-        "operationId": "BootController_delStr_v1",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": ["跳转swagger文档"]
-      }
-    },
-    "/v1/update-str": {
-      "get": {
-        "operationId": "BootController_updateStr_v1",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": ["跳转swagger文档"]
-      }
-    },
-    "/v1/set-arr": {
-      "get": {
-        "operationId": "BootController_setArr_v1",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": ["跳转swagger文档"]
-      }
-    },
-    "/v1/get-obj": {
-      "get": {
-        "operationId": "BootController_getObj_v1",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          }
-        },
-        "tags": ["跳转swagger文档"]
-      }
-    },
-    "/v1/del-obj": {
-      "get": {
-        "operationId": "BootController_delObj_v1",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": ["跳转swagger文档"]
-      }
-    },
-    "/v1/set-obj": {
-      "get": {
-        "operationId": "BootController_setObj_v1",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": ["跳转swagger文档"]
-      }
-    },
-    "/v1/put-obj": {
-      "get": {
-        "operationId": "BootController_putObj_v1",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": ["跳转swagger文档"]
-      }
-    },
-    "/v1/dd-obj": {
-      "get": {
-        "operationId": "BootController_ddObj_v1",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": ["跳转swagger文档"]
-      }
-    },
     "/v1/test": {
       "get": {
         "operationId": "BootController_test_v1",
         "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "tags": ["跳转swagger文档"]
@@ -3708,8 +3643,8 @@
           "parentId": {
             "type": "string",
             "nullable": true,
-            "description": "菜单父节点ID",
-            "example": "菜单父节点ID"
+            "description": "父菜单ID",
+            "example": "父菜单ID"
           },
           "id": {
             "type": "string",
@@ -3727,7 +3662,7 @@
             "example": "MENU:USER:MANAGEMENT"
           },
           "menuType": {
-            "description": "菜单类型",
+            "description": "菜单类型(10:菜单 20:按钮 30:组件 40:目录 50:外链 60:内链)",
             "example": 10,
             "enum": [10, 20, 30, 40, 50, 60],
             "type": "number"
@@ -3745,20 +3680,37 @@
           "path": {
             "type": "string",
             "nullable": true,
-            "description": "访问路径(MENU,LINK,INNER_LINK)",
+            "description": "访问路径(MENU,DIRECTORY,LINK,INNER_LINK)",
             "example": "/user"
+          },
+          "alias": {
+            "type": "string",
+            "nullable": true,
+            "description": "别名(MENU,DIRECTORY,LINK,INNER_LINK)(JSON)",
+            "example": "\"[\"users\"]\""
+          },
+          "component": {
+            "type": "string",
+            "description": "组件路径",
+            "example": "src/views/userView/index"
+          },
+          "redirect": {
+            "type": "string",
+            "nullable": true,
+            "description": "重定向(MENU,DIRECTORY,LINK,INNER_LINK)(JSON)",
+            "example": "\"{name:\"user\"}\""
           },
           "query": {
             "type": "string",
             "nullable": true,
-            "description": "路由参数(MENU)",
-            "example": "\"{id:\"xxx\"}\""
+            "description": "路由参数(MENU,DIRECTORY,LINK,INNER_LINK)(JSON)",
+            "example": "\"{redirect:\"/login\"}\""
           },
-          "component": {
+          "title": {
             "type": "string",
             "nullable": true,
-            "description": "组件路径(COMPONENT)",
-            "example": "UserButton"
+            "description": "标题(MENU,DIRECTORY,LINK,INNER_LINK)",
+            "example": "用户管理"
           },
           "icon": {
             "type": "string",
@@ -3835,8 +3787,11 @@
           "domain",
           "action",
           "path",
-          "query",
+          "alias",
           "component",
+          "redirect",
+          "query",
+          "title",
           "icon",
           "isCache",
           "isVisible",
@@ -3890,8 +3845,8 @@
           "parentId": {
             "type": "string",
             "nullable": true,
-            "description": "菜单父节点ID",
-            "example": "菜单父节点ID"
+            "description": "父菜单ID",
+            "example": "父菜单ID"
           },
           "id": {
             "type": "string",
@@ -3909,7 +3864,7 @@
             "example": "MENU:USER:MANAGEMENT"
           },
           "menuType": {
-            "description": "菜单类型",
+            "description": "菜单类型(10:菜单 20:按钮 30:组件 40:目录 50:外链 60:内链)",
             "example": 10,
             "enum": [10, 20, 30, 40, 50, 60],
             "type": "number"
@@ -3927,20 +3882,37 @@
           "path": {
             "type": "string",
             "nullable": true,
-            "description": "访问路径(MENU,LINK,INNER_LINK)",
+            "description": "访问路径(MENU,DIRECTORY,LINK,INNER_LINK)",
             "example": "/user"
+          },
+          "alias": {
+            "type": "string",
+            "nullable": true,
+            "description": "别名(MENU,DIRECTORY,LINK,INNER_LINK)(JSON)",
+            "example": "\"[\"users\"]\""
+          },
+          "component": {
+            "type": "string",
+            "description": "组件路径",
+            "example": "src/views/userView/index"
+          },
+          "redirect": {
+            "type": "string",
+            "nullable": true,
+            "description": "重定向(MENU,DIRECTORY,LINK,INNER_LINK)(JSON)",
+            "example": "\"{name:\"user\"}\""
           },
           "query": {
             "type": "string",
             "nullable": true,
-            "description": "路由参数(MENU)",
-            "example": "\"{id:\"xxx\"}\""
+            "description": "路由参数(MENU,DIRECTORY,LINK,INNER_LINK)(JSON)",
+            "example": "\"{redirect:\"/login\"}\""
           },
-          "component": {
+          "title": {
             "type": "string",
             "nullable": true,
-            "description": "组件路径(COMPONENT)",
-            "example": "UserButton"
+            "description": "标题(MENU,DIRECTORY,LINK,INNER_LINK)",
+            "example": "用户管理"
           },
           "icon": {
             "type": "string",
@@ -4025,8 +3997,11 @@
           "domain",
           "action",
           "path",
-          "query",
+          "alias",
           "component",
+          "redirect",
+          "query",
+          "title",
           "icon",
           "isCache",
           "isVisible",
@@ -4085,19 +4060,40 @@
             "minLength": 1,
             "maxLength": 2048
           },
-          "query": {
+          "alias": {
             "type": "string",
-            "description": "路由参数(MENU)",
-            "example": "\"{id:\"xxx\"}\"",
+            "description": "别名(MENU,DIRECTORY,LINK,INNER_LINK)(JSON)",
+            "example": "\"[\"users\"]\"",
             "minLength": 1,
             "maxLength": 2048
           },
           "component": {
             "type": "string",
-            "description": "组件路径(COMPONENT)",
-            "example": "UserButton",
+            "description": "组件路径",
+            "example": "src/views/userView/index",
             "minLength": 1,
             "maxLength": 2048
+          },
+          "redirect": {
+            "type": "string",
+            "description": "重定向(MENU,DIRECTORY,LINK,INNER_LINK)(JSON)",
+            "example": "\"{name:\"user\"}\"",
+            "minLength": 1,
+            "maxLength": 2048
+          },
+          "query": {
+            "type": "string",
+            "description": "路由参数(MENU,DIRECTORY,LINK,INNER_LINK)(JSON)",
+            "example": "\"{redirect:\"/login\"}\"",
+            "minLength": 1,
+            "maxLength": 2048
+          },
+          "title": {
+            "type": "string",
+            "description": "标题(MENU,DIRECTORY,LINK,INNER_LINK)",
+            "example": "用户管理",
+            "minLength": 1,
+            "maxLength": 64
           },
           "icon": {
             "type": "string",
@@ -4133,7 +4129,7 @@
           }
         },
         "description": "菜单名参数校验",
-        "required": ["name", "menuType", "domain", "action", "path"]
+        "required": ["name", "menuType", "domain", "action", "path", "component"]
       },
       "UpdateMenuDTO": {
         "type": "object",
@@ -4172,19 +4168,40 @@
             "minLength": 1,
             "maxLength": 2048
           },
-          "query": {
+          "alias": {
             "type": "string",
-            "description": "路由参数(MENU)",
-            "example": "\"{id:\"xxx\"}\"",
+            "description": "别名(MENU,DIRECTORY,LINK,INNER_LINK)(JSON)",
+            "example": "\"[\"users\"]\"",
             "minLength": 1,
             "maxLength": 2048
           },
           "component": {
             "type": "string",
-            "description": "组件路径(COMPONENT)",
-            "example": "UserButton",
+            "description": "组件路径",
+            "example": "src/views/userView/index",
             "minLength": 1,
             "maxLength": 2048
+          },
+          "redirect": {
+            "type": "string",
+            "description": "重定向(MENU,DIRECTORY,LINK,INNER_LINK)(JSON)",
+            "example": "\"{name:\"user\"}\"",
+            "minLength": 1,
+            "maxLength": 2048
+          },
+          "query": {
+            "type": "string",
+            "description": "路由参数(MENU,DIRECTORY,LINK,INNER_LINK)(JSON)",
+            "example": "\"{redirect:\"/login\"}\"",
+            "minLength": 1,
+            "maxLength": 2048
+          },
+          "title": {
+            "type": "string",
+            "description": "标题(MENU,DIRECTORY,LINK,INNER_LINK)",
+            "example": "用户管理",
+            "minLength": 1,
+            "maxLength": 64
           },
           "icon": {
             "type": "string",
@@ -4748,7 +4765,7 @@
             "maxLength": 500
           }
         },
-        "description": "角色名参数校验",
+        "description": "创建角色接口参数校验",
         "required": ["name", "roleCode", "dataScope"]
       },
       "UpdateRoleDTO": {
@@ -4825,7 +4842,7 @@
         },
         "required": ["ids"]
       },
-      "AssignRoleMenuDTO": {
+      "ReplaceRoleMenuDTO": {
         "type": "object",
         "properties": {
           "id": {
@@ -4846,10 +4863,10 @@
             }
           }
         },
-        "description": "给角色分配菜单参数校验",
+        "description": "替换角色的菜单(全量替换)参数校验",
         "required": ["id", "menuIds"]
       },
-      "AssignRolesMenuDTO": {
+      "ReplaceRolesMenuDTO": {
         "type": "object",
         "properties": {
           "menuIds": {
@@ -4874,7 +4891,7 @@
             }
           }
         },
-        "description": "批量给角色分配菜单参数校验",
+        "description": "批量替换角色的菜单(全量替换)参数校验",
         "required": ["menuIds", "ids"]
       },
       "ResourceIdsVO": {
@@ -4891,7 +4908,7 @@
         },
         "required": ["ids"]
       },
-      "AssignRoleResourceDTO": {
+      "ReplaceRoleResourceDTO": {
         "type": "object",
         "properties": {
           "id": {
@@ -4912,10 +4929,10 @@
             }
           }
         },
-        "description": "给角色分配资源参数校验",
+        "description": "替换角色的资源(全量替换)参数校验",
         "required": ["id", "resourceIds"]
       },
-      "AssignRolesResourceDTO": {
+      "ReplaceRolesResourceDTO": {
         "type": "object",
         "properties": {
           "resourceIds": {
@@ -4940,7 +4957,7 @@
             }
           }
         },
-        "description": "批量给角色分配资源参数校验",
+        "description": "批量替换角色的资源(全量替换)参数校验",
         "required": ["resourceIds", "ids"]
       },
       "UserProfileVO": {
@@ -5123,7 +5140,7 @@
             "maxLength": 500
           }
         },
-        "description": "用户名参数校验",
+        "description": "创建用户接口参数校验",
         "required": ["name", "pwd"]
       },
       "UpdateUserDTO": {
@@ -5198,7 +5215,7 @@
         },
         "required": ["ids"]
       },
-      "AssignUserRoleDTO": {
+      "ReplaceUserRoleDTO": {
         "type": "object",
         "properties": {
           "id": {
@@ -5219,10 +5236,10 @@
             }
           }
         },
-        "description": "给用户分配角色参数校验",
+        "description": "替换用户的角色(全量替换)参数校验",
         "required": ["id", "roleIds"]
       },
-      "AssignUsersRoleDTO": {
+      "ReplaceUsersRoleDTO": {
         "type": "object",
         "properties": {
           "roleIds": {
@@ -5247,7 +5264,7 @@
             }
           }
         },
-        "description": "批量给用户分配角色参数校验",
+        "description": "批量替换用户的角色(全量替换)参数校验",
         "required": ["roleIds", "ids"]
       },
       "AuthDetailsVO": {
@@ -5372,6 +5389,217 @@
         },
         "description": "令牌详情",
         "required": ["accessToken"]
+      },
+      "MenuRouteMetaVO": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "标题(MENU,DIRECTORY,LINK,INNER_LINK)",
+            "example": "用户管理"
+          },
+          "icon": {
+            "type": "string",
+            "description": "图标地址(MENU,DIRECTORY,LINK,INNER_LINK)",
+            "example": "https://www.icon.com"
+          },
+          "isCache": {
+            "type": "boolean",
+            "description": "是否缓存(MENU,COMPONENT,INNER_LINK)",
+            "example": true
+          },
+          "isVisible": {
+            "type": "boolean",
+            "description": "是否隐藏(MENU)",
+            "example": true
+          },
+          "isRefresh": {
+            "type": "boolean",
+            "description": "是否刷新(MENU)",
+            "example": true
+          },
+          "code": {
+            "type": "string",
+            "description": "菜单编码",
+            "example": "TEST"
+          }
+        },
+        "description": "菜单路由元数据",
+        "required": ["isCache", "isVisible", "isRefresh", "code"]
+      },
+      "MenuRouteVO": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "路由名",
+            "example": "路由名"
+          },
+          "path": {
+            "type": "string",
+            "description": "路由名",
+            "example": "路由名"
+          },
+          "alias": {
+            "type": "string",
+            "description": "路由名",
+            "example": "路由名"
+          },
+          "component": {
+            "type": "string",
+            "description": "路由名",
+            "example": "路由名"
+          },
+          "redirect": {
+            "type": "string",
+            "description": "路由名",
+            "example": "路由名"
+          },
+          "query": {
+            "type": "string",
+            "description": "路由参数(MENU,DIRECTORY,LINK,INNER_LINK)(JSON)",
+            "example": "\"{redirect:\"/login\"}\""
+          },
+          "meta": {
+            "description": "路由元数据",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MenuRouteMetaVO"
+              }
+            ]
+          },
+          "children": {
+            "description": "子路由",
+            "example": [],
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MenuRouteVO"
+            }
+          }
+        },
+        "description": "菜单路由",
+        "required": ["path", "component", "meta"]
+      },
+      "MeInfoVO": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "用户名",
+            "example": "用户名"
+          },
+          "profile": {
+            "description": "用户档案",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UserProfileVO"
+              }
+            ]
+          },
+          "id": {
+            "type": "string",
+            "description": "用户ID",
+            "example": "xxx"
+          },
+          "createdBy": {
+            "type": "string",
+            "description": "创建者",
+            "example": "xxx"
+          },
+          "updatedBy": {
+            "type": "string",
+            "description": "更新者",
+            "example": "xxx"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "创建时间",
+            "example": "xxx"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "更新时间",
+            "example": "xxx"
+          },
+          "remark": {
+            "type": "string",
+            "nullable": true,
+            "description": "备注",
+            "example": ""
+          },
+          "status": {
+            "description": "状态(未知:10 启用:20 禁用:30)",
+            "example": 20,
+            "enum": [10, 20, 30],
+            "type": "number"
+          },
+          "sort": {
+            "description": "排序优先级(低优先级:10 中等优先级:20 高优先级:30)",
+            "example": 10,
+            "enum": [10, 20, 30],
+            "type": "number"
+          },
+          "roles": {
+            "description": "角色编码",
+            "example": [],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "menus": {
+            "description": "菜单编码",
+            "example": [],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "routes": {
+            "description": "菜单路由",
+            "example": [],
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MenuRouteVO"
+            }
+          },
+          "btns": {
+            "description": "按钮编码",
+            "example": [],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "comps": {
+            "description": "组件编码",
+            "example": [],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "description": "当前登录用户信息",
+        "required": [
+          "name",
+          "profile",
+          "id",
+          "createdBy",
+          "updatedBy",
+          "createdAt",
+          "updatedAt",
+          "remark",
+          "status",
+          "sort",
+          "roles",
+          "menus",
+          "routes",
+          "btns",
+          "comps"
+        ]
       },
       "EmailCaptchaDTO": {
         "type": "object",

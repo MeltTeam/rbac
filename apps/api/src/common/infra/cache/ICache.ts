@@ -85,6 +85,13 @@ export interface ICacheTemplate extends ICacheTemplateOptions {
    */
   update: <T = any>(key: string, value: T, isLock?: boolean) => Promise<void>
   /**
+   * 原子递增并设置过期时间（用于限流计数）
+   * @param key 缓存键名
+   * @param ttl 过期时间（毫秒）
+   * @returns 递增后的值
+   */
+  incr: (key: string, ttl: number) => Promise<number>
+  /**
    * 延迟写入缓存(要提供队列)
    * @param key 键名
    * @param value 值

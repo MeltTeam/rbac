@@ -1,3 +1,3 @@
-import g from '@packages/generators'
+import g from '@packages/gen'
 
 export default g

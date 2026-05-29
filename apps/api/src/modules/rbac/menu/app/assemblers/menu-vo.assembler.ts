@@ -1,7 +1,7 @@
 import type { ExcludeKeys } from '@/common/utils'
 import type { IFindAllVOOptions } from '@/common/vo'
 import { MenuEntity } from '../../domain'
-import { FindAllMenuVO, MenuDetailsVO, MenuIdsVO } from '../vo'
+import { FindAllMenuVO, MenuDetailsVO, MenuIdsVO, MenuRouteMetaVO, MenuRouteVO } from '../vo'
 
 /** 菜单转换器 */
 export class MenuVOAssembler {
@@ -10,9 +10,20 @@ export class MenuVOAssembler {
     return new MenuDetailsVO(menu)
   }
 
+  /** 将实体转换为路由元数据VO */
+  static toRouteMetaVO(menu: MenuEntity) {
+    return new MenuRouteMetaVO(menu)
+  }
+
+  /** 将实体转换为路由VO */
+  static toRouteVO(menu: MenuEntity) {
+    return new MenuRouteVO(menu)
+  }
+
   /** 将实体转换为分页VO */
   static toFindAllVO(options: ExcludeKeys<IFindAllVOOptions<MenuEntity>, 'DataConstructor'>) {
     const { data, limit, page, total } = options
+
     return new FindAllMenuVO({ DataConstructor: MenuDetailsVO, data, limit, page, total })
   }
 

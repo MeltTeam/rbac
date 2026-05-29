@@ -4,10 +4,10 @@ import { ClsService } from 'nestjs-cls'
 import { EntityManager } from 'typeorm'
 import { SYSTEM_DEFAULT_BY } from '@/common/constants'
 import { LogContextMethod } from '@/common/deco'
+import { REQ_CTX } from '@/common/infra'
 import { UserDomainService } from '../../domain'
 import { UserRoleService } from '../services'
 import { DeleteUserCommand } from './delete-user.command'
-import { REQ_CTX } from '@/common/infra'
 
 /** 删除用户Handler */
 @CommandHandler(DeleteUserCommand)
@@ -24,7 +24,7 @@ export class DeleteUserHandler implements ICommandHandler<DeleteUserCommand> {
     return this.em.transaction(async (em: EntityManager) => {
       const by = this.clsService.get<string>(REQ_CTX.USER_ID) ?? SYSTEM_DEFAULT_BY
       // 置空关联关系
-      await Promise.all([this.userRoleService.assignUsersRoleByIds(em, { ids: [command.id], roleIds: [] }, by)])
+      await Promise.all([this.userRoleService.replaceUsersRoleByIds(em, { ids: [command.id], roleIds: [] }, by)])
       await this.userDomainService.deleteUsers(em, [command.id], by)
       return []
     })

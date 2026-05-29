@@ -1,5 +1,5 @@
 import type { EntityManager } from 'typeorm'
-import type { AssignRolesMenuDTO, RoleIdsDTO } from '../../dto'
+import type { ReplaceRolesMenuDTO, RoleIdsDTO } from '../../dto'
 import type { IRoleMenuService } from '../IRoleMenuService'
 import type { MenuIdsDTO } from '@/modules/rbac/menu/app'
 import { Injectable } from '@nestjs/common'
@@ -29,8 +29,8 @@ export class RoleMenuService implements IRoleMenuService {
     return await this.menuDomainService.getMenusByIds(ids, false, em)
   }
 
-  async assignRolesMenuByIds(em: EntityManager, assignRolesMenuDTO: AssignRolesMenuDTO, by: string = SYSTEM_DEFAULT_BY) {
-    const { ids, menuIds } = assignRolesMenuDTO
+  async replaceRolesMenuByIds(em: EntityManager, replaceRolesMenuDTO: ReplaceRolesMenuDTO, by: string = SYSTEM_DEFAULT_BY) {
+    const { ids, menuIds } = replaceRolesMenuDTO
     const roles = await this.roleDomainService.getRolesByIds(ids, false, em)
     const menus = await this.menuDomainService.getMenusByIds(menuIds, false, em)
     await this.RoleMenuRepo.deleteMany(ids, 'role_id', em)

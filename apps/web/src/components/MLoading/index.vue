@@ -1,10 +1,11 @@
 <script lang="ts" setup>
 import type { IMLoadingProps } from './IMLoading'
+import { TITLE } from '@/constants'
 
 defineOptions({ name: 'MLoading' })
 const props = withDefaults(defineProps<IMLoadingProps>(), {
   count: 5,
-  title: import.meta.env.VITE_APP_TITLE,
+  title: TITLE,
 })
 </script>
 
@@ -14,7 +15,7 @@ const props = withDefaults(defineProps<IMLoadingProps>(), {
       <section class="dots_container">
         <div v-for="i in props.count" :key="`dot${i}`" class="dot"></div>
       </section>
-      <div class="title">{{ props.title ?? 'vite app' }}</div>
+      <div class="title">{{ props.title }}</div>
     </div>
   </div>
 </template>

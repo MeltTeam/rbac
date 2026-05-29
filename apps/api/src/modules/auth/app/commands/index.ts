@@ -1,5 +1,5 @@
-export * from './create-auth-by-name.command'
-export * from './create-auth-by-name.handler'
+export * from './create-auth.command'
+export * from './create-auth.handler'
 export * from './delete-auth.command'
 export * from './delete-auth.handler'
 export * from './login.command'

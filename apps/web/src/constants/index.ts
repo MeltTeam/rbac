@@ -1,6 +1,6 @@
 /** 主颜色 */
 export const PRIMARY_COLOR_KEY = 'PRIMARY_COLOR'
-
+export const TITLE = import.meta.env.VITE_APP_TITLE
 /** UUID v4 长度 */
 export const UUID_V4_LENGTH = 36
 

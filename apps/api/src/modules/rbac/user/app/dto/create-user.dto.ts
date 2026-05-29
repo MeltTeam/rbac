@@ -6,7 +6,7 @@ import { InputPwd, InputSpace, InputTrim, Length, NotEmpty } from '@/common/deco
 import { USER_NAME } from '../../domain'
 
 /** 创建用户接口参数校验 */
-@ApiSchema({ description: '用户名参数校验' })
+@ApiSchema({ description: '创建用户接口参数校验' })
 export class CreateUserDTO implements ICreateUserDTO {
   /**
    * 用户名

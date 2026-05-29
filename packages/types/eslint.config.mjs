@@ -1,3 +1,3 @@
-import { serviceConfig } from '@configs/eslint-config'
+import { apiConfig } from '@configs/eslint-config'
 
-export default serviceConfig
+export default apiConfig

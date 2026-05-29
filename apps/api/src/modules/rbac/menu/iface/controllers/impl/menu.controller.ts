@@ -3,11 +3,11 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestj
 import { CommandBus, QueryBus } from '@nestjs/cqrs'
 import { ApiExtraModels } from '@nestjs/swagger'
 import { ResourceTypeEnum } from '@packages/types'
-import { ApiController, ApiMethod, ResourceDomain, ResourceMethod, ResourceType } from '@/common/deco'
+import { ApiController, ApiMethod, IsPublic, ResourceDomain, ResourceMethod, ResourceType } from '@/common/deco'
 import { FindAllDTO, GetTreeDepthDTO, GetTreesDTO, UpdateSortDTO, UpdateStatusDTO } from '@/common/dto'
 import { ResVO } from '@/common/vo'
 import {
-  CreateMenuByNameCommand,
+  CreateMenuCommand,
   CreateMenuDTO,
   DeleteMenuCommand,
   FindAllMenuVO,
@@ -31,6 +31,7 @@ import {
 @ResourceType(ResourceTypeEnum.API)
 @ResourceDomain('MENU')
 @ApiController({ ApiTagsOptions: ['Menu'] })
+@IsPublic()
 @ApiExtraModels(FindAllMenuVO, MenuDetailsVO, MenuTreeVO)
 export class MenuController implements IMenuController {
   constructor(
@@ -41,19 +42,19 @@ export class MenuController implements IMenuController {
   @Post()
   @ResourceMethod('create')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '创建菜单' }],
+    ApiOperationOptions: [{ description: 'createMenu', summary: '创建菜单' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess(MenuDetailsVO)],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',
   })
   async create(@Body() createMenuDTO: CreateMenuDTO) {
-    return await this.commandBus.execute(new CreateMenuByNameCommand(createMenuDTO))
+    return await this.commandBus.execute(new CreateMenuCommand(createMenuDTO))
   }
 
   @Delete(':id')
   @ResourceMethod('delete')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '删除菜单' }],
+    ApiOperationOptions: [{ description: 'deleteMenu', summary: '删除菜单' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess()],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',
@@ -65,7 +66,7 @@ export class MenuController implements IMenuController {
   @Patch(':id')
   @ResourceMethod('update')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '更新菜单' }],
+    ApiOperationOptions: [{ description: 'updateMenu', summary: '更新菜单' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess()],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',
@@ -77,7 +78,7 @@ export class MenuController implements IMenuController {
   @Patch(':id/status')
   @ResourceMethod('updateStatus')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '更新菜单状态' }],
+    ApiOperationOptions: [{ description: 'updateMenuStatus', summary: '更新菜单状态' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess()],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',
@@ -89,7 +90,7 @@ export class MenuController implements IMenuController {
   @Patch(':id/sort')
   @ResourceMethod('updateSort')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '更新菜单排序优先级' }],
+    ApiOperationOptions: [{ description: 'updateMenuSort', summary: '更新菜单排序优先级' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess()],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',
@@ -101,7 +102,7 @@ export class MenuController implements IMenuController {
   @Get()
   @ResourceMethod('list')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '获取菜单列表' }],
+    ApiOperationOptions: [{ description: 'getMenus', summary: '获取菜单列表' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess(FindAllMenuVO)],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',
@@ -113,7 +114,7 @@ export class MenuController implements IMenuController {
   @Get(':id')
   @ResourceMethod('detail')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '查看单个菜单详情' }],
+    ApiOperationOptions: [{ description: 'getMenuById', summary: '查看单个菜单详情' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess(MenuDetailsVO)],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',
@@ -125,7 +126,7 @@ export class MenuController implements IMenuController {
   @Patch(':id/move')
   @ResourceMethod('move')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '移动菜单' }],
+    ApiOperationOptions: [{ description: 'moveMenu', summary: '移动菜单' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess()],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',
@@ -137,7 +138,7 @@ export class MenuController implements IMenuController {
   @Get('tree/:id')
   @ResourceMethod('tree')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '查看单个菜单树结构' }],
+    ApiOperationOptions: [{ description: 'getMenuTree', summary: '查看单个菜单树结构' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess(MenuTreeVO)],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',
@@ -149,7 +150,7 @@ export class MenuController implements IMenuController {
   @Post('trees')
   @ResourceMethod('trees')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '查看多个菜单树结构' }],
+    ApiOperationOptions: [{ description: 'getMenuTrees', summary: '查看多个菜单树结构' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess(MenuTreeVO, true)],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',

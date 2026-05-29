@@ -8,31 +8,6 @@ import { initRedis } from '@/common/utils'
 import { QUEUE_CONFIG_KEY } from '@/config'
 import { CACHE_QUEUE_TOKEN, EMAIL_QUEUE_TOKEN, LOGGING_QUEUE_TOKEN, QUEUE_REDIS_CLIENT_TOKEN } from './constant'
 
-export class QueueModuleHelper {
-  public static instance: QueueModuleHelper
-  public logger: Logger
-  public initRedis: IInitRedisReturn
-  public static redis: null | TRedis = null
-
-  /**
-   * 创建QueueModuleHelper实例
-   * @param config Redis配置
-   */
-  public static async create(config: RedisOptions) {
-    // 这里key前缀不能自定义，不然队列会在内部找不到key
-    // config.keyPrefix = `${QueueModuleHelper.name}:`
-    if (!QueueModuleHelper.instance) {
-      QueueModuleHelper.instance = new QueueModuleHelper()
-      QueueModuleHelper.instance.logger = new Logger(QueueModule.name)
-      QueueModuleHelper.instance.initRedis = await initRedis({
-        redisConfig: config,
-        logger: QueueModuleHelper.instance.logger,
-      })
-    }
-    return QueueModuleHelper.instance
-  }
-}
-
 /** 队列模块 */
 @Global()
 @Module({
@@ -40,17 +15,12 @@ export class QueueModuleHelper {
     BullModule.forRootAsync({
       useFactory: async (configService: ConfigService) => {
         const config = configService.get<IQueueConfig>(QUEUE_CONFIG_KEY)!
-        const queueModuleHelper = await QueueModuleHelper.create(config.connection as RedisOptions)
-        const {
-          initRedis: { redisConfig, redisClient },
-        } = queueModuleHelper
-        if (!QueueModuleHelper.redis) QueueModuleHelper.redis = redisClient
-        config.connection = redisConfig
+        await QueueModule.init(config.connection as RedisOptions)
+        config.connection = QueueModule.initRedis!.redisConfig!
         return config
       },
       inject: [ConfigService],
     }),
-    /** 注册队列 */
     BullModule.registerQueueAsync(
       {
         name: CACHE_QUEUE_TOKEN,
@@ -66,20 +36,37 @@ export class QueueModuleHelper {
   providers: [
     {
       provide: QUEUE_REDIS_CLIENT_TOKEN,
-      useFactory: async (configService: ConfigService) => {
-        if (QueueModuleHelper.redis) return QueueModuleHelper.redis
+      useFactory: async (configService: ConfigService): Promise<TRedis> => {
         const config = configService.get<IQueueConfig>(QUEUE_CONFIG_KEY)!
-        const queueModuleHelper = await QueueModuleHelper.create(config.connection as RedisOptions)
-        const {
-          initRedis: { redisClient },
-        } = queueModuleHelper
-        QueueModuleHelper.redis = redisClient
-        return QueueModuleHelper.redis
+        await QueueModule.init(config.connection as RedisOptions)
+        return QueueModule.initRedis!.redisClient
       },
       inject: [ConfigService],
     },
   ],
-  // 导出redis实例
   exports: [BullModule, QUEUE_REDIS_CLIENT_TOKEN],
 })
-export class QueueModule {}
+export class QueueModule {
+  public static logger: Logger = new Logger(QueueModule.name)
+  public static initRedis: IInitRedisReturn | null = null
+  private static initPromise: Promise<void> | null = null
+
+  /**
+   * 初始化QueueModule
+   * @param config Redis配置
+   */
+  public static async init(config: RedisOptions): Promise<void> {
+    if (QueueModule.initRedis) return
+
+    if (!QueueModule.initPromise) {
+      QueueModule.initPromise = (async () => {
+        QueueModule.initRedis = await initRedis({
+          redisConfig: config,
+          logger: QueueModule.logger,
+        })
+      })()
+    }
+
+    await QueueModule.initPromise
+  }
+}

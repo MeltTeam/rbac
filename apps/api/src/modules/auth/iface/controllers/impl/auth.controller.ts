@@ -8,12 +8,12 @@ import { ApiController, ApiMethod, IsPublic, ResourceDomain, ResourceMethod, Res
 import { FindAllDTO, UpdateSortDTO, UpdateStatusDTO } from '@/common/dto'
 import { EmailLoginGuard, EmailRegisterGuard, EmailResetPwdGuard, RefreshTokenGuard, SvgLoginGuard } from '@/common/guards'
 import { ResVO } from '@/common/vo'
-import { UserDetailsVO } from '@/modules/rbac/user/app'
+import { MenuRouteMetaVO, MenuRouteVO } from '@/modules/rbac/menu/app'
 import {
   AuthDetailsVO,
   AuthIdDTO,
   CaptchaNameDTO,
-  CreateAuthByNameCommand,
+  CreateAuthCommand,
   CreateAuthDTO,
   DeleteAuthCommand,
   EmailCaptchaDTO,
@@ -27,6 +27,7 @@ import {
   GetSvgCaptchaQuery,
   LoginCommand,
   LogoutCommand,
+  MeInfoVO,
   RefreshTokenCommand,
   RefreshTokenDTO,
   RegisterCommand,
@@ -46,7 +47,7 @@ import {
 @ResourceType(ResourceTypeEnum.API)
 @ResourceDomain('AUTH')
 @ApiController({ ApiTagsOptions: ['Auth'] })
-@ApiExtraModels(FindAllAuthVO, AuthDetailsVO, SvgCaptchaVO, TokenVO, UserDetailsVO)
+@ApiExtraModels(FindAllAuthVO, AuthDetailsVO, SvgCaptchaVO, TokenVO, MeInfoVO, MenuRouteVO, MenuRouteMetaVO)
 export class AuthController implements IAuthController {
   constructor(
     private readonly queryBus: QueryBus,
@@ -55,9 +56,9 @@ export class AuthController implements IAuthController {
 
   @IsPublic()
   @SkipCache()
-  @Get('svg/:name')
+  @Get('captcha/svg/:name')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '获取SVG验证码' }],
+    ApiOperationOptions: [{ description: 'svgCaptcha', summary: '获取SVG验证码' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess(SvgCaptchaVO)],
   })
   async svgCaptcha(@Param() captchaNameDTO: CaptchaNameDTO) {
@@ -65,9 +66,9 @@ export class AuthController implements IAuthController {
   }
 
   @IsPublic()
-  @Post('email/:name')
+  @Post('captcha/email/:name')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '发送邮件验证码' }],
+    ApiOperationOptions: [{ description: 'emailCaptcha', summary: '发送邮件验证码' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess()],
   })
   async emailCaptcha(@Param() captchaNameDTO: CaptchaNameDTO, @Body() emailCaptchaDTO: EmailCaptchaDTO) {
@@ -78,7 +79,7 @@ export class AuthController implements IAuthController {
   @UseGuards(SvgLoginGuard)
   @Post('login/svg')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: 'SVG登录' }],
+    ApiOperationOptions: [{ description: 'svgLogin', summary: 'SVG登录' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess(TokenVO)],
   })
   async svgLogin(@Res({ passthrough: true }) res: Response, @Body() _: SvgLoginDTO) {
@@ -89,7 +90,7 @@ export class AuthController implements IAuthController {
   @UseGuards(EmailRegisterGuard)
   @Post('register/email')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '邮箱注册' }],
+    ApiOperationOptions: [{ description: 'emailRegister', summary: '邮箱注册' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess()],
   })
   async emailRegister(@Body() emailRegisterDTO: EmailRegisterDTO) {
@@ -100,7 +101,7 @@ export class AuthController implements IAuthController {
   @UseGuards(EmailLoginGuard)
   @Post('login/email')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '邮箱登录' }],
+    ApiOperationOptions: [{ description: 'emailLogin', summary: '邮箱登录' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess(TokenVO)],
   })
   async emailLogin(@Res({ passthrough: true }) res: Response, @Body() _: EmailLoginDTO) {
@@ -111,7 +112,7 @@ export class AuthController implements IAuthController {
   @UseGuards(EmailResetPwdGuard)
   @Post('reset-pwd/email')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '邮箱重置密码' }],
+    ApiOperationOptions: [{ description: 'emailResetPwd', summary: '邮箱重置密码' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess()],
   })
   async emailResetPwd(@Res({ passthrough: true }) res: Response, @Body() _: EmailResetPwdDTO) {
@@ -122,7 +123,7 @@ export class AuthController implements IAuthController {
   @UseGuards(RefreshTokenGuard)
   @Post('refresh')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '刷新令牌' }],
+    ApiOperationOptions: [{ description: 'refreshToken', summary: '刷新令牌' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess(TokenVO)],
   })
   async refreshToken(@Res({ passthrough: true }) res: Response, @Body() _: RefreshTokenDTO) {
@@ -133,7 +134,7 @@ export class AuthController implements IAuthController {
   @UseGuards(RefreshTokenGuard)
   @Post('logout')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '登出' }],
+    ApiOperationOptions: [{ description: 'loginOut', summary: '登出' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess()],
   })
   async loginOut(@Res({ passthrough: true }) res: Response, @Body() _: RefreshTokenDTO) {
@@ -142,8 +143,8 @@ export class AuthController implements IAuthController {
 
   @Get('me')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '获取当前登录用户信息' }],
-    ApiResponseOptions: [ResVO.SwaggerSuccess(UserDetailsVO)],
+    ApiOperationOptions: [{ description: 'getMeInfo', summary: '获取当前登录用户信息' }],
+    ApiResponseOptions: [ResVO.SwaggerSuccess(MeInfoVO)],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',
   })
@@ -154,19 +155,19 @@ export class AuthController implements IAuthController {
   @Post()
   @ResourceMethod('create')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '创建认证' }],
+    ApiOperationOptions: [{ description: 'createAuth', summary: '创建认证' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess(AuthDetailsVO)],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',
   })
   async create(@Body() createAuthDTO: CreateAuthDTO) {
-    return await this.commandBus.execute(new CreateAuthByNameCommand(createAuthDTO))
+    return await this.commandBus.execute(new CreateAuthCommand(createAuthDTO))
   }
 
   @Delete(':id')
   @ResourceMethod('delete')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '删除认证' }],
+    ApiOperationOptions: [{ description: 'deleteAuth', summary: '删除认证' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess()],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',
@@ -178,7 +179,7 @@ export class AuthController implements IAuthController {
   @Patch(':id')
   @ResourceMethod('update')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '更新认证' }],
+    ApiOperationOptions: [{ description: 'updateAuth', summary: '更新认证' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess()],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',
@@ -190,7 +191,7 @@ export class AuthController implements IAuthController {
   @Patch(':id/status')
   @ResourceMethod('updateStatus')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '更新认证状态' }],
+    ApiOperationOptions: [{ description: 'updateAuthStatus', summary: '更新认证状态' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess()],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',
@@ -202,7 +203,7 @@ export class AuthController implements IAuthController {
   @Patch(':id/sort')
   @ResourceMethod('updateSort')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '更新认证排序优先级' }],
+    ApiOperationOptions: [{ description: 'updateAuthSort', summary: '更新认证排序优先级' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess()],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',
@@ -214,7 +215,7 @@ export class AuthController implements IAuthController {
   @Get()
   @ResourceMethod('list')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '获取认证列表' }],
+    ApiOperationOptions: [{ description: 'getAuths', summary: '获取认证列表' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess(FindAllAuthVO)],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',
@@ -226,7 +227,7 @@ export class AuthController implements IAuthController {
   @Get(':id')
   @ResourceMethod('detail')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '查看单个认证详情' }],
+    ApiOperationOptions: [{ description: 'getAuthById', summary: '查看单个认证详情' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess(AuthDetailsVO)],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',

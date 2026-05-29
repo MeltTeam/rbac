@@ -3,18 +3,18 @@ import type { ICustomAxiosRequestConfig } from '@/utils/http/IHttpUtils'
 
 import { http } from '@/utils/http'
 
-/** 获取认证列表 GET /v1/auth */
-export function v1AuthGet({
+/** 获取认证列表 getAuths GET /v1/auth */
+export function getAuths({
   params,
   options,
 }: {
   // 叠加生成的Param类型 (非body参数openapi默认没有生成对象)
-  params: API.V1AuthGetParams
+  params: API.GetAuthsParams
 
   options?: ICustomAxiosRequestConfig
 }) {
   return http.request<
-    API.V1AuthGetParams,
+    API.GetAuthsParams,
     API.ResVO & {
       data?: API.FindAllAuthVO
     }
@@ -30,8 +30,8 @@ export function v1AuthGet({
   })
 }
 
-/** 创建认证 POST /v1/auth */
-export function v1AuthPost({
+/** 创建认证 createAuth POST /v1/auth */
+export function createAuth({
   body,
   options,
 }: {
@@ -57,20 +57,20 @@ export function v1AuthPost({
   })
 }
 
-/** 查看单个认证详情 GET /v1/auth/${param0} */
-export function v1AuthIdGet({
+/** 查看单个认证详情 getAuthById GET /v1/auth/${param0} */
+export function getAuthById({
   params,
   options,
 }: {
   // 叠加生成的Param类型 (非body参数openapi默认没有生成对象)
-  params: API.V1AuthIdGetParams
+  params: API.GetAuthByIdParams
 
   options?: ICustomAxiosRequestConfig
 }) {
   const { id: param0, ...queryParams } = params
 
   return http.request<
-    API.V1AuthIdGetParams,
+    API.GetAuthByIdParams,
     API.ResVO & {
       data?: API.AuthDetailsVO
     }
@@ -84,20 +84,20 @@ export function v1AuthIdGet({
   })
 }
 
-/** 删除认证 DELETE /v1/auth/${param0} */
-export function v1AuthIdDelete({
+/** 删除认证 deleteAuth DELETE /v1/auth/${param0} */
+export function deleteAuth({
   params,
   options,
 }: {
   // 叠加生成的Param类型 (非body参数openapi默认没有生成对象)
-  params: API.V1AuthIdDeleteParams
+  params: API.DeleteAuthParams
 
   options?: ICustomAxiosRequestConfig
 }) {
   const { id: param0, ...queryParams } = params
 
   return http.request<
-    API.V1AuthIdDeleteParams,
+    API.DeleteAuthParams,
     API.ResVO & {
       data?: unknown
     }
@@ -111,14 +111,14 @@ export function v1AuthIdDelete({
   })
 }
 
-/** 更新认证 PATCH /v1/auth/${param0} */
-export function v1AuthIdPatch({
+/** 更新认证 updateAuth PATCH /v1/auth/${param0} */
+export function updateAuth({
   params,
   body,
   options,
 }: {
   // 叠加生成的Param类型 (非body参数openapi默认没有生成对象)
-  params: API.V1AuthIdPatchParams
+  params: API.UpdateAuthParams
   body: API.UpdateAuthDTO
 
   options?: ICustomAxiosRequestConfig
@@ -144,14 +144,14 @@ export function v1AuthIdPatch({
   })
 }
 
-/** 更新认证排序优先级 PATCH /v1/auth/${param0}/sort */
-export function v1AuthIdSortPatch({
+/** 更新认证排序优先级 updateAuthSort PATCH /v1/auth/${param0}/sort */
+export function updateAuthSort({
   params,
   body,
   options,
 }: {
   // 叠加生成的Param类型 (非body参数openapi默认没有生成对象)
-  params: API.V1AuthIdSortPatchParams
+  params: API.UpdateAuthSortParams
   body: API.UpdateSortDTO
 
   options?: ICustomAxiosRequestConfig
@@ -177,14 +177,14 @@ export function v1AuthIdSortPatch({
   })
 }
 
-/** 更新认证状态 PATCH /v1/auth/${param0}/status */
-export function v1AuthIdStatusPatch({
+/** 更新认证状态 updateAuthStatus PATCH /v1/auth/${param0}/status */
+export function updateAuthStatus({
   params,
   body,
   options,
 }: {
   // 叠加生成的Param类型 (非body参数openapi默认没有生成对象)
-  params: API.V1AuthIdStatusPatchParams
+  params: API.UpdateAuthStatusParams
   body: API.UpdateStatusDTO
 
   options?: ICustomAxiosRequestConfig
@@ -210,14 +210,14 @@ export function v1AuthIdStatusPatch({
   })
 }
 
-/** 发送邮件验证码 POST /v1/auth/email/${param0} */
-export function v1AuthEmailNamePost({
+/** 发送邮件验证码 emailCaptcha POST /v1/auth/captcha/email/${param0} */
+export function emailCaptcha({
   params,
   body,
   options,
 }: {
   // 叠加生成的Param类型 (非body参数openapi默认没有生成对象)
-  params: API.V1AuthEmailNamePostParams
+  params: API.EmailCaptchaParams
   body: API.EmailCaptchaDTO
 
   options?: ICustomAxiosRequestConfig
@@ -229,7 +229,7 @@ export function v1AuthEmailNamePost({
     API.ResVO & {
       data?: unknown
     }
-  >(`/v1/auth/email/${param0}`, {
+  >(`/v1/auth/captcha/email/${param0}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -243,8 +243,35 @@ export function v1AuthEmailNamePost({
   })
 }
 
-/** 邮箱登录 POST /v1/auth/login/email */
-export function v1AuthLoginEmailPost({
+/** 获取SVG验证码 svgCaptcha GET /v1/auth/captcha/svg/${param0} */
+export function svgCaptcha({
+  params,
+  options,
+}: {
+  // 叠加生成的Param类型 (非body参数openapi默认没有生成对象)
+  params: API.SvgCaptchaParams
+
+  options?: ICustomAxiosRequestConfig
+}) {
+  const { name: param0, ...queryParams } = params
+
+  return http.request<
+    API.SvgCaptchaParams,
+    API.ResVO & {
+      data?: API.SvgCaptchaVO
+    }
+  >(`/v1/auth/captcha/svg/${param0}`, {
+    method: 'GET',
+    params: { ...queryParams },
+    // 配置插件之类的
+    ...(options || {
+      customConfig: {},
+    }),
+  })
+}
+
+/** 邮箱登录 emailLogin POST /v1/auth/login/email */
+export function emailLogin({
   body,
   options,
 }: {
@@ -270,8 +297,8 @@ export function v1AuthLoginEmailPost({
   })
 }
 
-/** SVG登录 POST /v1/auth/login/svg */
-export function v1AuthLoginSvgPost({
+/** SVG登录 svgLogin POST /v1/auth/login/svg */
+export function svgLogin({
   body,
   options,
 }: {
@@ -297,8 +324,8 @@ export function v1AuthLoginSvgPost({
   })
 }
 
-/** 登出 POST /v1/auth/logout */
-export function v1AuthLogoutPost({
+/** 登出 loginOut POST /v1/auth/logout */
+export function loginOut({
   body,
   options,
 }: {
@@ -324,12 +351,12 @@ export function v1AuthLogoutPost({
   })
 }
 
-/** 获取当前登录用户信息 GET /v1/auth/me */
-export function v1AuthMeGet({ options }: { options?: ICustomAxiosRequestConfig }) {
+/** 获取当前登录用户信息 getMeInfo GET /v1/auth/me */
+export function getMeInfo({ options }: { options?: ICustomAxiosRequestConfig }) {
   return http.request<
     any,
     API.ResVO & {
-      data?: API.UserDetailsVO
+      data?: API.MeInfoVO
     }
   >('/v1/auth/me', {
     method: 'GET',
@@ -340,8 +367,8 @@ export function v1AuthMeGet({ options }: { options?: ICustomAxiosRequestConfig }
   })
 }
 
-/** 刷新令牌 POST /v1/auth/refresh */
-export function v1AuthRefreshPost({
+/** 刷新令牌 refreshToken POST /v1/auth/refresh */
+export function refreshToken({
   body,
   options,
 }: {
@@ -367,8 +394,8 @@ export function v1AuthRefreshPost({
   })
 }
 
-/** 邮箱注册 POST /v1/auth/register/email */
-export function v1AuthRegisterEmailPost({
+/** 邮箱注册 emailRegister POST /v1/auth/register/email */
+export function emailRegister({
   body,
   options,
 }: {
@@ -394,8 +421,8 @@ export function v1AuthRegisterEmailPost({
   })
 }
 
-/** 邮箱重置密码 POST /v1/auth/reset-pwd/email */
-export function v1AuthResetpwdEmailPost({
+/** 邮箱重置密码 emailResetPwd POST /v1/auth/reset-pwd/email */
+export function emailResetPwd({
   body,
   options,
 }: {
@@ -414,33 +441,6 @@ export function v1AuthResetpwdEmailPost({
       'Content-Type': 'application/json',
     },
     data: body,
-    // 配置插件之类的
-    ...(options || {
-      customConfig: {},
-    }),
-  })
-}
-
-/** 获取SVG验证码 GET /v1/auth/svg/${param0} */
-export function v1AuthSvgNameGet({
-  params,
-  options,
-}: {
-  // 叠加生成的Param类型 (非body参数openapi默认没有生成对象)
-  params: API.V1AuthSvgNameGetParams
-
-  options?: ICustomAxiosRequestConfig
-}) {
-  const { name: param0, ...queryParams } = params
-
-  return http.request<
-    API.V1AuthSvgNameGetParams,
-    API.ResVO & {
-      data?: API.SvgCaptchaVO
-    }
-  >(`/v1/auth/svg/${param0}`, {
-    method: 'GET',
-    params: { ...queryParams },
     // 配置插件之类的
     ...(options || {
       customConfig: {},

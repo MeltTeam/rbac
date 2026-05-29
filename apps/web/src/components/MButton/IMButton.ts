@@ -1,5 +1,7 @@
-import type { ButtonProps } from 'element-plus'
+import type { ButtonInstance, ButtonProps } from 'element-plus'
 
-export type MButtonProps = {
-  async?: boolean
-} & Partial<ButtonProps>
+export type MButtonProps = {} & ButtonProps
+export interface MButtonInstance extends ButtonInstance {
+  $props: MButtonProps
+  $slots: ButtonInstance['$slots'] & {}
+}

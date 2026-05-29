@@ -1,5 +1,5 @@
 import type { IAppConfig, ISwaggerConfig } from '@/config'
-import { Controller, Get, Render } from '@nestjs/common'
+import { Controller, Get, Param, Render } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { ApiController, ApiMethod, IsNoFormat, IsPublic } from '@/common/deco'
 import { CacheService } from '@/common/infra'
@@ -30,96 +30,8 @@ export class BootController {
     return { name, enabled, path, startTime }
   }
 
-  @IsPublic()
-  @Get('set-str')
-  async setStr() {
-    await this.cacheService.set('str', 'str', 5 * 60 * 1000)
-    return []
-  }
-
-  @IsPublic()
-  @Get('get-str')
-  async getStr() {
-    return await this.cacheService.get<string>('str')
-  }
-
-  @IsPublic()
-  @Get('del-str')
-  async delStr() {
-    await this.cacheService.del('str')
-    return []
-  }
-
-  @IsPublic()
-  @Get('update-str')
-  async updateStr() {
-    await this.cacheService.update('str', 'test')
-    return []
-  }
-
-  @IsPublic()
-  @Get('set-arr')
-  async setArr() {
-    await this.cacheService.set('arr', ['test', 1, 2, 3, ['test']], 5 * 60 * 1000)
-    return []
-  }
-
-  @IsPublic()
-  @Get('get-obj')
-  async getArr() {
-    return await this.cacheService.get('obj')
-  }
-
-  @IsPublic()
-  @Get('del-obj')
-  async delArr() {
-    await this.cacheService.del('obj')
-    return []
-  }
-
-  @IsPublic()
-  @Get('set-obj')
-  async setObj() {
-    await this.cacheService.set(
-      'obj',
-      {
-        haha: true,
-        a: 120,
-      },
-      5 * 60 * 1000,
-    )
-    return []
-  }
-
-  @IsPublic()
-  @Get('get-obj')
-  async getObj() {
-    return await this.cacheService.get('obj')
-  }
-
-  @IsPublic()
-  @Get('del-obj')
-  async delObj() {
-    await this.cacheService.del('obj')
-    return []
-  }
-
-  @IsPublic()
-  @Get('put-obj')
-  async putObj() {
-    await this.cacheService.update('obj', 1)
-    return []
-  }
-
-  @IsPublic()
-  @Get('dd-obj')
-  async ddObj() {
-    await this.cacheService.delayedDel('obj', 5000)
-    return []
-  }
-
   @Get('test')
-  async test() {
-    return 'test'
+  async test(@Param() a: any) {
+    return a
   }
 }

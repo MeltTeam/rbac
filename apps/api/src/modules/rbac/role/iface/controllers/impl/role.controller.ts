@@ -3,11 +3,11 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestj
 import { CommandBus, QueryBus } from '@nestjs/cqrs'
 import { ApiExtraModels } from '@nestjs/swagger'
 import { ResourceTypeEnum } from '@packages/types'
-import { ApiController, ApiMethod, ResourceDomain, ResourceMethod, ResourceType } from '@/common/deco'
+import { ApiController, ApiMethod, IsPublic, ResourceDomain, ResourceMethod, ResourceType } from '@/common/deco'
 import { FindAllDTO, GetTreeDepthDTO, GetTreesDTO, UpdateSortDTO, UpdateStatusDTO } from '@/common/dto'
 import { ResVO } from '@/common/vo'
 import {
-  CreateRoleByNameCommand,
+  CreateRoleCommand,
   CreateRoleDTO,
   DeleteRoleCommand,
   FindAllRoleVO,
@@ -31,6 +31,7 @@ import {
 @ResourceType(ResourceTypeEnum.API)
 @ResourceDomain('ROLE')
 @ApiController({ ApiTagsOptions: ['Role'] })
+@IsPublic()
 @ApiExtraModels(FindAllRoleVO, RoleDetailsVO, RoleTreeVO)
 export class RoleController implements IRoleController {
   constructor(
@@ -41,19 +42,19 @@ export class RoleController implements IRoleController {
   @Post()
   @ResourceMethod('create')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '创建角色' }],
+    ApiOperationOptions: [{ description: 'createRole', summary: '创建角色' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess(RoleDetailsVO)],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',
   })
   async create(@Body() createRoleDTO: CreateRoleDTO) {
-    return await this.commandBus.execute(new CreateRoleByNameCommand(createRoleDTO))
+    return await this.commandBus.execute(new CreateRoleCommand(createRoleDTO))
   }
 
   @Delete(':id')
   @ResourceMethod('delete')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '删除角色' }],
+    ApiOperationOptions: [{ description: 'deleteRole', summary: '删除角色' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess()],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',
@@ -65,7 +66,7 @@ export class RoleController implements IRoleController {
   @Patch(':id')
   @ResourceMethod('update')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '更新角色' }],
+    ApiOperationOptions: [{ description: 'updateRole', summary: '更新角色' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess()],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',
@@ -77,7 +78,7 @@ export class RoleController implements IRoleController {
   @Patch(':id/status')
   @ResourceMethod('updateStatus')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '更新角色状态' }],
+    ApiOperationOptions: [{ description: 'updateRoleStatus', summary: '更新角色状态' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess()],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',
@@ -89,7 +90,7 @@ export class RoleController implements IRoleController {
   @Patch(':id/sort')
   @ResourceMethod('updateSort')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '更新角色排序优先级' }],
+    ApiOperationOptions: [{ description: 'updateRoleSort', summary: '更新角色排序优先级' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess()],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',
@@ -101,7 +102,7 @@ export class RoleController implements IRoleController {
   @Get()
   @ResourceMethod('list')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '获取角色列表' }],
+    ApiOperationOptions: [{ description: 'getRoles', summary: '获取角色列表' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess(FindAllRoleVO)],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',
@@ -113,7 +114,7 @@ export class RoleController implements IRoleController {
   @Get(':id')
   @ResourceMethod('detail')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '查看单个角色详情' }],
+    ApiOperationOptions: [{ description: 'getRoleById', summary: '查看单个角色详情' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess(RoleDetailsVO)],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',
@@ -125,7 +126,7 @@ export class RoleController implements IRoleController {
   @Patch(':id/move')
   @ResourceMethod('move')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '移动角色' }],
+    ApiOperationOptions: [{ description: 'moveRole', summary: '移动角色' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess()],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',
@@ -137,7 +138,7 @@ export class RoleController implements IRoleController {
   @Get('tree/:id')
   @ResourceMethod('tree')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '查看单个角色树结构' }],
+    ApiOperationOptions: [{ description: 'getRoleTree', summary: '查看单个角色树结构' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess(RoleTreeVO)],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',
@@ -149,7 +150,7 @@ export class RoleController implements IRoleController {
   @Post('trees')
   @ResourceMethod('trees')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '查看多个角色树结构' }],
+    ApiOperationOptions: [{ description: 'getRoleTrees', summary: '查看多个角色树结构' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess(RoleTreeVO, true)],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',

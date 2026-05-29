@@ -3,18 +3,18 @@ import type { ICustomAxiosRequestConfig } from '@/utils/http/IHttpUtils'
 
 import { http } from '@/utils/http'
 
-/** 获取资源列表 GET /v1/resource */
-export function v1ResourceGet({
+/** 获取资源列表 getResources GET /v1/resource */
+export function getResources({
   params,
   options,
 }: {
   // 叠加生成的Param类型 (非body参数openapi默认没有生成对象)
-  params: API.V1ResourceGetParams
+  params: API.GetResourcesParams
 
   options?: ICustomAxiosRequestConfig
 }) {
   return http.request<
-    API.V1ResourceGetParams,
+    API.GetResourcesParams,
     API.ResVO & {
       data?: API.FindAllResourceVO
     }
@@ -30,8 +30,8 @@ export function v1ResourceGet({
   })
 }
 
-/** 创建资源 POST /v1/resource */
-export function v1ResourcePost({
+/** 创建资源 createResource POST /v1/resource */
+export function createResource({
   body,
   options,
 }: {
@@ -57,20 +57,20 @@ export function v1ResourcePost({
   })
 }
 
-/** 查看单个资源详情 GET /v1/resource/${param0} */
-export function v1ResourceIdGet({
+/** 查看单个资源详情 getResourceById GET /v1/resource/${param0} */
+export function getResourceById({
   params,
   options,
 }: {
   // 叠加生成的Param类型 (非body参数openapi默认没有生成对象)
-  params: API.V1ResourceIdGetParams
+  params: API.GetResourceByIdParams
 
   options?: ICustomAxiosRequestConfig
 }) {
   const { id: param0, ...queryParams } = params
 
   return http.request<
-    API.V1ResourceIdGetParams,
+    API.GetResourceByIdParams,
     API.ResVO & {
       data?: API.ResourceDetailsVO
     }
@@ -84,20 +84,20 @@ export function v1ResourceIdGet({
   })
 }
 
-/** 删除资源 DELETE /v1/resource/${param0} */
-export function v1ResourceIdDelete({
+/** 删除资源 deleteResource DELETE /v1/resource/${param0} */
+export function deleteResource({
   params,
   options,
 }: {
   // 叠加生成的Param类型 (非body参数openapi默认没有生成对象)
-  params: API.V1ResourceIdDeleteParams
+  params: API.DeleteResourceParams
 
   options?: ICustomAxiosRequestConfig
 }) {
   const { id: param0, ...queryParams } = params
 
   return http.request<
-    API.V1ResourceIdDeleteParams,
+    API.DeleteResourceParams,
     API.ResVO & {
       data?: unknown
     }
@@ -111,14 +111,14 @@ export function v1ResourceIdDelete({
   })
 }
 
-/** 更新资源 PATCH /v1/resource/${param0} */
-export function v1ResourceIdPatch({
+/** 更新资源 updateResource PATCH /v1/resource/${param0} */
+export function updateResource({
   params,
   body,
   options,
 }: {
   // 叠加生成的Param类型 (非body参数openapi默认没有生成对象)
-  params: API.V1ResourceIdPatchParams
+  params: API.UpdateResourceParams
   body: API.UpdateResourceDTO
 
   options?: ICustomAxiosRequestConfig
@@ -144,14 +144,14 @@ export function v1ResourceIdPatch({
   })
 }
 
-/** 更新资源排序优先级 PATCH /v1/resource/${param0}/sort */
-export function v1ResourceIdSortPatch({
+/** 更新资源排序优先级 updateResourceSort PATCH /v1/resource/${param0}/sort */
+export function updateResourceSort({
   params,
   body,
   options,
 }: {
   // 叠加生成的Param类型 (非body参数openapi默认没有生成对象)
-  params: API.V1ResourceIdSortPatchParams
+  params: API.UpdateResourceSortParams
   body: API.UpdateSortDTO
 
   options?: ICustomAxiosRequestConfig
@@ -177,14 +177,14 @@ export function v1ResourceIdSortPatch({
   })
 }
 
-/** 更新资源状态 PATCH /v1/resource/${param0}/status */
-export function v1ResourceIdStatusPatch({
+/** 更新资源状态 updateResourceStatus PATCH /v1/resource/${param0}/status */
+export function updateResourceStatus({
   params,
   body,
   options,
 }: {
   // 叠加生成的Param类型 (非body参数openapi默认没有生成对象)
-  params: API.V1ResourceIdStatusPatchParams
+  params: API.UpdateResourceStatusParams
   body: API.UpdateStatusDTO
 
   options?: ICustomAxiosRequestConfig

@@ -4,11 +4,13 @@
     "target": "ES2023",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "baseUrl": "./",
-    "module": "commonjs",
+    "baseUrl": ".",
+    "rootDir": "./src",
     "paths": {
       "@/*": ["src/*"]
     },
+    "ignoreDeprecations": "6.0",
+    "module": "commonjs",
     "strictBindCallApply": false,
     "strictNullChecks": true,
     "noFallthroughCasesInSwitch": false,

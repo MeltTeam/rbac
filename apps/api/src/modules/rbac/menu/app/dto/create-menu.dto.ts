@@ -4,7 +4,19 @@ import { CheckEnum, MenuTypeEnum } from '@packages/types'
 import { IsEnum, IsOptional } from 'class-validator'
 import { REMARK } from '@/common/constants'
 import { InputCode, InputSpace, InputTrim, Length, NotEmpty } from '@/common/deco'
-import { MENU_ACTION, MENU_COMPONENT, MENU_DOMAIN, MENU_ICON, MENU_NAME, MENU_PARENT_ID, MENU_PATH, MENU_QUERY } from '../../domain'
+import {
+  MENU_ACTION,
+  MENU_ALIAS,
+  MENU_COMPONENT,
+  MENU_DOMAIN,
+  MENU_ICON,
+  MENU_NAME,
+  MENU_PARENT_ID,
+  MENU_PATH,
+  MENU_QUERY,
+  MENU_REDIRECT,
+  MENU_TITLE,
+} from '../../domain'
 
 /** 创建菜单接口参数校验 */
 @ApiSchema({ description: '菜单名参数校验' })
@@ -65,8 +77,35 @@ export class CreateMenuDTO implements ICreateMenuDTO {
   path: string
 
   /**
-   * 路由参数(MENU)
-   * @example '{id:"xxx"}'
+   * 别名(MENU,DIRECTORY,LINK,INNER_LINK)(JSON)
+   * @example '["users"]'
+   */
+  @Length(1, 2048, MENU_ALIAS)
+  @InputSpace(MENU_ALIAS)
+  @IsOptional()
+  alias?: string
+
+  /**
+   * 组件路径
+   * @example 'src/views/userView/index'
+   */
+  @Length(1, 2048, MENU_COMPONENT)
+  @InputSpace(MENU_COMPONENT)
+  @NotEmpty(MENU_COMPONENT)
+  component: string
+
+  /**
+   * 重定向(MENU,DIRECTORY,LINK,INNER_LINK)(JSON)
+   * @example '{name:"user"}'
+   */
+  @Length(1, 2048, MENU_REDIRECT)
+  @InputSpace(MENU_REDIRECT)
+  @IsOptional()
+  redirect?: string
+
+  /**
+   * 路由参数(MENU,DIRECTORY,LINK,INNER_LINK)(JSON)
+   * @example '{redirect:"/login"}'
    */
   @Length(1, 2048, MENU_QUERY)
   @InputSpace(MENU_QUERY)
@@ -74,13 +113,13 @@ export class CreateMenuDTO implements ICreateMenuDTO {
   query?: string
 
   /**
-   * 组件路径(COMPONENT)
-   * @example 'UserButton'
+   * 标题(MENU,DIRECTORY,LINK,INNER_LINK)
+   * @example '用户管理'
    */
-  @Length(1, 2048, MENU_COMPONENT)
-  @InputSpace(MENU_COMPONENT)
+  @Length(1, 64, MENU_TITLE)
+  @InputSpace(MENU_TITLE)
   @IsOptional()
-  component?: string
+  title?: string
 
   /**
    * 图标地址(MENU,DIRECTORY,LINK,INNER_LINK)

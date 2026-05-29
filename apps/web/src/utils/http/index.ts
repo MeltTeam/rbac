@@ -1,49 +1,39 @@
 import type {
-  // IBusinessErrorPluginConfig,
-  // IDuplicationPluginConfig,
-  // ILimitPluginConfig,
+  IDuplicationPluginConfig,
+  ILimitPluginConfig,
   INetworkErrorPluginConfig,
+  INetworkStatusPluginConfig,
   ITokenPluginConfig,
-  // IUnknownErrorPluginConfig,
 } from './plugins'
 import { eventBus } from '@/eventBus'
 import { HttpUtils } from './HttpUtils'
-import { NetworkErrorPlugin, TokenPlugin } from './plugins'
-// import { BusinessErrorPlugin, DuplicationPlugin, LimitPlugin, NetworkErrorPlugin, UnknownErrorPlugin } from './plugins'
+import { DuplicationPlugin, LimitPlugin, NetworkErrorPlugin, NetworkStatusPlugin, TokenPlugin } from './plugins'
 
 export interface CustomConfig {
-  /** 限流处理插件配置 */
-  // LimitPlugin?: ILimitPluginConfig
   /** 重复请求处理插件配置 */
-  // DuplicationPlugin?: IDuplicationPluginConfig
+  DuplicationPlugin?: IDuplicationPluginConfig
+  /** 限流处理插件配置 */
+  LimitPlugin?: ILimitPluginConfig
   /** 网络错误处理插件配置 */
   NetworkErrorPlugin?: INetworkErrorPluginConfig
+  /** 网络状态检测插件配置 */
+  NetworkStatusPlugin?: INetworkStatusPluginConfig
   /** 令牌处理插件配置 */
   TokenPlugin?: ITokenPluginConfig
-  /** 业务错误处理插件配置 */
-  // BusinessErrorPlugin?: IBusinessErrorPluginConfig
-  /** 未知错误处理插件配置 */
-  // UnknownErrorPlugin?: IUnknownErrorPluginConfig
 }
-export const http = new HttpUtils<CustomConfig>()
-http.plugins = [
-  NetworkErrorPlugin,
-  TokenPlugin,
-  {
-    name: '插件1',
-    priority: 2,
-    onRes: async (res) => {
-      console.warn('插件1')
-      return res
+export const http = new HttpUtils<CustomConfig>({
+  customConfig: {
+    NetworkStatusPlugin: {
+      enabled: true,
     },
   },
-]
+})
+http.plugins = [LimitPlugin, NetworkStatusPlugin, DuplicationPlugin, NetworkErrorPlugin, TokenPlugin]
 
-// // 注册插件事件
+eventBus.on('HTTP_PLUGIN:DUPLICATION_PLUGIN:ShowError', (message: string, duration: number) => ElMessage({ message, type: 'warning', duration }))
+eventBus.on('HTTP_PLUGIN:LIMIT_PLUGIN:ShowError', (message: string, duration: number) => ElMessage({ message, type: 'warning', duration }))
+eventBus.on('HTTP_PLUGIN:NETWORK_ERROR_PLUGIN:ShowError', (message: string, type: 'error' | 'warning', duration: number) => {
+  ElMessage[type]({ message, duration })
+})
+eventBus.on('HTTP_PLUGIN:NETWORK_STATUS_PLUGIN:ShowError', (message: string, duration: number) => ElMessage({ message, type: 'error', duration }))
 eventBus.on('HTTP_PLUGIN:TOKEN_PLUGIN:ShowError', (message: string, duration: number) => ElMessage({ message, type: 'error', duration }))
-eventBus.on('HTTP_PLUGIN:NETWORK_ERROR_PLUGIN:ShowError', (message: string, duration: number) => ElMessage({ message, type: 'error', duration }))
-// eventBus.on('HTTP_PLUGIN:LimitPlugin:showError', (message: string, duration: number) => ElMessage({ message, type: 'error', duration }))
-// eventBus.on('HTTP_PLUGIN:DuplicationPlugin:showError', (message: string, duration: number) => ElMessage({ message, type: 'error', duration }))
-// eventBus.on('HTTP_PLUGIN:BusinessErrorPlugin:showError', (message: string, duration: number) => ElMessage({ message, type: 'warning', duration }))
-// eventBus.on('HTTP_PLUGIN:NetworkErrorPlugin:showError', (message: string, duration: number) => ElMessage({ message, type: 'error', duration }))
-// eventBus.on('HTTP_PLUGIN:UnknownErrorPlugin:showError', (message: string, duration: number) => ElMessage({ message, type: 'error', duration }))

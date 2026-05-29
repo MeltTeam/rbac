@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RBAC 管理系统</title>
+    <link rel="stylesheet" href="../css/common.css">
+</head>
+<body>
+    <div class="admin-layout">
+        <div class="sidebar-overlay"></div>
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>RBAC Admin</h1>
+            </div>
+            <nav class="sidebar-nav">
+                <div class="nav-item active" data-page="dashboard" onclick="showPage('dashboard')">
+                    <span class="nav-item-icon">📊</span>
+                    <span>仪表板</span>
+                </div>
+                <div class="nav-item" data-page="users" onclick="showPage('users')">
+                    <span class="nav-item-icon">👥</span>
+                    <span>用户管理</span>
+                </div>
+                <div class="nav-item" data-page="roles" onclick="showPage('roles')">
+                    <span class="nav-item-icon">🛡️</span>
+                    <span>角色管理</span>
+                </div>
+                <div class="nav-item" data-page="menus" onclick="showPage('menus')">
+                    <span class="nav-item-icon">📋</span>
+                    <span>菜单管理</span>
+                </div>
+                <div class="nav-item" data-page="resources" onclick="showPage('resources')">
+                    <span class="nav-item-icon">🔗</span>
+                    <span>资源管理</span>
+                </div>
+            </nav>
+        </aside>
+        <main class="main-content">
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="menu-toggle" id="menuToggle" onclick="toggleMobileSidebar()">☰</button>
+                    <div class="breadcrumb">
+                        <span class="breadcrumb-item">首页</span>
+                        <span class="breadcrumb-separator">/</span>
+                        <span class="breadcrumb-item active">仪表板</span>
+                    </div>
+                </div>
+                <div class="topbar-right">
+                    <button class="theme-toggle-btn topbar-btn" onclick="toggleTheme()">🌙</button>
+                    <button class="topbar-btn">🔔</button>
+                    <button class="topbar-btn">⚙️</button>
+                    <div class="user-avatar" onclick="window.location.href='login.html'">A</div>
+                </div>
+            </header>
+            <div class="page-content">
+                <div id="dashboard" class="page-view">
+                    <div class="page-header">
+                        <h2>仪表板</h2>
+                        <p>系统概览和关键数据统计</p>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon blue">👥</div>
+                            <div class="stat-info">
+                                <h4>用户总数</h4>
+                                <div class="stat-value">1,234</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon green">🛡️</div>
+                            <div class="stat-info">
+                                <h4>角色总数</h4>
+                                <div class="stat-value">56</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon orange">📋</div>
+                            <div class="stat-info">
+                                <h4>菜单总数</h4>
+                                <div class="stat-value">89</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon purple">🔗</div>
+                            <div class="stat-info">
+                                <h4>资源总数</h4>
+                                <div class="stat-value">245</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>最近活动</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-container">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>用户</th>
+                                            <th>操作</th>
+                                            <th>时间</th>
+                                            <th>状态</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>张三</td>
+                                            <td>登录系统</td>
+                                            <td>2024-01-15 10:30:00</td>
+                                            <td><span class="badge badge-success">成功</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>李四</td>
+                                            <td>更新角色权限</td>
+                                            <td>2024-01-15 10:15:00</td>
+                                            <td><span class="badge badge-success">成功</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>王五</td>
+                                            <td>添加新用户</td>
+                                            <td>2024-01-15 09:45:00</td>
+                                            <td><span class="badge badge-warning">待审核</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>赵六</td>
+                                            <td>删除菜单</td>
+                                            <td>2024-01-15 09:30:00</td>
+                                            <td><span class="badge badge-danger">失败</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="users" class="page-view hidden">
+                    <div class="page-header">
+                        <h2>用户管理</h2>
+                        <p>管理系统用户账户和权限</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>用户列表</h3>
+                            <button class="btn btn-primary" onclick="openModal('userModal')">+ 添加用户</button>
+                        </div>
+                        <div class="card-body">
+                            <div class="input-group" style="margin-bottom: 20px;">
+                                <div class="input-wrapper" style="max-width: 300px;">
+                                    <input type="text" placeholder="搜索用户名...">
+                                </div>
+                                <div class="input-wrapper" style="max-width: 200px;">
+                                    <select>
+                                        <option>全部状态</option>
+                                        <option>启用</option>
+                                        <option>禁用</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="table-container">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>用户名</th>
+                                            <th>邮箱</th>
+                                            <th>角色</th>
+                                            <th>状态</th>
+                                            <th>操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>admin</td>
+                                            <td>admin@example.com</td>
+                                            <td>超级管理员</td>
+                                            <td><span class="badge badge-success">启用</span></td>
+                                            <td>
+                                                <div class="table-actions">
+                                                    <button class="icon-btn">✏️</button>
+                                                    <button class="icon-btn danger">🗑️</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>2</td>
+                                            <td>zhangsan</td>
+                                            <td>zhangsan@example.com</td>
+                                            <td>普通用户</td>
+                                            <td><span class="badge badge-success">启用</span></td>
+                                            <td>
+                                                <div class="table-actions">
+                                                    <button class="icon-btn">✏️</button>
+                                                    <button class="icon-btn danger">🗑️</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>3</td>
+                                            <td>lisi</td>
+                                            <td>lisi@example.com</td>
+                                            <td>编辑</td>
+                                            <td><span class="badge badge-warning">禁用</span></td>
+                                            <td>
+                                                <div class="table-actions">
+                                                    <button class="icon-btn">✏️</button>
+                                                    <button class="icon-btn danger">🗑️</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="roles" class="page-view hidden">
+                    <div class="page-header">
+                        <h2>角色管理</h2>
+                        <p>管理系统角色和权限分配</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>角色列表</h3>
+                            <button class="btn btn-primary" onclick="openModal('roleModal')">+ 添加角色</button>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-container">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>角色名称</th>
+                                            <th>角色代码</th>
+                                            <th>描述</th>
+                                            <th>用户数</th>
+                                            <th>操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>超级管理员</td>
+                                            <td>super_admin</td>
+                                            <td>系统最高权限</td>
+                                            <td>2</td>
+                                            <td>
+                                                <div class="table-actions">
+                                                    <button class="icon-btn">✏️</button>
+                                                    <button class="icon-btn">🔗</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>2</td>
+                                            <td>管理员</td>
+                                            <td>admin</td>
+                                            <td>系统管理权限</td>
+                                            <td>5</td>
+                                            <td>
+                                                <div class="table-actions">
+                                                    <button class="icon-btn">✏️</button>
+                                                    <button class="icon-btn">🔗</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>3</td>
+                                            <td>普通用户</td>
+                                            <td>user</td>
+                                            <td>基础访问权限</td>
+                                            <td>123</td>
+                                            <td>
+                                                <div class="table-actions">
+                                                    <button class="icon-btn">✏️</button>
+                                                    <button class="icon-btn">🔗</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="menus" class="page-view hidden">
+                    <div class="page-header">
+                        <h2>菜单管理</h2>
+                        <p>管理系统菜单结构</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>菜单列表</h3>
+                            <button class="btn btn-primary" onclick="openModal('menuModal')">+ 添加菜单</button>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-container">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>菜单名称</th>
+                                            <th>图标</th>
+                                            <th>路径</th>
+                                            <th>排序</th>
+                                            <th>状态</th>
+                                            <th>操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>仪表板</td>
+                                            <td>📊</td>
+                                            <td>/dashboard</td>
+                                            <td>1</td>
+                                            <td><span class="badge badge-success">启用</span></td>
+                                            <td>
+                                                <div class="table-actions">
+                                                    <button class="icon-btn">✏️</button>
+                                                    <button class="icon-btn">⬆️</button>
+                                                    <button class="icon-btn">⬇️</button>
+                                                    <button class="icon-btn danger">🗑️</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>2</td>
+                                            <td>用户管理</td>
+                                            <td>👥</td>
+                                            <td>/users</td>
+                                            <td>2</td>
+                                            <td><span class="badge badge-success">启用</span></td>
+                                            <td>
+                                                <div class="table-actions">
+                                                    <button class="icon-btn">✏️</button>
+                                                    <button class="icon-btn">⬆️</button>
+                                                    <button class="icon-btn">⬇️</button>
+                                                    <button class="icon-btn danger">🗑️</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>3</td>
+                                            <td>角色管理</td>
+                                            <td>🛡️</td>
+                                            <td>/roles</td>
+                                            <td>3</td>
+                                            <td><span class="badge badge-success">启用</span></td>
+                                            <td>
+                                                <div class="table-actions">
+                                                    <button class="icon-btn">✏️</button>
+                                                    <button class="icon-btn">⬆️</button>
+                                                    <button class="icon-btn">⬇️</button>
+                                                    <button class="icon-btn danger">🗑️</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="resources" class="page-view hidden">
+                    <div class="page-header">
+                        <h2>资源管理</h2>
+                        <p>管理系统API资源和权限</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>资源列表</h3>
+                            <button class="btn btn-primary" onclick="openModal('resourceModal')">+ 添加资源</button>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-container">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>资源名称</th>
+                                            <th>资源代码</th>
+                                            <th>HTTP方法</th>
+                                            <th>路径</th>
+                                            <th>操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>获取用户列表</td>
+                                            <td>user:list</td>
+                                            <td><span class="badge badge-success">GET</span></td>
+                                            <td>/api/users</td>
+                                            <td>
+                                                <div class="table-actions">
+                                                    <button class="icon-btn">✏️</button>
+                                                    <button class="icon-btn danger">🗑️</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>2</td>
+                                            <td>创建用户</td>
+                                            <td>user:create</td>
+                                            <td><span class="badge badge-info">POST</span></td>
+                                            <td>/api/users</td>
+                                            <td>
+                                                <div class="table-actions">
+                                                    <button class="icon-btn">✏️</button>
+                                                    <button class="icon-btn danger">🗑️</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>3</td>
+                                            <td>删除用户</td>
+                                            <td>user:delete</td>
+                                            <td><span class="badge badge-danger">DELETE</span></td>
+                                            <td>/api/users/:id</td>
+                                            <td>
+                                                <div class="table-actions">
+                                                    <button class="icon-btn">✏️</button>
+                                                    <button class="icon-btn danger">🗑️</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <div id="userModal" class="modal-overlay hidden">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>添加用户</h3>
+                <button class="modal-close" onclick="closeModal('userModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="input-wrapper">
+                    <label>用户名</label>
+                    <input type="text" placeholder="请输入用户名">
+                </div>
+                <div class="input-wrapper" style="margin-top: 16px;">
+                    <label>邮箱</label>
+                    <input type="email" placeholder="请输入邮箱">
+                </div>
+                <div class="input-wrapper" style="margin-top: 16px;">
+                    <label>密码</label>
+                    <input type="password" placeholder="请输入密码">
+                </div>
+                <div class="input-wrapper" style="margin-top: 16px;">
+                    <label>角色</label>
+                    <select>
+                        <option>请选择角色</option>
+                        <option>超级管理员</option>
+                        <option>管理员</option>
+                        <option>普通用户</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('userModal')">取消</button>
+                <button class="btn btn-primary" onclick="closeModal('userModal')">确认</button>
+            </div>
+        </div>
+    </div>
+    <div id="roleModal" class="modal-overlay hidden">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>添加角色</h3>
+                <button class="modal-close" onclick="closeModal('roleModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="input-wrapper">
+                    <label>角色名称</label>
+                    <input type="text" placeholder="请输入角色名称">
+                </div>
+                <div class="input-wrapper" style="margin-top: 16px;">
+                    <label>角色代码</label>
+                    <input type="text" placeholder="请输入角色代码">
+                </div>
+                <div class="input-wrapper" style="margin-top: 16px;">
+                    <label>描述</label>
+                    <textarea placeholder="请输入角色描述"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('roleModal')">取消</button>
+                <button class="btn btn-primary" onclick="closeModal('roleModal')">确认</button>
+            </div>
+        </div>
+    </div>
+    <div id="menuModal" class="modal-overlay hidden">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>添加菜单</h3>
+                <button class="modal-close" onclick="closeModal('menuModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="input-wrapper">
+                    <label>菜单名称</label>
+                    <input type="text" placeholder="请输入菜单名称">
+                </div>
+                <div class="input-wrapper" style="margin-top: 16px;">
+                    <label>图标</label>
+                    <input type="text" placeholder="请输入图标">
+                </div>
+                <div class="input-wrapper" style="margin-top: 16px;">
+                    <label>路径</label>
+                    <input type="text" placeholder="请输入路径">
+                </div>
+                <div class="input-wrapper" style="margin-top: 16px;">
+                    <label>排序</label>
+                    <input type="number" placeholder="请输入排序">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('menuModal')">取消</button>
+                <button class="btn btn-primary" onclick="closeModal('menuModal')">确认</button>
+            </div>
+        </div>
+    </div>
+    <div id="resourceModal" class="modal-overlay hidden">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>添加资源</h3>
+                <button class="modal-close" onclick="closeModal('resourceModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="input-wrapper">
+                    <label>资源名称</label>
+                    <input type="text" placeholder="请输入资源名称">
+                </div>
+                <div class="input-wrapper" style="margin-top: 16px;">
+                    <label>资源代码</label>
+                    <input type="text" placeholder="请输入资源代码">
+                </div>
+                <div class="input-wrapper" style="margin-top: 16px;">
+                    <label>HTTP方法</label>
+                    <select>
+                        <option>GET</option>
+                        <option>POST</option>
+                        <option>PUT</option>
+                        <option>DELETE</option>
+                    </select>
+                </div>
+                <div class="input-wrapper" style="margin-top: 16px;">
+                    <label>路径</label>
+                    <input type="text" placeholder="请输入路径">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('resourceModal')">取消</button>
+                <button class="btn btn-primary" onclick="closeModal('resourceModal')">确认</button>
+            </div>
+        </div>
+    </div>
+    <script src="../js/common.js"></script>
+</body>
+</html>

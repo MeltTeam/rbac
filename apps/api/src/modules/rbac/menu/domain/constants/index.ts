@@ -26,10 +26,20 @@ export const MENU_ACTION_MIN = 2
 export const MENU_ACTION_MAX = 40
 /** 访问路径 key */
 export const MENU_PATH = '访问路径'
-/** 路由参数 key */
-export const MENU_QUERY = '路由参数'
+/** 别名 key */
+export const MENU_ALIAS = '别名'
 /** 组件路径 key */
 export const MENU_COMPONENT = '组件路径'
+/** 重定向 key */
+export const MENU_REDIRECT = '重定向'
+/** 路由参数 key */
+export const MENU_QUERY = '路由参数'
+/** 标题 key */
+export const MENU_TITLE = '标题'
+/** 标题最小长度 */
+export const MENU_TITLE_MIN = 1
+/** 标题最大长度 */
+export const MENU_TITLE_MAX = 64
 /** 菜单图标 key */
 export const MENU_ICON = '菜单图标'
 /** 菜单是否缓存 key */

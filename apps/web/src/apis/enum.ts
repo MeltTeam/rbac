@@ -138,7 +138,7 @@ export enum IsVisibleEnum4 {
 
 export type IIsVisibleEnum4 = keyof typeof IsVisibleEnum4
 
-/** 菜单类型 */
+/** 菜单类型(10:菜单 20:按钮 30:组件 40:目录 50:外链 60:内链) */
 export enum MenuTypeEnum {
   NUMBER_10 = 10,
   NUMBER_20 = 20,
@@ -150,7 +150,7 @@ export enum MenuTypeEnum {
 
 export type IMenuTypeEnum = keyof typeof MenuTypeEnum
 
-/** 菜单类型 */
+/** 菜单类型(10:菜单 20:按钮 30:组件 40:目录 50:外链 60:内链) */
 export enum MenuTypeEnum2 {
   NUMBER_10 = 10,
   NUMBER_20 = 20,
@@ -309,6 +309,15 @@ export enum SortEnum8 {
 
 export type ISortEnum8 = keyof typeof SortEnum8
 
+/** 排序优先级(低优先级:10 中等优先级:20 高优先级:30) */
+export enum SortEnum9 {
+  NUMBER_10 = 10,
+  NUMBER_20 = 20,
+  NUMBER_30 = 30,
+}
+
+export type ISortEnum9 = keyof typeof SortEnum9
+
 /** 状态(未知:10 启用:20 禁用:30) */
 export enum StatusEnum {
   NUMBER_10 = 10,
@@ -380,3 +389,12 @@ export enum StatusEnum8 {
 }
 
 export type IStatusEnum8 = keyof typeof StatusEnum8
+
+/** 状态(未知:10 启用:20 禁用:30) */
+export enum StatusEnum9 {
+  NUMBER_10 = 10,
+  NUMBER_20 = 20,
+  NUMBER_30 = 30,
+}
+
+export type IStatusEnum9 = keyof typeof StatusEnum9

@@ -6,7 +6,7 @@ import { InputCode, InputSpace, InputTrim, Length, NotEmpty } from '@/common/dec
 import { ROLE_CODE, ROLE_NAME, ROLE_PARENT_ID } from '../../domain'
 
 /** 创建角色接口参数校验 */
-@ApiSchema({ description: '角色名参数校验' })
+@ApiSchema({ description: '创建角色接口参数校验' })
 export class CreateRoleDTO implements ICreateRoleDTO {
   /**
    * 角色名

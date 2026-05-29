@@ -142,19 +142,32 @@ export abstract class CacheTemplate implements ICacheTemplate, OnApplicationBoot
     return isLock ? this.withLock(key, cb) : await cb()
   }
 
+  /** 原子递增并设置过期时间（用于限流计数） */
+  async incr(key: string, ttl: number): Promise<number> {
+    const result = await this.RedisClient.incr(key)
+    if (result === 1) {
+      await this.RedisClient.pexpire(key, ttl)
+    }
+    await this.RedisClient.publish(this.channelName, key)
+    return result
+  }
+
   async delayedSet<T = unknown>(key: string, value: T, ttl: number = 0, delay: number = 1000, attempts: number = 3) {
     if ((!this.queue && !this.queueRedis) || (!redisIsOk(this.queueRedis!))) throw new CacheException(ExceptionCode.CACHE_NO_QUEUE_INSTANCE_PROVIDED, ExceptionCodeTextMap)
-    await this.queue?.add('delayedSet', { type: 'set', key, value, ttl }, { jobId: key, attempts, delay })
+    const jobId = key.replace(/:/g, '_')
+    await this.queue?.add('delayedSet', { type: 'set', key, value, ttl }, { jobId, attempts, delay })
   }
 
   async delayedUpdate<T = unknown>(key: string, value: T, delay: number = 1000, attempts: number = 3) {
     if ((!this.queue && !this.queueRedis) || (!redisIsOk(this.queueRedis!))) throw new CacheException(ExceptionCode.CACHE_NO_QUEUE_INSTANCE_PROVIDED, ExceptionCodeTextMap)
-    await this.queue?.add('delayedUpdate', { type: 'update', key, value }, { jobId: key, attempts, delay })
+    const jobId = key.replace(/:/g, '_')
+    await this.queue?.add('delayedUpdate', { type: 'update', key, value }, { jobId, attempts, delay })
   }
 
   async delayedDel(key: string, delay: number = 1000, attempts: number = 3) {
     if ((!this.queue && !this.queueRedis) || (!redisIsOk(this.queueRedis!))) throw new CacheException(ExceptionCode.CACHE_NO_QUEUE_INSTANCE_PROVIDED, ExceptionCodeTextMap)
-    await this.queue?.add('delayedDel', { type: 'del', key }, { jobId: key, attempts, delay })
+    const jobId = key.replace(/:/g, '_')
+    await this.queue?.add('delayedDel', { type: 'del', key }, { jobId, attempts, delay })
   }
 
   async delayedDelMany(keys: string[], delay: number = 1000, attempts: number = 3) {

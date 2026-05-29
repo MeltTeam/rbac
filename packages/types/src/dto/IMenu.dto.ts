@@ -12,12 +12,18 @@ export interface ICreateMenuDTO {
   domain: string
   /** 菜单操作类型 */
   action: string
-  /** 访问路径(MENU,LINK,INNER_LINK) */
+  /** 访问路径(MENU,DIRECTORY,LINK,INNER_LINK) */
   path: string
-  /** 路由参数(MENU) */
+  /** 别名(MENU,DIRECTORY,LINK,INNER_LINK)(JSON) */
+  alias?: string
+  /** 组件路径 */
+  component: string
+  /** 重定向(MENU,DIRECTORY,LINK,INNER_LINK)(JSON) */
+  redirect?: string
+  /** 路由参数(MENU,DIRECTORY,LINK,INNER_LINK)(JSON)  */
   query?: string
-  /** 组件路径(COMPONENT) */
-  component?: string
+  /** 标题(MENU,DIRECTORY,LINK,INNER_LINK) */
+  title?: string
   /** 图标地址(MENU,DIRECTORY,LINK,INNER_LINK) */
   icon?: string
   /** 是否缓存(MENU,COMPONENT,INNER_LINK) */
@@ -40,12 +46,18 @@ export interface IUpdateMenuDTO {
   domain?: string
   /** 菜单操作类型 */
   action?: string
-  /** 访问路径(MENU,LINK,INNER_LINK) */
+  /** 访问路径(MENU,DIRECTORY,LINK,INNER_LINK) */
   path?: string
-  /** 路由参数(MENU) */
-  query?: string
-  /** 组件路径(COMPONENT) */
+  /** 别名(MENU,DIRECTORY,LINK,INNER_LINK)(JSON) */
+  alias?: string
+  /** 组件路径 */
   component?: string
+  /** 重定向(MENU,DIRECTORY,LINK,INNER_LINK)(JSON) */
+  redirect?: string
+  /** 路由参数(MENU,DIRECTORY,LINK,INNER_LINK)(JSON)  */
+  query?: string
+  /** 标题(MENU,DIRECTORY,LINK,INNER_LINK) */
+  title?: string
   /** 图标地址(MENU,DIRECTORY,LINK,INNER_LINK) */
   icon?: string
   /** 是否缓存(MENU,COMPONENT,INNER_LINK) */

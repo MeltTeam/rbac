@@ -6,6 +6,8 @@ export default async () => {
     ['./modules/rbac/menu/domain/entities/impl/menu-tree.entity']: await import('./modules/rbac/menu/domain/entities/impl/menu-tree.entity'),
     ['./modules/rbac/menu/domain/entities/impl/menu.entity']: await import('./modules/rbac/menu/domain/entities/impl/menu.entity'),
     ['./modules/rbac/menu/app/vo/menu-details.vo']: await import('./modules/rbac/menu/app/vo/menu-details.vo'),
+    ['./modules/rbac/menu/app/vo/menu-route-meta.vo']: await import('./modules/rbac/menu/app/vo/menu-route-meta.vo'),
+    ['./modules/rbac/menu/app/vo/menu-route.vo']: await import('./modules/rbac/menu/app/vo/menu-route.vo'),
     ['./modules/rbac/menu/app/vo/menu-tree.vo']: await import('./modules/rbac/menu/app/vo/menu-tree.vo'),
     ['./modules/rbac/user/domain/entities/impl/user-profile.entity']: await import('./modules/rbac/user/domain/entities/impl/user-profile.entity'),
     ['./modules/rbac/user/domain/entities/impl/user.entity']: await import('./modules/rbac/user/domain/entities/impl/user.entity'),
@@ -13,13 +15,10 @@ export default async () => {
     ['./modules/rbac/user/app/vo/user-details.vo']: await import('./modules/rbac/user/app/vo/user-details.vo'),
     ['./modules/rbac/role/app/vo/role-details.vo']: await import('./modules/rbac/role/app/vo/role-details.vo'),
     ['./modules/rbac/role/app/vo/role-tree.vo']: await import('./modules/rbac/role/app/vo/role-tree.vo'),
-    ['./modules/rbac/resource/app/vo/resource-details.vo']: await import('./modules/rbac/resource/app/vo/resource-details.vo'),
     ['./modules/rbac/resource/domain/entities/impl/resource.entity']: await import('./modules/rbac/resource/domain/entities/impl/resource.entity'),
     ['./modules/rbac/role/domain/entities/impl/role-tree.entity']: await import('./modules/rbac/role/domain/entities/impl/role-tree.entity'),
+    ['./modules/rbac/resource/app/vo/resource-details.vo']: await import('./modules/rbac/resource/app/vo/resource-details.vo'),
     ['./modules/auth/app/vo/auth-details.vo']: await import('./modules/auth/app/vo/auth-details.vo'),
-    ['./modules/auth/app/vo/svg-captcha.vo']: await import('./modules/auth/app/vo/svg-captcha.vo'),
-    ['./modules/auth/app/vo/token.vo']: await import('./modules/auth/app/vo/token.vo'),
-    ['./modules/auth/app/vo/find-all-auth.vo']: await import('./modules/auth/app/vo/find-all-auth.vo'),
     ['./modules/rbac/menu/app/vo/find-all-menu.vo']: await import('./modules/rbac/menu/app/vo/find-all-menu.vo'),
     ['./modules/rbac/resource/app/vo/find-all-resource.vo']: await import('./modules/rbac/resource/app/vo/find-all-resource.vo'),
     ['./modules/rbac/menu/app/vo/menu-ids.vo']: await import('./modules/rbac/menu/app/vo/menu-ids.vo'),
@@ -28,10 +27,123 @@ export default async () => {
     ['./modules/rbac/role/app/vo/find-all-role.vo']: await import('./modules/rbac/role/app/vo/find-all-role.vo'),
     ['./modules/rbac/user/app/vo/user-ids.vo']: await import('./modules/rbac/user/app/vo/user-ids.vo'),
     ['./modules/rbac/user/app/vo/find-all-user.vo']: await import('./modules/rbac/user/app/vo/find-all-user.vo'),
+    ['./modules/auth/app/vo/svg-captcha.vo']: await import('./modules/auth/app/vo/svg-captcha.vo'),
+    ['./modules/auth/app/vo/token.vo']: await import('./modules/auth/app/vo/token.vo'),
+    ['./modules/auth/app/vo/find-all-auth.vo']: await import('./modules/auth/app/vo/find-all-auth.vo'),
   }
   return {
     '@nestjs/swagger': {
       models: [
+        [
+          import('./common/vo/base.vo'),
+          {
+            BaseVO: {
+              name: { required: true, type: () => String, description: '\u4E1A\u52A1\u540D(\u9700\u8981\u5B50\u7C7B\u5B9E\u73B0)' },
+              id: { required: true, type: () => String },
+              createdBy: { required: true, type: () => String, description: '\u521B\u5EFA\u8005', example: 'xxx' },
+              updatedBy: { required: true, type: () => String, description: '\u66F4\u65B0\u8005', example: 'xxx' },
+              createdAt: { required: true, type: () => Date, description: '\u521B\u5EFA\u65F6\u95F4', example: 'xxx' },
+              updatedAt: { required: true, type: () => Date, description: '\u66F4\u65B0\u65F6\u95F4', example: 'xxx' },
+              remark: { required: true, type: () => String, nullable: true, description: '\u5907\u6CE8', example: '' },
+              status: {
+                required: true,
+                description: '\u72B6\u6001(\u672A\u77E5:10 \u542F\u7528:20 \u7981\u7528:30)',
+                example: 20,
+                enum: t['../../../packages/types/dist/index'].StatusEnum,
+              },
+              sort: {
+                required: true,
+                description:
+                  '\u6392\u5E8F\u4F18\u5148\u7EA7(\u4F4E\u4F18\u5148\u7EA7:10 \u4E2D\u7B49\u4F18\u5148\u7EA7:20 \u9AD8\u4F18\u5148\u7EA7:30)',
+                example: 10,
+                enum: t['../../../packages/types/dist/index'].SortEnum,
+              },
+            },
+          },
+        ],
+        [
+          import('./common/vo/find-all.vo'),
+          {
+            FindAllVO: {
+              data: { required: true, description: '\u8BE6\u60C5\u5217\u8868(\u9700\u8981\u5B50\u7C7B\u5B9E\u73B0)' },
+              total: { required: true, type: () => Number, description: '\u603B\u6570', example: 1000 },
+              page: { required: true, type: () => Number, description: '\u7B2C\u51E0\u9875', example: 1 },
+              limit: { required: true, type: () => Number, description: '\u4E00\u9875\u51E0\u6761\u6570\u636E', example: 100 },
+              totalPages: { required: true, type: () => Number, description: '\u603B\u9875\u6570', example: 200 },
+            },
+          },
+        ],
+        [
+          import('./common/vo/res.vo'),
+          {
+            ResVO: {
+              code: { required: true, type: () => String, description: '\u4E1A\u52A1\u7801', example: '0' },
+              msg: { required: true, type: () => String, description: '\u4E1A\u52A1\u4FE1\u606F', example: '\u64CD\u4F5C\u6210\u529F' },
+              data: { required: true, type: () => Object, description: '\u4E1A\u52A1\u6570\u636E(\u5BF9\u8C61\u6216\u6570\u7EC4)' },
+              originUrl: { required: true, type: () => String, description: '\u8BF7\u6C42\u5730\u5740', example: 'xxx' },
+              referer: { required: true, type: () => String, description: '\u8BF7\u6C42\u6E90', example: 'xxx' },
+              userAgent: { required: true, type: () => String, description: '\u5BA2\u6237\u7AEF\u4FE1\u606F', example: 'xxx' },
+              timestamp: { required: true, type: () => Number, description: '\u65F6\u95F4\u6233', example: 1672531200000 },
+              clientIp: { required: true, type: () => String, description: '\u5BA2\u6237\u7AEFIP', example: 'xxx' },
+            },
+          },
+        ],
+        [
+          import('./common/entities/common.entity'),
+          {
+            CommonEntity: {
+              _id: { required: true, type: () => Number },
+              id: { required: true, type: () => String },
+              createdBy: { required: true, type: () => String },
+              updatedBy: { required: true, type: () => String },
+              deletedBy: { required: true, type: () => String, nullable: true },
+              createdAt: { required: true, type: () => Date },
+              updatedAt: { required: true, type: () => Date },
+              deletedAt: { required: true, type: () => Date, nullable: true },
+              remark: { required: true, type: () => String, nullable: true },
+              status: { required: true, enum: t['../../../packages/types/dist/index'].StatusEnum },
+              sort: { required: true, enum: t['../../../packages/types/dist/index'].SortEnum },
+            },
+          },
+        ],
+        [
+          import('./modules/rbac/menu/domain/entities/impl/menu.entity'),
+          {
+            MenuEntity: {
+              parentId: { required: true, type: () => String, nullable: true },
+              name: { required: true, type: () => String },
+              menuCode: { required: true, type: () => String },
+              menuType: { required: true, enum: t['../../../packages/types/dist/index'].MenuTypeEnum },
+              domain: { required: true, type: () => String },
+              action: { required: true, type: () => String },
+              path: { required: true, type: () => String, nullable: true },
+              alias: { required: true, type: () => String, nullable: true },
+              component: { required: true, type: () => String },
+              redirect: { required: true, type: () => String, nullable: true },
+              query: { required: true, type: () => String, nullable: true },
+              title: { required: true, type: () => String, nullable: true },
+              icon: { required: true, type: () => String, nullable: true },
+              isCache: { required: true, enum: t['../../../packages/types/dist/index'].CheckEnum },
+              isVisible: { required: true, enum: t['../../../packages/types/dist/index'].CheckEnum },
+              isRefresh: { required: true, enum: t['../../../packages/types/dist/index'].CheckEnum },
+              roles: { required: true, type: () => [t['./modules/rbac/role/domain/entities/impl/role.entity'].RoleEntity] },
+              ancestorNodes: { required: true, type: () => [t['./modules/rbac/menu/domain/entities/impl/menu-tree.entity'].MenuTreeEntity] },
+              descendantNodes: { required: true, type: () => [t['./modules/rbac/menu/domain/entities/impl/menu-tree.entity'].MenuTreeEntity] },
+            },
+          },
+        ],
+        [
+          import('./modules/rbac/menu/domain/entities/impl/menu-tree.entity'),
+          {
+            MenuTreeEntity: {
+              ancestorId: { required: true, type: () => String },
+              descendantId: { required: true, type: () => String },
+              depth: { required: true, type: () => Number },
+              ancestorMenu: { required: true, type: () => t['./modules/rbac/menu/domain/entities/impl/menu.entity'].MenuEntity },
+              descendantMenu: { required: true, type: () => t['./modules/rbac/menu/domain/entities/impl/menu.entity'].MenuEntity },
+            },
+          },
+        ],
         [
           import('./common/dto/find-all.dto'),
           {
@@ -139,123 +251,10 @@ export default async () => {
           },
         ],
         [
-          import('./common/entities/common.entity'),
-          {
-            CommonEntity: {
-              _id: { required: true, type: () => Number },
-              id: { required: true, type: () => String },
-              createdBy: { required: true, type: () => String },
-              updatedBy: { required: true, type: () => String },
-              deletedBy: { required: true, type: () => String, nullable: true },
-              createdAt: { required: true, type: () => Date },
-              updatedAt: { required: true, type: () => Date },
-              deletedAt: { required: true, type: () => Date, nullable: true },
-              remark: { required: true, type: () => String, nullable: true },
-              status: { required: true, enum: t['../../../packages/types/dist/index'].StatusEnum },
-              sort: { required: true, enum: t['../../../packages/types/dist/index'].SortEnum },
-            },
-          },
-        ],
-        [
-          import('./modules/rbac/menu/domain/entities/impl/menu.entity'),
-          {
-            MenuEntity: {
-              parentId: { required: true, type: () => String, nullable: true },
-              name: { required: true, type: () => String },
-              menuCode: { required: true, type: () => String },
-              domain: { required: true, type: () => String },
-              action: { required: true, type: () => String },
-              path: { required: true, type: () => String, nullable: true },
-              query: { required: true, type: () => String, nullable: true },
-              component: { required: true, type: () => String, nullable: true },
-              icon: { required: true, type: () => String, nullable: true },
-              isCache: { required: true, enum: t['../../../packages/types/dist/index'].CheckEnum },
-              isVisible: { required: true, enum: t['../../../packages/types/dist/index'].CheckEnum },
-              isRefresh: { required: true, enum: t['../../../packages/types/dist/index'].CheckEnum },
-              menuType: { required: true, enum: t['../../../packages/types/dist/index'].MenuTypeEnum },
-              roles: { required: true, type: () => [t['./modules/rbac/role/domain/entities/impl/role.entity'].RoleEntity] },
-              ancestorNodes: { required: true, type: () => [t['./modules/rbac/menu/domain/entities/impl/menu-tree.entity'].MenuTreeEntity] },
-              descendantNodes: { required: true, type: () => [t['./modules/rbac/menu/domain/entities/impl/menu-tree.entity'].MenuTreeEntity] },
-            },
-          },
-        ],
-        [
-          import('./modules/rbac/menu/domain/entities/impl/menu-tree.entity'),
-          {
-            MenuTreeEntity: {
-              ancestorId: { required: true, type: () => String },
-              descendantId: { required: true, type: () => String },
-              depth: { required: true, type: () => Number },
-              ancestorMenu: { required: true, type: () => t['./modules/rbac/menu/domain/entities/impl/menu.entity'].MenuEntity },
-              descendantMenu: { required: true, type: () => t['./modules/rbac/menu/domain/entities/impl/menu.entity'].MenuEntity },
-            },
-          },
-        ],
-        [
-          import('./common/vo/base.vo'),
-          {
-            BaseVO: {
-              name: { required: true, type: () => String, description: '\u4E1A\u52A1\u540D(\u9700\u8981\u5B50\u7C7B\u5B9E\u73B0)' },
-              id: { required: true, type: () => String },
-              createdBy: { required: true, type: () => String, description: '\u521B\u5EFA\u8005', example: 'xxx' },
-              updatedBy: { required: true, type: () => String, description: '\u66F4\u65B0\u8005', example: 'xxx' },
-              createdAt: { required: true, type: () => Date, description: '\u521B\u5EFA\u65F6\u95F4', example: 'xxx' },
-              updatedAt: { required: true, type: () => Date, description: '\u66F4\u65B0\u65F6\u95F4', example: 'xxx' },
-              remark: { required: true, type: () => String, nullable: true, description: '\u5907\u6CE8', example: '' },
-              status: {
-                required: true,
-                description: '\u72B6\u6001(\u672A\u77E5:10 \u542F\u7528:20 \u7981\u7528:30)',
-                example: 20,
-                enum: t['../../../packages/types/dist/index'].StatusEnum,
-              },
-              sort: {
-                required: true,
-                description:
-                  '\u6392\u5E8F\u4F18\u5148\u7EA7(\u4F4E\u4F18\u5148\u7EA7:10 \u4E2D\u7B49\u4F18\u5148\u7EA7:20 \u9AD8\u4F18\u5148\u7EA7:30)',
-                example: 10,
-                enum: t['../../../packages/types/dist/index'].SortEnum,
-              },
-            },
-          },
-        ],
-        [
-          import('./common/vo/find-all.vo'),
-          {
-            FindAllVO: {
-              data: { required: true, description: '\u8BE6\u60C5\u5217\u8868(\u9700\u8981\u5B50\u7C7B\u5B9E\u73B0)' },
-              total: { required: true, type: () => Number, description: '\u603B\u6570', example: 1000 },
-              page: { required: true, type: () => Number, description: '\u7B2C\u51E0\u9875', example: 1 },
-              limit: { required: true, type: () => Number, description: '\u4E00\u9875\u51E0\u6761\u6570\u636E', example: 100 },
-              totalPages: { required: true, type: () => Number, description: '\u603B\u9875\u6570', example: 200 },
-            },
-          },
-        ],
-        [
-          import('./common/vo/res.vo'),
-          {
-            ResVO: {
-              code: { required: true, type: () => String, description: '\u4E1A\u52A1\u7801', example: '0' },
-              msg: { required: true, type: () => String, description: '\u4E1A\u52A1\u4FE1\u606F', example: '\u64CD\u4F5C\u6210\u529F' },
-              data: { required: true, type: () => Object, description: '\u4E1A\u52A1\u6570\u636E(\u5BF9\u8C61\u6216\u6570\u7EC4)' },
-              originUrl: { required: true, type: () => String, description: '\u8BF7\u6C42\u5730\u5740', example: 'xxx' },
-              referer: { required: true, type: () => String, description: '\u8BF7\u6C42\u6E90', example: 'xxx' },
-              userAgent: { required: true, type: () => String, description: '\u5BA2\u6237\u7AEF\u4FE1\u606F', example: 'xxx' },
-              timestamp: { required: true, type: () => Number, description: '\u65F6\u95F4\u6233', example: 1672531200000 },
-              clientIp: { required: true, type: () => String, description: '\u5BA2\u6237\u7AEFIP', example: 'xxx' },
-            },
-          },
-        ],
-        [
           import('./modules/rbac/menu/app/vo/menu-details.vo'),
           {
             MenuDetailsVO: {
-              parentId: {
-                required: true,
-                type: () => String,
-                nullable: true,
-                description: '\u83DC\u5355\u7236\u8282\u70B9ID',
-                example: '\u83DC\u5355\u7236\u8282\u70B9ID',
-              },
+              parentId: { required: true, type: () => String, nullable: true, description: '\u7236\u83DC\u5355ID', example: '\u7236\u83DC\u5355ID' },
               id: { required: true, type: () => String, description: '\u83DC\u5355ID', example: 'xxx' },
               name: { required: true, type: () => String, description: '\u83DC\u5355\u540D', example: '\u83DC\u5355\u540D' },
               menuCode: {
@@ -266,7 +265,8 @@ export default async () => {
               },
               menuType: {
                 required: true,
-                description: '\u83DC\u5355\u7C7B\u578B',
+                description:
+                  '\u83DC\u5355\u7C7B\u578B(10:\u83DC\u5355 20:\u6309\u94AE 30:\u7EC4\u4EF6 40:\u76EE\u5F55 50:\u5916\u94FE 60:\u5185\u94FE)',
                 example: 10,
                 enum: t['../../../packages/types/dist/index'].MenuTypeEnum,
               },
@@ -276,16 +276,37 @@ export default async () => {
                 required: true,
                 type: () => String,
                 nullable: true,
-                description: '\u8BBF\u95EE\u8DEF\u5F84(MENU,LINK,INNER_LINK)',
+                description: '\u8BBF\u95EE\u8DEF\u5F84(MENU,DIRECTORY,LINK,INNER_LINK)',
                 example: '/user',
               },
-              query: { required: true, type: () => String, nullable: true, description: '\u8DEF\u7531\u53C2\u6570(MENU)', example: '"{id:"xxx"}"' },
-              component: {
+              alias: {
                 required: true,
                 type: () => String,
                 nullable: true,
-                description: '\u7EC4\u4EF6\u8DEF\u5F84(COMPONENT)',
-                example: 'UserButton',
+                description: '\u522B\u540D(MENU,DIRECTORY,LINK,INNER_LINK)(JSON)',
+                example: '"["users"]"',
+              },
+              component: { required: true, type: () => String, description: '\u7EC4\u4EF6\u8DEF\u5F84', example: 'src/views/userView/index' },
+              redirect: {
+                required: true,
+                type: () => String,
+                nullable: true,
+                description: '\u91CD\u5B9A\u5411(MENU,DIRECTORY,LINK,INNER_LINK)(JSON)',
+                example: '"{name:"user"}"',
+              },
+              query: {
+                required: true,
+                type: () => String,
+                nullable: true,
+                description: '\u8DEF\u7531\u53C2\u6570(MENU,DIRECTORY,LINK,INNER_LINK)(JSON)',
+                example: '"{redirect:"/login"}"',
+              },
+              title: {
+                required: true,
+                type: () => String,
+                nullable: true,
+                description: '\u6807\u9898(MENU,DIRECTORY,LINK,INNER_LINK)',
+                example: '\u7528\u6237\u7BA1\u7406',
               },
               icon: {
                 required: true,
@@ -330,6 +351,58 @@ export default async () => {
         [
           import('./modules/rbac/menu/app/vo/menu-ids.vo'),
           { MenuIdsVO: { ids: { required: true, type: () => [String], description: '\u83DC\u5355ID\u5217\u8868', example: [] } } },
+        ],
+        [
+          import('./modules/rbac/menu/app/vo/menu-route-meta.vo'),
+          {
+            MenuRouteMetaVO: {
+              title: {
+                required: false,
+                type: () => String,
+                description: '\u6807\u9898(MENU,DIRECTORY,LINK,INNER_LINK)',
+                example: '\u7528\u6237\u7BA1\u7406',
+              },
+              icon: {
+                required: false,
+                type: () => String,
+                description: '\u56FE\u6807\u5730\u5740(MENU,DIRECTORY,LINK,INNER_LINK)',
+                example: 'https://www.icon.com',
+              },
+              isCache: { required: true, type: () => Boolean, description: '\u662F\u5426\u7F13\u5B58(MENU,COMPONENT,INNER_LINK)', example: true },
+              isVisible: { required: true, type: () => Boolean, description: '\u662F\u5426\u9690\u85CF(MENU)', example: true },
+              isRefresh: { required: true, type: () => Boolean, description: '\u662F\u5426\u5237\u65B0(MENU)', example: true },
+              code: { required: true, type: () => String, description: '\u83DC\u5355\u7F16\u7801', example: 'TEST' },
+            },
+          },
+        ],
+        [
+          import('./modules/rbac/menu/app/vo/menu-route.vo'),
+          {
+            MenuRouteVO: {
+              name: { required: false, type: () => String, description: '\u8DEF\u7531\u540D', example: '\u8DEF\u7531\u540D' },
+              path: { required: true, type: () => String, description: '\u8DEF\u7531\u540D', example: '\u8DEF\u7531\u540D' },
+              alias: { required: false, type: () => String, description: '\u8DEF\u7531\u540D', example: '\u8DEF\u7531\u540D' },
+              component: { required: true, type: () => String, description: '\u8DEF\u7531\u540D', example: '\u8DEF\u7531\u540D' },
+              redirect: { required: false, type: () => String, description: '\u8DEF\u7531\u540D', example: '\u8DEF\u7531\u540D' },
+              query: {
+                required: false,
+                type: () => String,
+                description: '\u8DEF\u7531\u53C2\u6570(MENU,DIRECTORY,LINK,INNER_LINK)(JSON)',
+                example: '"{redirect:"/login"}"',
+              },
+              meta: {
+                required: true,
+                type: () => t['./modules/rbac/menu/app/vo/menu-route-meta.vo'].MenuRouteMetaVO,
+                description: '\u8DEF\u7531\u5143\u6570\u636E',
+              },
+              children: {
+                required: false,
+                type: () => [t['./modules/rbac/menu/app/vo/menu-route.vo'].MenuRouteVO],
+                description: '\u5B50\u8DEF\u7531',
+                example: [],
+              },
+            },
+          },
         ],
         [
           import('./modules/rbac/menu/app/vo/menu-tree.vo'),
@@ -381,21 +454,45 @@ export default async () => {
                 minLength: 1,
                 maxLength: 2048,
               },
-              query: {
+              alias: {
                 required: false,
                 type: () => String,
-                description: '\u8DEF\u7531\u53C2\u6570(MENU)',
-                example: '"{id:"xxx"}"',
+                description: '\u522B\u540D(MENU,DIRECTORY,LINK,INNER_LINK)(JSON)',
+                example: '"["users"]"',
                 minLength: 1,
                 maxLength: 2048,
               },
               component: {
-                required: false,
+                required: true,
                 type: () => String,
-                description: '\u7EC4\u4EF6\u8DEF\u5F84(COMPONENT)',
-                example: 'UserButton',
+                description: '\u7EC4\u4EF6\u8DEF\u5F84',
+                example: 'src/views/userView/index',
                 minLength: 1,
                 maxLength: 2048,
+              },
+              redirect: {
+                required: false,
+                type: () => String,
+                description: '\u91CD\u5B9A\u5411(MENU,DIRECTORY,LINK,INNER_LINK)(JSON)',
+                example: '"{name:"user"}"',
+                minLength: 1,
+                maxLength: 2048,
+              },
+              query: {
+                required: false,
+                type: () => String,
+                description: '\u8DEF\u7531\u53C2\u6570(MENU,DIRECTORY,LINK,INNER_LINK)(JSON)',
+                example: '"{redirect:"/login"}"',
+                minLength: 1,
+                maxLength: 2048,
+              },
+              title: {
+                required: false,
+                type: () => String,
+                description: '\u6807\u9898(MENU,DIRECTORY,LINK,INNER_LINK)',
+                example: '\u7528\u6237\u7BA1\u7406',
+                minLength: 1,
+                maxLength: 64,
               },
               icon: {
                 required: false,
@@ -488,21 +585,45 @@ export default async () => {
                 minLength: 1,
                 maxLength: 2048,
               },
-              query: {
+              alias: {
                 required: false,
                 type: () => String,
-                description: '\u8DEF\u7531\u53C2\u6570(MENU)',
-                example: '"{id:"xxx"}"',
+                description: '\u522B\u540D(MENU,DIRECTORY,LINK,INNER_LINK)(JSON)',
+                example: '"["users"]"',
                 minLength: 1,
                 maxLength: 2048,
               },
               component: {
                 required: false,
                 type: () => String,
-                description: '\u7EC4\u4EF6\u8DEF\u5F84(COMPONENT)',
-                example: 'UserButton',
+                description: '\u7EC4\u4EF6\u8DEF\u5F84',
+                example: 'src/views/userView/index',
                 minLength: 1,
                 maxLength: 2048,
+              },
+              redirect: {
+                required: false,
+                type: () => String,
+                description: '\u91CD\u5B9A\u5411(MENU,DIRECTORY,LINK,INNER_LINK)(JSON)',
+                example: '"{name:"user"}"',
+                minLength: 1,
+                maxLength: 2048,
+              },
+              query: {
+                required: false,
+                type: () => String,
+                description: '\u8DEF\u7531\u53C2\u6570(MENU,DIRECTORY,LINK,INNER_LINK)(JSON)',
+                example: '"{redirect:"/login"}"',
+                minLength: 1,
+                maxLength: 2048,
+              },
+              title: {
+                required: false,
+                type: () => String,
+                description: '\u6807\u9898(MENU,DIRECTORY,LINK,INNER_LINK)',
+                example: '\u7528\u6237\u7BA1\u7406',
+                minLength: 1,
+                maxLength: 64,
               },
               icon: {
                 required: false,
@@ -612,38 +733,6 @@ export default async () => {
           import('./modules/rbac/user/app/vo/user-ids.vo'),
           { UserIdsVO: { ids: { required: true, type: () => [String], description: '\u7528\u6237ID\u5217\u8868', example: [] } } },
         ],
-        [import('./modules/rbac/user/app/dto/user-id.dto'), { UserIdDTO: {} }],
-        [
-          import('./modules/rbac/user/app/dto/assign-user-role.dto'),
-          {
-            AssignUserRoleDTO: {
-              roleIds: {
-                required: true,
-                type: () => [String],
-                description: '\u89D2\u8272ID\u5217\u8868',
-                example: ['xxx', 'xxx'],
-                minLength: 36,
-                maxLength: 36,
-              },
-            },
-          },
-        ],
-        [import('./modules/rbac/user/app/dto/user-ids.dto'), { UserIdsDTO: {} }],
-        [
-          import('./modules/rbac/user/app/dto/assign-users-role.dto'),
-          {
-            AssignUsersRoleDTO: {
-              roleIds: {
-                required: true,
-                type: () => [String],
-                description: '\u89D2\u8272ID\u5217\u8868',
-                example: ['xxx', 'xxx'],
-                minLength: 36,
-                maxLength: 36,
-              },
-            },
-          },
-        ],
         [
           import('./modules/rbac/user/app/dto/create-user.dto'),
           {
@@ -674,6 +763,38 @@ export default async () => {
               },
               pwd: { required: true, type: () => String, description: '\u5BC6\u7801', example: 'Aa123456', minLength: 8, maxLength: 64 },
               remark: { required: false, type: () => String, description: '\u5907\u6CE8', example: 'xxx', minLength: 1, maxLength: 500 },
+            },
+          },
+        ],
+        [import('./modules/rbac/user/app/dto/user-id.dto'), { UserIdDTO: {} }],
+        [
+          import('./modules/rbac/user/app/dto/replace-user-role.dto'),
+          {
+            ReplaceUserRoleDTO: {
+              roleIds: {
+                required: true,
+                type: () => [String],
+                description: '\u89D2\u8272ID\u5217\u8868',
+                example: ['xxx', 'xxx'],
+                minLength: 36,
+                maxLength: 36,
+              },
+            },
+          },
+        ],
+        [import('./modules/rbac/user/app/dto/user-ids.dto'), { UserIdsDTO: {} }],
+        [
+          import('./modules/rbac/user/app/dto/replace-users-role.dto'),
+          {
+            ReplaceUsersRoleDTO: {
+              roleIds: {
+                required: true,
+                type: () => [String],
+                description: '\u89D2\u8272ID\u5217\u8868',
+                example: ['xxx', 'xxx'],
+                minLength: 36,
+                maxLength: 36,
+              },
             },
           },
         ],
@@ -779,68 +900,6 @@ export default async () => {
             },
           },
         ],
-        [import('./modules/rbac/role/app/dto/role-id.dto'), { RoleIdDTO: {} }],
-        [
-          import('./modules/rbac/role/app/dto/assign-role-menu.dto'),
-          {
-            AssignRoleMenuDTO: {
-              menuIds: {
-                required: true,
-                type: () => [String],
-                description: '\u83DC\u5355ID\u5217\u8868',
-                example: ['xxx', 'xxx'],
-                minLength: 36,
-                maxLength: 36,
-              },
-            },
-          },
-        ],
-        [
-          import('./modules/rbac/role/app/dto/assign-role-resource.dto'),
-          {
-            AssignRoleResourceDTO: {
-              resourceIds: {
-                required: true,
-                type: () => [String],
-                description: '\u8D44\u6E90ID\u5217\u8868',
-                example: ['xxx', 'xxx'],
-                minLength: 36,
-                maxLength: 36,
-              },
-            },
-          },
-        ],
-        [import('./modules/rbac/role/app/dto/role-ids.dto'), { RoleIdsDTO: {} }],
-        [
-          import('./modules/rbac/role/app/dto/assign-roles-menu.dto'),
-          {
-            AssignRolesMenuDTO: {
-              menuIds: {
-                required: true,
-                type: () => [String],
-                description: '\u83DC\u5355ID\u5217\u8868',
-                example: ['xxx', 'xxx'],
-                minLength: 36,
-                maxLength: 36,
-              },
-            },
-          },
-        ],
-        [
-          import('./modules/rbac/role/app/dto/assign-roles-resource.dto'),
-          {
-            AssignRolesResourceDTO: {
-              resourceIds: {
-                required: true,
-                type: () => [String],
-                description: '\u8D44\u6E90ID\u5217\u8868',
-                example: ['xxx', 'xxx'],
-                minLength: 36,
-                maxLength: 36,
-              },
-            },
-          },
-        ],
         [
           import('./modules/rbac/role/app/dto/create-role.dto'),
           {
@@ -878,6 +937,68 @@ export default async () => {
           {
             MoveRoleDTO: {
               parentId: { required: false, type: () => String, description: '\u7236\u8282\u70B9ID', example: 'xxx', minLength: 36, maxLength: 36 },
+            },
+          },
+        ],
+        [import('./modules/rbac/role/app/dto/role-id.dto'), { RoleIdDTO: {} }],
+        [
+          import('./modules/rbac/role/app/dto/replace-role-menu.dto'),
+          {
+            ReplaceRoleMenuDTO: {
+              menuIds: {
+                required: true,
+                type: () => [String],
+                description: '\u83DC\u5355ID\u5217\u8868',
+                example: ['xxx', 'xxx'],
+                minLength: 36,
+                maxLength: 36,
+              },
+            },
+          },
+        ],
+        [
+          import('./modules/rbac/role/app/dto/replace-role-resource.dto'),
+          {
+            ReplaceRoleResourceDTO: {
+              resourceIds: {
+                required: true,
+                type: () => [String],
+                description: '\u8D44\u6E90ID\u5217\u8868',
+                example: ['xxx', 'xxx'],
+                minLength: 36,
+                maxLength: 36,
+              },
+            },
+          },
+        ],
+        [import('./modules/rbac/role/app/dto/role-ids.dto'), { RoleIdsDTO: {} }],
+        [
+          import('./modules/rbac/role/app/dto/replace-roles-menu.dto'),
+          {
+            ReplaceRolesMenuDTO: {
+              menuIds: {
+                required: true,
+                type: () => [String],
+                description: '\u83DC\u5355ID\u5217\u8868',
+                example: ['xxx', 'xxx'],
+                minLength: 36,
+                maxLength: 36,
+              },
+            },
+          },
+        ],
+        [
+          import('./modules/rbac/role/app/dto/replace-roles-resource.dto'),
+          {
+            ReplaceRolesResourceDTO: {
+              resourceIds: {
+                required: true,
+                type: () => [String],
+                description: '\u8D44\u6E90ID\u5217\u8868',
+                example: ['xxx', 'xxx'],
+                minLength: 36,
+                maxLength: 36,
+              },
             },
           },
         ],
@@ -924,6 +1045,47 @@ export default async () => {
                 enum: t['../../../packages/types/dist/index'].DataScopeEnum,
               },
               remark: { required: false, type: () => String, description: '\u5907\u6CE8', example: 'xxx', minLength: 1, maxLength: 500 },
+            },
+          },
+        ],
+        [
+          import('./modules/rbac/role/domain/entities/impl/role.entity'),
+          {
+            RoleEntity: {
+              name: { required: true, type: () => String },
+              parentId: { required: true, type: () => String, nullable: true },
+              roleCode: { required: true, type: () => String },
+              dataScope: { required: true, enum: t['../../../packages/types/dist/index'].DataScopeEnum },
+              users: { required: true, type: () => [t['./modules/rbac/user/domain/entities/impl/user.entity'].UserEntity] },
+              resources: { required: true, type: () => [t['./modules/rbac/resource/domain/entities/impl/resource.entity'].ResourceEntity] },
+              menus: { required: true, type: () => [t['./modules/rbac/menu/domain/entities/impl/menu.entity'].MenuEntity] },
+              ancestorNodes: { required: true, type: () => [t['./modules/rbac/role/domain/entities/impl/role-tree.entity'].RoleTreeEntity] },
+              descendantNodes: { required: true, type: () => [t['./modules/rbac/role/domain/entities/impl/role-tree.entity'].RoleTreeEntity] },
+            },
+          },
+        ],
+        [
+          import('./modules/rbac/role/domain/entities/impl/role-tree.entity'),
+          {
+            RoleTreeEntity: {
+              ancestorId: { required: true, type: () => String },
+              descendantId: { required: true, type: () => String },
+              depth: { required: true, type: () => Number },
+              ancestorRole: { required: true, type: () => t['./modules/rbac/role/domain/entities/impl/role.entity'].RoleEntity },
+              descendantRole: { required: true, type: () => t['./modules/rbac/role/domain/entities/impl/role.entity'].RoleEntity },
+            },
+          },
+        ],
+        [
+          import('./modules/rbac/resource/domain/entities/impl/resource.entity'),
+          {
+            ResourceEntity: {
+              name: { required: true, type: () => String },
+              resourceCode: { required: true, type: () => String },
+              resourceType: { required: true, enum: t['../../../packages/types/dist/index'].ResourceTypeEnum },
+              domain: { required: true, type: () => String },
+              method: { required: true, type: () => String },
+              roles: { required: true, type: () => [t['./modules/rbac/role/domain/entities/impl/role.entity'].RoleEntity] },
             },
           },
         ],
@@ -1041,47 +1203,6 @@ export default async () => {
             },
           },
         ],
-        [
-          import('./modules/rbac/role/domain/entities/impl/role.entity'),
-          {
-            RoleEntity: {
-              name: { required: true, type: () => String },
-              parentId: { required: true, type: () => String, nullable: true },
-              roleCode: { required: true, type: () => String },
-              dataScope: { required: true, enum: t['../../../packages/types/dist/index'].DataScopeEnum },
-              users: { required: true, type: () => [t['./modules/rbac/user/domain/entities/impl/user.entity'].UserEntity] },
-              resources: { required: true, type: () => [t['./modules/rbac/resource/domain/entities/impl/resource.entity'].ResourceEntity] },
-              menus: { required: true, type: () => [t['./modules/rbac/menu/domain/entities/impl/menu.entity'].MenuEntity] },
-              ancestorNodes: { required: true, type: () => [t['./modules/rbac/role/domain/entities/impl/role-tree.entity'].RoleTreeEntity] },
-              descendantNodes: { required: true, type: () => [t['./modules/rbac/role/domain/entities/impl/role-tree.entity'].RoleTreeEntity] },
-            },
-          },
-        ],
-        [
-          import('./modules/rbac/role/domain/entities/impl/role-tree.entity'),
-          {
-            RoleTreeEntity: {
-              ancestorId: { required: true, type: () => String },
-              descendantId: { required: true, type: () => String },
-              depth: { required: true, type: () => Number },
-              ancestorRole: { required: true, type: () => t['./modules/rbac/role/domain/entities/impl/role.entity'].RoleEntity },
-              descendantRole: { required: true, type: () => t['./modules/rbac/role/domain/entities/impl/role.entity'].RoleEntity },
-            },
-          },
-        ],
-        [
-          import('./modules/rbac/resource/domain/entities/impl/resource.entity'),
-          {
-            ResourceEntity: {
-              name: { required: true, type: () => String },
-              resourceCode: { required: true, type: () => String },
-              resourceType: { required: true, enum: t['../../../packages/types/dist/index'].ResourceTypeEnum },
-              domain: { required: true, type: () => String },
-              method: { required: true, type: () => String },
-              roles: { required: true, type: () => [t['./modules/rbac/role/domain/entities/impl/role.entity'].RoleEntity] },
-            },
-          },
-        ],
         [import('./modules/auth/domain/entities/impl/auth.entity'), { AuthEntity: { name: { required: true, type: () => String } } }],
         [
           import('./modules/auth/app/vo/auth-details.vo'),
@@ -1114,6 +1235,14 @@ export default async () => {
             MeInfoVO: {
               roles: { required: true, type: () => [String], description: '\u89D2\u8272\u7F16\u7801', example: [] },
               menus: { required: true, type: () => [String], description: '\u83DC\u5355\u7F16\u7801', example: [] },
+              routes: {
+                required: true,
+                type: () => [t['./modules/rbac/menu/app/vo/menu-route.vo'].MenuRouteVO],
+                description: '\u83DC\u5355\u8DEF\u7531',
+                example: [],
+              },
+              btns: { required: true, type: () => [String], description: '\u6309\u94AE\u7F16\u7801', example: [] },
+              comps: { required: true, type: () => [String], description: '\u7EC4\u4EF6\u7F16\u7801', example: [] },
             },
           },
         ],
@@ -1330,29 +1459,7 @@ export default async () => {
         ],
       ],
       controllers: [
-        [
-          import('./modules/auth/iface/controllers/impl/auth.controller'),
-          {
-            AuthController: {
-              svgCaptcha: { type: t['./modules/auth/app/vo/svg-captcha.vo'].SvgCaptchaVO },
-              emailCaptcha: {},
-              svgLogin: { type: t['./modules/auth/app/vo/token.vo'].TokenVO },
-              emailRegister: {},
-              emailLogin: { type: t['./modules/auth/app/vo/token.vo'].TokenVO },
-              emailResetPwd: {},
-              refreshToken: { type: Object },
-              loginOut: {},
-              meInfo: { type: Object },
-              create: { type: t['./modules/auth/app/vo/auth-details.vo'].AuthDetailsVO },
-              delete: {},
-              update: {},
-              updateStatus: {},
-              updateSort: {},
-              list: { type: t['./modules/auth/app/vo/find-all-auth.vo'].FindAllAuthVO },
-              detail: { type: t['./modules/auth/app/vo/auth-details.vo'].AuthDetailsVO },
-            },
-          },
-        ],
+        [import('./boot/boot.controller'), { BootController: { boot: {}, test: { type: Object } } }],
         [
           import('./modules/rbac/menu/iface/controllers/impl/menu.controller'),
           {
@@ -1388,8 +1495,8 @@ export default async () => {
           import('./modules/rbac/role/iface/controllers/impl/role-menu.controller'),
           {
             RoleMenuController: {
-              assign: {},
-              batchAssign: {},
+              replace: {},
+              batchReplace: {},
               menuIds: { type: t['./modules/rbac/menu/app/vo/menu-ids.vo'].MenuIdsVO },
               roleIds: { type: t['./modules/rbac/role/app/vo/role-ids.vo'].RoleIdsVO },
             },
@@ -1399,8 +1506,8 @@ export default async () => {
           import('./modules/rbac/role/iface/controllers/impl/role-resource.controller'),
           {
             RoleResourceController: {
-              assign: {},
-              batchAssign: {},
+              replace: {},
+              batchReplace: {},
               resourceIds: { type: t['./modules/rbac/resource/app/vo/resource-ids.vo'].ResourceIdsVO },
               roleIds: { type: t['./modules/rbac/role/app/vo/role-ids.vo'].RoleIdsVO },
             },
@@ -1427,8 +1534,8 @@ export default async () => {
           import('./modules/rbac/user/iface/controllers/impl/user-role.controller'),
           {
             UserRoleController: {
-              assign: {},
-              batchAssign: {},
+              replace: {},
+              batchReplace: {},
               roleIds: { type: t['./modules/rbac/role/app/vo/role-ids.vo'].RoleIdsVO },
               userIds: { type: t['./modules/rbac/user/app/vo/user-ids.vo'].UserIdsVO },
             },
@@ -1449,22 +1556,25 @@ export default async () => {
           },
         ],
         [
-          import('./boot/boot.controller'),
+          import('./modules/auth/iface/controllers/impl/auth.controller'),
           {
-            BootController: {
-              boot: {},
-              setStr: {},
-              getStr: { type: Object },
-              delStr: {},
-              updateStr: {},
-              setArr: {},
-              getArr: { type: Object },
-              delArr: {},
-              setObj: {},
-              getObj: { type: Object },
-              delObj: {},
-              putObj: {},
-              ddObj: {},
+            AuthController: {
+              svgCaptcha: { type: t['./modules/auth/app/vo/svg-captcha.vo'].SvgCaptchaVO },
+              emailCaptcha: {},
+              svgLogin: { type: t['./modules/auth/app/vo/token.vo'].TokenVO },
+              emailRegister: {},
+              emailLogin: { type: t['./modules/auth/app/vo/token.vo'].TokenVO },
+              emailResetPwd: {},
+              refreshToken: { type: Object },
+              loginOut: {},
+              meInfo: { type: Object },
+              create: { type: t['./modules/auth/app/vo/auth-details.vo'].AuthDetailsVO },
+              delete: {},
+              update: {},
+              updateStatus: {},
+              updateSort: {},
+              list: { type: t['./modules/auth/app/vo/find-all-auth.vo'].FindAllAuthVO },
+              detail: { type: t['./modules/auth/app/vo/auth-details.vo'].AuthDetailsVO },
             },
           },
         ],

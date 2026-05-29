@@ -14,48 +14,17 @@ import { CacheProcessor } from './cache.processor'
 import { CacheService } from './cache.service'
 import { CACHE_REDIS_CLIENT_TOKEN } from './constant'
 
-export class CacheModuleHelper {
-  public static instance: CacheModuleHelper
-  public logger: Logger
-  public initRedis: IInitRedisReturn
-  public static redis: null | TRedis = null
-
-  /**
-   * 创建CacheModuleHelper实例
-   * @param config Redis配置
-   */
-  public static async create(config: RedisOptions) {
-    config.keyPrefix = `${CacheModuleHelper.name}:`
-    if (!CacheModuleHelper.instance) {
-      CacheModuleHelper.instance = new CacheModuleHelper()
-      CacheModuleHelper.instance.logger = new Logger(CacheModule.name)
-      CacheModuleHelper.instance.initRedis = await initRedis({
-        redisConfig: config,
-        logger: CacheModuleHelper.instance.logger,
-      })
-    }
-    return CacheModuleHelper.instance
-  }
-}
-
 /** 缓存模块 */
 @Global()
 @Module({
   imports: [
-    /** 双缓存模块 */
     nestCacheModule.registerAsync({
       isGlobal: true,
       useFactory: async (configService: ConfigService) => {
         const { memory, redis: { ttl, ...config } } = configService.get<ICacheConfig>(CACHE_CONFIG_KEY)!
-        /** L1 内存缓存 */
         const L1 = new Keyv({ store: new KeyvCacheableMemory({ ttl: memory.ttl, lruSize: memory.lruSize }) })
-        /** L2 Redis 缓存 */
-        const cacheModuleHelper = await CacheModuleHelper.create(config as RedisOptions)
-        const {
-          initRedis: { redisClient },
-        } = cacheModuleHelper
-        if (!CacheModuleHelper.redis) CacheModuleHelper.redis = redisClient
-        const store = new KeyvValkey(CacheModuleHelper.redis as IOValkey, { useRedisSets: false })
+        await CacheModule.init(config as RedisOptions)
+        const store = new KeyvValkey(CacheModule.initRedis!.redisClient as IOValkey, { useRedisSets: false })
         const L2 = new Keyv({ store })
         return {
           stores: [L1, L2],
@@ -72,15 +41,10 @@ export class CacheModuleHelper {
   providers: [
     {
       provide: CACHE_REDIS_CLIENT_TOKEN,
-      useFactory: async (configService: ConfigService) => {
-        if (CacheModuleHelper.redis) return CacheModuleHelper.redis
+      useFactory: async (configService: ConfigService): Promise<TRedis> => {
         const { redis: { ttl: _, ...storageConfig } } = configService.get<ICacheConfig>(CACHE_CONFIG_KEY)!
-        const throttler2ModuleHelper = await CacheModuleHelper.create(storageConfig)
-        const {
-          initRedis: { redisClient },
-        } = throttler2ModuleHelper
-        CacheModuleHelper.redis = redisClient
-        return CacheModuleHelper.redis
+        await CacheModule.init(storageConfig as RedisOptions)
+        return CacheModule.initRedis!.redisClient
       },
       inject: [ConfigService],
     },
@@ -90,5 +54,27 @@ export class CacheModuleHelper {
   exports: [CacheService, CacheProcessor, CACHE_REDIS_CLIENT_TOKEN],
 })
 export class CacheModule {
+  public static logger: Logger = new Logger(CacheModule.name)
+  public static initRedis: IInitRedisReturn | null = null
+  private static initPromise: Promise<void> | null = null
 
+  /**
+   * 初始化CacheModule
+   * @param config Redis配置
+   */
+  public static async init(config: RedisOptions): Promise<void> {
+    if (CacheModule.initRedis) return
+
+    if (!CacheModule.initPromise) {
+      CacheModule.initPromise = (async () => {
+        config.keyPrefix = `${CacheModule.name}:`
+        CacheModule.initRedis = await initRedis({
+          redisConfig: config,
+          logger: CacheModule.logger,
+        })
+      })()
+    }
+
+    await CacheModule.initPromise
+  }
 }

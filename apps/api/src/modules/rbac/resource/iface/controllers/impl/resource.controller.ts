@@ -7,7 +7,7 @@ import { ApiController, ApiMethod, ResourceDomain, ResourceMethod, ResourceType 
 import { FindAllDTO, UpdateSortDTO, UpdateStatusDTO } from '@/common/dto'
 import { ResVO } from '@/common/vo'
 import {
-  CreateResourceByNameCommand,
+  CreateResourceCommand,
   CreateResourceDTO,
   DeleteResourceCommand,
   FindAllResourceVO,
@@ -36,19 +36,19 @@ export class ResourceController implements IResourceController {
   @Post()
   @ResourceMethod('create')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '创建资源' }],
+    ApiOperationOptions: [{ description: 'createResource', summary: '创建资源' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess(ResourceDetailsVO)],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',
   })
   async create(@Body() createResourceDTO: CreateResourceDTO) {
-    return await this.commandBus.execute(new CreateResourceByNameCommand(createResourceDTO))
+    return await this.commandBus.execute(new CreateResourceCommand(createResourceDTO))
   }
 
   @Delete(':id')
   @ResourceMethod('delete')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '删除资源' }],
+    ApiOperationOptions: [{ description: 'deleteResource', summary: '删除资源' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess()],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',
@@ -60,7 +60,7 @@ export class ResourceController implements IResourceController {
   @Patch(':id')
   @ResourceMethod('update')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '更新资源' }],
+    ApiOperationOptions: [{ description: 'updateResource', summary: '更新资源' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess()],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',
@@ -72,7 +72,7 @@ export class ResourceController implements IResourceController {
   @Patch(':id/status')
   @ResourceMethod('updateStatus')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '更新资源状态' }],
+    ApiOperationOptions: [{ description: 'updateResourceStatus', summary: '更新资源状态' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess()],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',
@@ -84,7 +84,7 @@ export class ResourceController implements IResourceController {
   @Patch(':id/sort')
   @ResourceMethod('updateSort')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '更新资源排序优先级' }],
+    ApiOperationOptions: [{ description: 'updateResourceSort', summary: '更新资源排序优先级' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess()],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',
@@ -96,7 +96,7 @@ export class ResourceController implements IResourceController {
   @Get()
   @ResourceMethod('list')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '获取资源列表' }],
+    ApiOperationOptions: [{ description: 'getResources', summary: '获取资源列表' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess(FindAllResourceVO)],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',
@@ -108,7 +108,7 @@ export class ResourceController implements IResourceController {
   @Get(':id')
   @ResourceMethod('detail')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '查看单个资源详情' }],
+    ApiOperationOptions: [{ description: 'getResourceById', summary: '查看单个资源详情' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess(ResourceDetailsVO)],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',

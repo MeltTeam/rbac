@@ -25,10 +25,15 @@
       "content": "切换语言"
     },
     "MThemeBtn": {
-      "content": "主题颜色"
+      "content": "主题颜色",
+      "apply": "应用",
+      "reset": "重置"
     },
     "MModeBtn": {
       "content": "主题模式"
+    },
+    "MLogoutBtn": {
+      "content": "登出"
     }
   },
   "layouts": {
@@ -36,10 +41,13 @@
       "banner": "横幅"
     }
   },
-  "views": {
+  "pages": {
     "Error": {
       "NotFound": {
         "title": "未找到页面"
+      },
+      "Forbidden": {
+        "title": "拒绝访问"
       }
     },
     "Login": {
@@ -99,6 +107,9 @@
     },
     "Test": {
       "title": "测试"
+    },
+    "Menu": {
+      "title": "菜单"
     }
   }
 }

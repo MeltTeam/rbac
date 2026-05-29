@@ -3,18 +3,18 @@ import type { ICustomAxiosRequestConfig } from '@/utils/http/IHttpUtils'
 
 import { http } from '@/utils/http'
 
-/** 获取角色列表 GET /v1/role */
-export function v1RoleGet({
+/** 获取角色列表 getRoles GET /v1/role */
+export function getRoles({
   params,
   options,
 }: {
   // 叠加生成的Param类型 (非body参数openapi默认没有生成对象)
-  params: API.V1RoleGetParams
+  params: API.GetRolesParams
 
   options?: ICustomAxiosRequestConfig
 }) {
   return http.request<
-    API.V1RoleGetParams,
+    API.GetRolesParams,
     API.ResVO & {
       data?: API.FindAllRoleVO
     }
@@ -30,8 +30,8 @@ export function v1RoleGet({
   })
 }
 
-/** 创建角色 POST /v1/role */
-export function v1RolePost({
+/** 创建角色 createRole POST /v1/role */
+export function createRole({
   body,
   options,
 }: {
@@ -57,20 +57,20 @@ export function v1RolePost({
   })
 }
 
-/** 查看单个角色详情 GET /v1/role/${param0} */
-export function v1RoleIdGet({
+/** 查看单个角色详情 getRoleById GET /v1/role/${param0} */
+export function getRoleById({
   params,
   options,
 }: {
   // 叠加生成的Param类型 (非body参数openapi默认没有生成对象)
-  params: API.V1RoleIdGetParams
+  params: API.GetRoleByIdParams
 
   options?: ICustomAxiosRequestConfig
 }) {
   const { id: param0, ...queryParams } = params
 
   return http.request<
-    API.V1RoleIdGetParams,
+    API.GetRoleByIdParams,
     API.ResVO & {
       data?: API.RoleDetailsVO
     }
@@ -84,20 +84,20 @@ export function v1RoleIdGet({
   })
 }
 
-/** 删除角色 DELETE /v1/role/${param0} */
-export function v1RoleIdDelete({
+/** 删除角色 deleteRole DELETE /v1/role/${param0} */
+export function deleteRole({
   params,
   options,
 }: {
   // 叠加生成的Param类型 (非body参数openapi默认没有生成对象)
-  params: API.V1RoleIdDeleteParams
+  params: API.DeleteRoleParams
 
   options?: ICustomAxiosRequestConfig
 }) {
   const { id: param0, ...queryParams } = params
 
   return http.request<
-    API.V1RoleIdDeleteParams,
+    API.DeleteRoleParams,
     API.ResVO & {
       data?: unknown
     }
@@ -111,14 +111,14 @@ export function v1RoleIdDelete({
   })
 }
 
-/** 更新角色 PATCH /v1/role/${param0} */
-export function v1RoleIdPatch({
+/** 更新角色 updateRole PATCH /v1/role/${param0} */
+export function updateRole({
   params,
   body,
   options,
 }: {
   // 叠加生成的Param类型 (非body参数openapi默认没有生成对象)
-  params: API.V1RoleIdPatchParams
+  params: API.UpdateRoleParams
   body: API.UpdateRoleDTO
 
   options?: ICustomAxiosRequestConfig
@@ -144,14 +144,14 @@ export function v1RoleIdPatch({
   })
 }
 
-/** 移动角色 PATCH /v1/role/${param0}/move */
-export function v1RoleIdMovePatch({
+/** 移动角色 moveRole PATCH /v1/role/${param0}/move */
+export function moveRole({
   params,
   body,
   options,
 }: {
   // 叠加生成的Param类型 (非body参数openapi默认没有生成对象)
-  params: API.V1RoleIdMovePatchParams
+  params: API.MoveRoleParams
   body: API.MoveRoleDTO
 
   options?: ICustomAxiosRequestConfig
@@ -177,14 +177,14 @@ export function v1RoleIdMovePatch({
   })
 }
 
-/** 更新角色排序优先级 PATCH /v1/role/${param0}/sort */
-export function v1RoleIdSortPatch({
+/** 更新角色排序优先级 updateRoleSort PATCH /v1/role/${param0}/sort */
+export function updateRoleSort({
   params,
   body,
   options,
 }: {
   // 叠加生成的Param类型 (非body参数openapi默认没有生成对象)
-  params: API.V1RoleIdSortPatchParams
+  params: API.UpdateRoleSortParams
   body: API.UpdateSortDTO
 
   options?: ICustomAxiosRequestConfig
@@ -210,14 +210,14 @@ export function v1RoleIdSortPatch({
   })
 }
 
-/** 更新角色状态 PATCH /v1/role/${param0}/status */
-export function v1RoleIdStatusPatch({
+/** 更新角色状态 updateRoleStatus PATCH /v1/role/${param0}/status */
+export function updateRoleStatus({
   params,
   body,
   options,
 }: {
   // 叠加生成的Param类型 (非body参数openapi默认没有生成对象)
-  params: API.V1RoleIdStatusPatchParams
+  params: API.UpdateRoleStatusParams
   body: API.UpdateStatusDTO
 
   options?: ICustomAxiosRequestConfig
@@ -243,20 +243,20 @@ export function v1RoleIdStatusPatch({
   })
 }
 
-/** 查看单个角色树结构 GET /v1/role/tree/${param0} */
-export function v1RoleTreeIdGet({
+/** 查看单个角色树结构 getRoleTree GET /v1/role/tree/${param0} */
+export function getRoleTree({
   params,
   options,
 }: {
   // 叠加生成的Param类型 (非body参数openapi默认没有生成对象)
-  params: API.V1RoleTreeIdGetParams
+  params: API.GetRoleTreeParams
 
   options?: ICustomAxiosRequestConfig
 }) {
   const { id: param0, ...queryParams } = params
 
   return http.request<
-    API.V1RoleTreeIdGetParams,
+    API.GetRoleTreeParams,
     API.ResVO & {
       data?: API.RoleTreeVO
     }
@@ -272,8 +272,8 @@ export function v1RoleTreeIdGet({
   })
 }
 
-/** 查看多个角色树结构 POST /v1/role/trees */
-export function v1RoleTreesPost({
+/** 查看多个角色树结构 getRoleTrees POST /v1/role/trees */
+export function getRoleTrees({
   body,
   options,
 }: {

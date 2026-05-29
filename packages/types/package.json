@@ -8,7 +8,7 @@
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "scripts": {
-    "g": "plop --plopfile plopfile.mjs \"type\"",
+    "g": "plop --plopfile ./node_modules/@packages/gen/src/plopfiles/types.mjs",
     "g:eslint": "eslint",
     "g:format": "prettier",
     "ts:init": "tsc --init",
@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@configs/eslint-config": "workspace:*",
-    "@packages/generators": "workspace:*",
+    "@packages/gen": "workspace:*",
     "@rollup/plugin-commonjs": "catalog:cli",
     "@rollup/plugin-node-resolve": "catalog:cli",
     "@rollup/plugin-typescript": "catalog:cli",

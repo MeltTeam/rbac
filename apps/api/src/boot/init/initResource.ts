@@ -2,7 +2,6 @@ import type { ConfigService } from '@nestjs/config'
 import type { NestExpressApplication } from '@nestjs/platform-express'
 import type { ResourceTypeEnum } from '@packages/types'
 import type { IncomingMessage, Server, ServerResponse } from 'node:http'
-import type { ResourceEntity } from '@/modules/rbac/resource/domain'
 import { Logger } from '@nestjs/common'
 import { ModulesContainer, Reflector } from '@nestjs/core'
 import { ResourceTypeCodeMap } from '@packages/types'
@@ -78,26 +77,16 @@ export async function initResource(
     // 实体管理器(用于操作数据库)
     const entityManager = appInstance.get(EntityManager)
     await entityManager.transaction(async (em: EntityManager) => {
-      // 当前资源情况
-      let existingResources: ResourceEntity[] = []
-      try {
-        const res = await resourceDomainService.getResourcesByCodes(
-          createResourceDTOList.map((r) => r.code),
-          em,
-        )
-        existingResources = res
-      } catch {
-        logger.warn('未找到现有资源，将创建所有新资源')
-        existingResources = []
-      }
       const codes = new Set<string>()
-      const names = new Set<string>()
-      existingResources.forEach((r) => {
-        codes.add(r.resourceCode)
-        names.add(r.name)
-      })
-      const newResources = createResourceDTOList.filter((r) => !codes.has(r.code) || !names.has(r.name))
-      // 资源
+      const pageSize = 2000
+      let page = 1
+      while (true) {
+        const [resources, total] = await resourceDomainService.getResources({ page, limit: pageSize }, false, em)
+        resources.forEach((r) => codes.add(r.resourceCode))
+        if (page * pageSize >= total) break
+        page++
+      }
+      const newResources = createResourceDTOList.filter((r) => !codes.has(r.code))
       if (newResources.length > 0) {
         logger.log(`发现 ${newResources.length} 个新资源，开始创建...`)
         const createDTOList = newResources.map((r) => {
@@ -110,17 +99,17 @@ export async function initResource(
           return createDTO
         })
         try {
-          existingResources = await resourceDomainService.createResources(em, createDTOList)
+          await resourceDomainService.createResources(em, createDTOList)
           logger.log(`√ 批量创建资源成功，共创建 ${newResources.length} 个新资源`)
         } catch (err) {
-          logger.error(`× 批量创建资源失败${err.message}`, err.stack)
+          logger.error(`× 批量创建资源失败: ${err.message}`, err.stack)
         }
       } else {
         logger.log('没有发现新资源需要创建')
       }
     })
   } catch (err) {
-    logger.error(`资源扫描失败${err.message}`, err.stack)
+    logger.error(`资源扫描失败: ${err.message}`, err.stack)
   }
   return limit
 }

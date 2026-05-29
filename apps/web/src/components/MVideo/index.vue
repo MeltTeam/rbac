@@ -53,7 +53,7 @@ function stopRecording() {
       downloadName.value = `recording-${new Date().toISOString().slice(0, 19).replace('T', '_').replace(/:/g, '-')}.mp4`
 
       // 清空录制数据
-      recordedChunks.value = []
+      recordedChunks.value.length = 0
 
       // 设置状态
       isRecording.value = false
@@ -66,13 +66,13 @@ function stopRecording() {
   <div>
     <MButton :disabled="isRecording" @click="startRecording">开始录屏</MButton>
     <MButton :disabled="!isRecording" @click="stopRecording">停止录屏</MButton>
-    <video v-if="videoUrl" class="video_container" :src="videoUrl" controls></video>
+    <video v-if="videoUrl" class="m-video-container" :src="videoUrl" controls></video>
     <a v-if="downloadUrl" type="default" link :href="downloadUrl" :download="downloadName" class="download-link"> 下载视频 </a>
   </div>
 </template>
 
 <style scoped>
-.video_container {
+.m-video-container {
   width: 100%;
   max-width: 600px;
   margin-top: 20px;

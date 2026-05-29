@@ -40,6 +40,3 @@ apps/service/system
 *.sw?
 
 *.tsbuildinfo
-# skills
-.trae
-.agents

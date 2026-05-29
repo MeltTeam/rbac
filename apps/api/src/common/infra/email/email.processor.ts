@@ -6,13 +6,13 @@ import { MailerService } from '@nestjs-modules/mailer'
 import { Processor, WorkerHost } from '@nestjs/bullmq'
 import { ConfigService } from '@nestjs/config'
 import { LoggingService } from '@/common/infra/logging'
-import { EMAIL_QUEUE_TOKEN } from '@/common/infra/queue'
+import { EMAIL_QUEUE_COMPLETE, EMAIL_QUEUE_FAIL, EMAIL_QUEUE_TOKEN } from '@/common/infra/queue'
 import { APP_CONFIG_KEY, EMAIL_CONFIG_KEY, EMAIL_SERVICE_KEYS } from '@/config'
 
 /** 邮件队列处理 */
 @Processor(EMAIL_QUEUE_TOKEN, {
-  removeOnComplete: { count: 500 },
-  removeOnFail: { count: 500 },
+  removeOnComplete: { count: EMAIL_QUEUE_COMPLETE },
+  removeOnFail: { count: EMAIL_QUEUE_FAIL },
 })
 export class EmailProcessor extends WorkerHost {
   constructor(

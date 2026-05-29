@@ -7,7 +7,7 @@ import { ApiController, ApiMethod, ResourceDomain, ResourceMethod, ResourceType 
 import { FindAllDTO, UpdateSortDTO, UpdateStatusDTO } from '@/common/dto'
 import { ResVO } from '@/common/vo'
 import {
-  CreateUserByNameCommand,
+  CreateUserCommand,
   CreateUserDTO,
   DeleteUserCommand,
   FindAllUserVO,
@@ -36,19 +36,19 @@ export class UserController implements IUserController {
   @Post()
   @ResourceMethod('create')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '创建用户' }],
+    ApiOperationOptions: [{ description: 'createUser', summary: '创建用户' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess(UserDetailsVO)],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',
   })
   async create(@Body() createUserDTO: CreateUserDTO) {
-    return await this.commandBus.execute(new CreateUserByNameCommand(createUserDTO))
+    return await this.commandBus.execute(new CreateUserCommand(createUserDTO))
   }
 
   @Delete(':id')
   @ResourceMethod('delete')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '删除用户' }],
+    ApiOperationOptions: [{ description: 'deleteUser', summary: '删除用户' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess()],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',
@@ -60,7 +60,7 @@ export class UserController implements IUserController {
   @Patch(':id')
   @ResourceMethod('update')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '更新用户' }],
+    ApiOperationOptions: [{ description: 'updateUser', summary: '更新用户' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess()],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',
@@ -72,7 +72,7 @@ export class UserController implements IUserController {
   @Patch(':id/status')
   @ResourceMethod('updateStatus')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '更新用户状态' }],
+    ApiOperationOptions: [{ description: 'updateUserStatus', summary: '更新用户状态' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess()],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',
@@ -84,7 +84,7 @@ export class UserController implements IUserController {
   @Patch(':id/sort')
   @ResourceMethod('updateSort')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '更新用户排序优先级' }],
+    ApiOperationOptions: [{ description: 'updateUserSort', summary: '更新用户排序优先级' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess()],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',
@@ -96,7 +96,7 @@ export class UserController implements IUserController {
   @Get()
   @ResourceMethod('list')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '获取用户列表' }],
+    ApiOperationOptions: [{ description: 'getUsers', summary: '获取用户列表' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess(FindAllUserVO)],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',
@@ -108,7 +108,7 @@ export class UserController implements IUserController {
   @Get(':id')
   @ResourceMethod('detail')
   @ApiMethod({
-    ApiOperationOptions: [{ summary: '查看单个用户详情' }],
+    ApiOperationOptions: [{ description: 'getUserById', summary: '查看单个用户详情' }],
     ApiResponseOptions: [ResVO.SwaggerSuccess(UserDetailsVO)],
     ApiBearerAuthOptions: 'JWT',
     ApiCookieAuthOptions: 'COOKIE-JWT',

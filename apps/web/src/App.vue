@@ -1,17 +1,31 @@
 <script lang="ts" setup>
-import { Fragment } from 'vue'
+import { themeStore } from '@/stores'
 
 defineOptions({ name: 'App' })
 const isLoading = ref(true)
+function loadOk() {
+  setTimeout(() => {
+    isLoading.value = false
+  }, 500)
+}
+const theme = themeStore()
+theme.initTheme()
+
+// if (import.meta.env.DEV) {
+//   // 只在开发环境启用 vConsole
+//   import('vconsole').then(({ default: VConsole }) => {
+//     const vConsole = new VConsole()
+//     onUnmounted(() => {
+//       vConsole.destroy()
+//     })
+//   })
+// }
 </script>
 
 <template>
-  <Fragment>
-    <div class="a">1</div>
-  </Fragment>
-  <div v-mLoading="isLoading" class="App_container wh-screen bg-[#cccccc] dark:bg-[#212121]">
+  <div v-mLoading="isLoading" class="App_container wh-screen bg-el-bg-page dark:bg-[#212121]">
     <RouterView v-slot="{ Component }">
-      <Component :is="Component" @vue:mounted="() => (isLoading = false)" />
+      <component :is="Component" @vue:mounted="loadOk" />
     </RouterView>
   </div>
 </template>

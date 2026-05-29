@@ -3,6 +3,7 @@ import type { UserEntity } from '../../domain'
 import { ApiSchema } from '@nestjs/swagger'
 import { omit } from 'lodash-es'
 import { BaseVO } from '@/common/vo'
+import { UserVOAssembler } from '../assemblers'
 import { UserProfileVO } from './user-profile.vo'
 
 /** 用户详情 */
@@ -28,7 +29,7 @@ export class UserDetailsVO extends BaseVO implements IUserDetailsVO {
       const keys = ['_id', 'pwd', 'loginIp', 'salt', 'roles']
       const omitResult = omit(user, keys)
       Object.assign(this, omitResult)
-      this.profile = new UserProfileVO(user.profile)
+      this.profile = UserVOAssembler.toProfileVO(user.profile)
     }
   }
 }

@@ -19,7 +19,7 @@ export class UnknownExceptionFilter implements ExceptionFilter {
   ) {}
 
   catch(exception: Error, host: ArgumentsHost) {
-    this.loggingService.log('未知异常过滤器')
+    this.loggingService.debug('未知异常过滤器')
     const ctx = host.switchToHttp()
     const res = ctx.getResponse<Response>()
     ResVO.setLoggerContext(this.clsService, UnknownExceptionFilter.name)

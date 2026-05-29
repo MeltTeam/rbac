@@ -3,21 +3,21 @@ import type { ICustomAxiosRequestConfig } from '@/utils/http/IHttpUtils'
 
 import { http } from '@/utils/http'
 
-/** 给用户分配角色 POST /v1/user/role */
-export function v1UserRolePost({
+/** 批量替换用户的角色(全量替换) replaceUsersRole POST /v1/user-role/batch-replace */
+export function replaceUsersRole({
   body,
   options,
 }: {
-  body: API.AssignUserRoleDTO
+  body: API.ReplaceUsersRoleDTO
 
   options?: ICustomAxiosRequestConfig
 }) {
   return http.request<
-    API.AssignUserRoleDTO,
+    API.ReplaceUsersRoleDTO,
     API.ResVO & {
       data?: unknown
     }
-  >('/v1/user/role', {
+  >('/v1/user-role/batch-replace', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -30,24 +30,51 @@ export function v1UserRolePost({
   })
 }
 
-/** 获取用户的角色ID列表 GET /v1/user/role/${param0}/role-ids */
-export function v1UserRoleIdRoleidsGet({
+/** 替换用户的角色(全量替换) replaceUserRole POST /v1/user-role/replace */
+export function replaceUserRole({
+  body,
+  options,
+}: {
+  body: API.ReplaceUserRoleDTO
+
+  options?: ICustomAxiosRequestConfig
+}) {
+  return http.request<
+    API.ReplaceUserRoleDTO,
+    API.ResVO & {
+      data?: unknown
+    }
+  >('/v1/user-role/replace', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    // 配置插件之类的
+    ...(options || {
+      customConfig: {},
+    }),
+  })
+}
+
+/** 获取用户的角色ID列表 getRoleByUser GET /v1/user-role/role-ids/${param0} */
+export function getRoleByUser({
   params,
   options,
 }: {
   // 叠加生成的Param类型 (非body参数openapi默认没有生成对象)
-  params: API.V1UserRoleIdRoleidsGetParams
+  params: API.GetRoleByUserParams
 
   options?: ICustomAxiosRequestConfig
 }) {
   const { id: param0, ...queryParams } = params
 
   return http.request<
-    API.V1UserRoleIdRoleidsGetParams,
+    API.GetRoleByUserParams,
     API.ResVO & {
       data?: API.RoleIdsVO
     }
-  >(`/v1/user/role/${param0}/role-ids`, {
+  >(`/v1/user-role/role-ids/${param0}`, {
     method: 'GET',
     params: { ...queryParams },
     // 配置插件之类的
@@ -57,53 +84,26 @@ export function v1UserRoleIdRoleidsGet({
   })
 }
 
-/** 获取角色的用户ID列表 GET /v1/user/role/${param0}/user-ids */
-export function v1UserRoleIdUseridsGet({
+/** 获取角色的用户ID列表 getUserByRole GET /v1/user-role/user-ids/${param0} */
+export function getUserByRole({
   params,
   options,
 }: {
   // 叠加生成的Param类型 (非body参数openapi默认没有生成对象)
-  params: API.V1UserRoleIdUseridsGetParams
+  params: API.GetUserByRoleParams
 
   options?: ICustomAxiosRequestConfig
 }) {
   const { id: param0, ...queryParams } = params
 
   return http.request<
-    API.V1UserRoleIdUseridsGetParams,
+    API.GetUserByRoleParams,
     API.ResVO & {
       data?: API.UserIdsVO
     }
-  >(`/v1/user/role/${param0}/user-ids`, {
+  >(`/v1/user-role/user-ids/${param0}`, {
     method: 'GET',
     params: { ...queryParams },
-    // 配置插件之类的
-    ...(options || {
-      customConfig: {},
-    }),
-  })
-}
-
-/** 批量给用户分配角色 POST /v1/user/role/batch */
-export function v1UserRoleBatchPost({
-  body,
-  options,
-}: {
-  body: API.AssignUsersRoleDTO
-
-  options?: ICustomAxiosRequestConfig
-}) {
-  return http.request<
-    API.AssignUsersRoleDTO,
-    API.ResVO & {
-      data?: unknown
-    }
-  >('/v1/user/role/batch', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    data: body,
     // 配置插件之类的
     ...(options || {
       customConfig: {},

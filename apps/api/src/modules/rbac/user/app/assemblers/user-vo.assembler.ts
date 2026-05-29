@@ -1,13 +1,18 @@
+import type { UserEntity, UserProfileEntity } from '../../domain'
 import type { ExcludeKeys } from '@/common/utils'
 import type { IFindAllVOOptions } from '@/common/vo'
-import { UserEntity } from '../../domain'
-import { FindAllUserVO, UserDetailsVO, UserIdsVO } from '../vo'
+import { FindAllUserVO, UserDetailsVO, UserIdsVO, UserProfileVO } from '../vo'
 
 /** 用户转换器 */
 export class UserVOAssembler {
   /** 将实体转换为详情VO */
   static toDetailsVO(user: UserEntity) {
     return new UserDetailsVO(user)
+  }
+
+  /** 将实体转换为档案VO */
+  static toProfileVO(profile: UserProfileEntity) {
+    return new UserProfileVO(profile)
   }
 
   /** 将实体转换为分页VO */

@@ -1,13 +1,11 @@
 import type { ModuleMetadata } from '@nestjs/common'
 import type { EntityClassOrSchema } from '@nestjs/typeorm/dist/interfaces/entity-class-or-schema.type'
-import { Global, Module } from '@nestjs/common'
+import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
+import { MenuModule } from '../menu/menu.module'
+import { ResourceModule } from '../resource/resource.module'
 import {
-  AssignRoleMenuHandler,
-  AssignRoleResourceHandler,
-  AssignRolesMenuHandler,
-  AssignRolesResourceHandler,
-  CreateRoleByNameHandler,
+  CreateRoleHandler,
   DeleteRoleHandler,
   GetMenuByRoleHandler,
   GetResourceByRoleHandler,
@@ -18,6 +16,10 @@ import {
   GetRoleTreeHandler,
   GetRoleTreesHandler,
   MoveRoleHandler,
+  ReplaceRoleMenuHandler,
+  ReplaceRoleResourceHandler,
+  ReplaceRolesMenuHandler,
+  ReplaceRolesResourceHandler,
   RoleMenuService,
   RoleResourceService,
   UpdateRoleHandler,
@@ -34,16 +36,16 @@ const entities: EntityClassOrSchema[] = [RoleEntity, RoleTreeEntity]
 const controllers: ModuleMetadata['controllers'] = [RoleController, RoleMenuController, RoleResourceController]
 /** 命令处理 */
 const commandHandlers: ModuleMetadata['providers'] = [
-  CreateRoleByNameHandler,
+  CreateRoleHandler,
   DeleteRoleHandler,
   UpdateRoleHandler,
   UpdateRoleSortHandler,
   UpdateRoleStatusHandler,
   MoveRoleHandler,
-  AssignRoleMenuHandler,
-  AssignRolesMenuHandler,
-  AssignRoleResourceHandler,
-  AssignRolesResourceHandler,
+  ReplaceRoleMenuHandler,
+  ReplaceRolesMenuHandler,
+  ReplaceRoleResourceHandler,
+  ReplaceRolesResourceHandler,
 ]
 /** 查询处理 */
 const queryHandlers: ModuleMetadata['providers'] = [
@@ -63,9 +65,8 @@ const services: ModuleMetadata['providers'] = [RoleValidateService, RoleDomainSe
 /** 仓库 */
 const repo: ModuleMetadata['providers'] = [RoleRepository, RoleTreeRepository, RoleResourceRepository, RoleMenuRepository]
 /** 角色模块 */
-@Global()
 @Module({
-  imports: [TypeOrmModule.forFeature(entities)],
+  imports: [TypeOrmModule.forFeature(entities), MenuModule, ResourceModule],
   controllers,
   providers: [...repo, ...services, ...commandHandlers, ...queryHandlers, ...eventHandlers],
   exports: [...repo, ...services, ...commandHandlers, ...queryHandlers, ...eventHandlers],

@@ -1,4 +1,4 @@
-import type { AxiosInstance, AxiosResponse } from 'axios'
+import type { AxiosInstance } from 'axios'
 import type {
   ICustomAxiosError,
   ICustomAxiosRequestConfig,
@@ -6,11 +6,13 @@ import type {
   ICustomInternalAxiosRequestConfig,
   IHttpUtils,
   IHttpUtilsOptions,
+  IPluginRes,
 } from './IHttpUtils'
 import type { IHttpUtilsPlugin, IHttpUtilsPluginCTX, THttpUtilsPluginHook, TPluginHookData } from './IPlugin'
 import axios from 'axios'
+import qs from 'qs'
 import { v4 } from 'uuid'
-import { REQUEST_ID_RULES } from './IHttpUtils'
+import { PluginResType, REQUEST_ID_RULES } from './IHttpUtils'
 
 export class HttpUtils<C = any> implements IHttpUtils<C> {
   axiosInstance!: AxiosInstance
@@ -19,6 +21,10 @@ export class HttpUtils<C = any> implements IHttpUtils<C> {
     timeout: 5000,
     headers: { 'Content-Type': 'application/json' },
     withCredentials: true,
+    /** 兼容后端解析包含对象数组param参数的方案 */
+    paramsSerializer: {
+      serialize: (params) => qs.stringify(params, { arrayFormat: 'brackets', skipNulls: true }),
+    },
     customConfig: {},
   }
 
@@ -36,16 +42,18 @@ export class HttpUtils<C = any> implements IHttpUtils<C> {
       return config
     }
     const onReqErr = async (err: ICustomAxiosError<C>) => {
-      err = await this.runHook('onReqErr', err)
-      return err
+      const result = await this.runHook('onReqErr', err)
+      if (axios.isAxiosError(result)) throw result
+      return result
     }
     const onRes = async (res: ICustomAxiosResponse<C>) => {
       res = await this.runHook('onRes', res)
-      return res
+      return res.data
     }
     const onResErr = async (err: ICustomAxiosError<C>) => {
-      err = await this.runHook('onResErr', err)
-      return err
+      const result = await this.runHook('onResErr', err)
+      if (axios.isAxiosError(result)) throw result
+      return result
     }
     const { request, response } = this.axiosInstance.interceptors
     request.use(onReq, onReqErr)
@@ -55,6 +63,7 @@ export class HttpUtils<C = any> implements IHttpUtils<C> {
   // 插件相关
   public plugins: IHttpUtilsPlugin<C>[] = []
   ctx: IHttpUtilsPluginCTX<C> = {
+    createPluginRes: this.createPluginRes.bind(this),
     getPlugins: this.getPlugins.bind(this),
     setPlugin: this.setPlugin.bind(this),
     delPlugin: this.delPlugin.bind(this),
@@ -68,6 +77,10 @@ export class HttpUtils<C = any> implements IHttpUtils<C> {
     delete: this.delete.bind(this),
     put: this.put.bind(this),
     patch: this.patch.bind(this),
+  }
+
+  async createPluginRes<T>(type: PluginResType, res: T) {
+    return { type, res }
   }
 
   async setPlugin(plugin: IHttpUtilsPlugin<C>) {
@@ -107,22 +120,33 @@ export class HttpUtils<C = any> implements IHttpUtils<C> {
     return [...plugins].sort((a, b) => this.getPluginPriority(a, hook) - this.getPluginPriority(b, hook))
   }
 
+  private isPluginRes<T>(value: unknown): value is IPluginRes<T> {
+    return (
+      typeof value === 'object' &&
+      value !== null &&
+      'type' in value &&
+      'res' in value &&
+      Object.values(PluginResType).includes((value as IPluginRes<T>).type)
+    )
+  }
+
   async runHook<H extends THttpUtilsPluginHook>(hook: H, data: TPluginHookData<C, H>) {
     const sortedPlugins = this.sortPlugins(this.plugins, hook)
     let currentData = data
-
     for (const plugin of sortedPlugins) {
       // eslint-disable-next-line ts/no-unsafe-function-type
       const pluginHook = plugin[hook] as Function | undefined
       if (pluginHook) {
         try {
-          const result = await pluginHook(currentData, this.ctx)
-          if (result !== undefined && result !== null) {
-            currentData = result as TPluginHookData<C, H>
+          const res = await pluginHook(currentData, this.ctx)
+          if (this.isPluginRes<TPluginHookData<C, H>>(res)) {
+            currentData = res.res
+            if (res.type === PluginResType.END) return currentData
           }
         } catch (err) {
-          console.error(`[HttpUtils] Plugin "${plugin.name}" ${hook} failed:`, err)
-          // 继续执行下一个插件，保持系统稳定性
+          if (axios.isAxiosError(err) && err.code && ['LIMIT', 'OFFLINE'].includes(err.code)) {
+            throw err
+          }
           continue
         }
       }
@@ -150,11 +174,14 @@ export class HttpUtils<C = any> implements IHttpUtils<C> {
   }
 
   public async request<DTO = any, VO = never[]>(url: string, config: ICustomAxiosRequestConfig<C, DTO>) {
-    const res = await this.axiosInstance!.request<VO, AxiosResponse<VO>, DTO>({
+    const res = await this.axiosInstance!.request<VO, VO, DTO>({
       ...config,
       url,
-    })
-    return res.data
+    }).then(
+      (res) => res,
+      (res) => res as VO,
+    )
+    return res
   }
 
   public async get<DTO = any, VO = never[]>(url: string, params?: DTO, config?: ICustomAxiosRequestConfig<C, DTO>) {
